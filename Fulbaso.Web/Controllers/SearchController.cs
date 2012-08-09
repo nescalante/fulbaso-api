@@ -69,7 +69,7 @@ namespace Fulbaso.UI.Controllers
                 if (!int.TryParse(p, out currentPage))
                     currentPage = 1;
 
-            var model = _courtBookService.GetAvailable(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, date, h, currentPage, UIConfiguration.ROWS_COUNT, out count);
+            var model = _courtBookService.GetAvailable(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, date, h, currentPage, Configuration.RowsPerRequest, out count);
             ViewBag.Places = count;
 
             return View(model);

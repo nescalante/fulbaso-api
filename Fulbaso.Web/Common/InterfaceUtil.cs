@@ -27,7 +27,7 @@ namespace Fulbaso.UI
 
         public static string GetRemarked(string description, string remark, string className)
         {
-            if (description == null) return string.Empty;
+            if (description == null || description == "*") return string.Empty;
 
             var result = description;
             var tagInit = "<span class=\"" + className + "\">";

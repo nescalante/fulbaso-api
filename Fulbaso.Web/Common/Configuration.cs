@@ -3,12 +3,12 @@ using System.Configuration;
 
 namespace Fulbaso.UI
 {
-    public class UIConfiguration
+    public class Configuration
     {
-        public readonly static int ROWS_COUNT = Convert.ToInt32(ConfigurationManager.AppSettings.Get("RowsCount"));
+        public readonly static int RowsPerRequest = Convert.ToInt32(ConfigurationManager.AppSettings.Get("RowsPerRequest"));
 
-        public readonly static string APP_TITLE = ConfigurationManager.AppSettings.Get("AppTitle");
+        public readonly static string AppTitle = ConfigurationManager.AppSettings.Get("AppTitle");
 
-        public readonly static string APP_ID = ConfigurationManager.AppSettings.Get("AppID");
+        public readonly static string AppId = ConfigurationManager.AppSettings.Get("AppId");
     }
 }

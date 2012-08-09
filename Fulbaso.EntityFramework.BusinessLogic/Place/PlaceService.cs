@@ -93,13 +93,13 @@ namespace Fulbaso.EntityFramework.BusinessLogic
             return query.ToList();
         }
 
-        public IEnumerable<Place> GetList(string value, int page, int rows, out int count)
+        public IEnumerable<Place> GetList(string value, int init, int rows, out int count)
         {
             var query = EntityUtil.Context.PlaceViews.Where(c => string.IsNullOrEmpty(value) ||
                 c.exp.Contains(value));
             count = query.Count();
 
-            query = query.OrderBy(q => q.Name).Skip((page - 1) * rows).Take(rows);
+            query = query.OrderBy(q => q.exp.ToUpper().IndexOf(value.ToUpper())).Skip(init).Take(rows);
 
             return GetFromView(query);
         }
@@ -124,12 +124,12 @@ namespace Fulbaso.EntityFramework.BusinessLogic
             return list;
         }
 
-        public IEnumerable<Place> GetList(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int page, int rows, out int count)
+        public IEnumerable<Place> GetList(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int init, int rows, out int count)
         {
             var places = CreateQuery(players, floorTypes, locations, indoor, lighted);
             count = places.Count();
 
-            places = places.OrderBy(q => q.Name).Skip((page - 1) * rows).Take(rows);
+            places = places.OrderBy(q => q.Name).Skip(init).Take(rows);
 
             var list = (from i in places
                         select new Place

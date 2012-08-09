@@ -12,7 +12,7 @@
     };    
 }
             
-<a style="text-decoration: none; display:block;" class="span4 place-info" href="@Url.Action("ItemView", "Place", new { id = Model.Page })">
+<a class="span4 place-info" href="@Url.Action("ItemView", "Place", new { id = Model.Page })">
     <div>
         <h3>@Html.Raw(InterfaceUtil.GetRemarked(Model.Description, Request.QueryString["q"], "ui-remark ui-corner-all"))</h3>
         <ul style="margin:0;padding:0;" data-id="@Model.Id">

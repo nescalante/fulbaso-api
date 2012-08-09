@@ -5,6 +5,7 @@ using Fulbaso.EntityFramework.BusinessLogic;
 using Fulbaso.Common;
 using Fulbaso.Contract;
 using Fulbaso.UI.Models;
+using System;
 
 namespace Fulbaso.UI.Controllers
 {
@@ -32,6 +33,32 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        public ActionResult List(int init, string query)
+        {
+            int count;
+            var model = _placeService.GetList(query == "*" ? string.Empty : query, init, Configuration.RowsPerRequest, out count);
+
+            return View("List", model);
+        }
+
+        [HttpGet]
+        public ActionResult Search(string query)
+        {
+            query = query == "*" ? string.Empty : query;
+            int count;
+            var model = _placeService.GetList(query, 0, Configuration.RowsPerRequest, out count);
+            ViewBag.Query = query;
+            ViewBag.Count = count;
+
+            if (count == 1)
+            {
+                return RedirectToAction("ItemView", "Place", new { id = model.First().Page, });
+            }
+
+            return View("Places", model);
+        }
+
+        [HttpGet]
         public ActionResult Index(string q, string p, string j, string s, string l, bool? ind, bool? lig)
         {
             int currentPage, count;
@@ -44,7 +71,7 @@ namespace Fulbaso.UI.Controllers
 
             if (j != null || s != null || l != null || ind != null || lig != null)
             {
-                model = _placeService.GetList(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, currentPage, UIConfiguration.ROWS_COUNT, out count);
+                model = _placeService.GetList(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, currentPage, Configuration.RowsPerRequest, out count);
                 ViewBag.Places = count;
             }
             else
@@ -64,7 +91,7 @@ namespace Fulbaso.UI.Controllers
                 }
 
                 var query = q == "*" ? string.Empty : q;
-                model = _placeService.GetList(query, currentPage, UIConfiguration.ROWS_COUNT, out count);
+                model = _placeService.GetList(query, currentPage, Configuration.RowsPerRequest, out count);
                 ViewBag.Places = count;
                 ViewBag.Query = query;
 

@@ -27,7 +27,7 @@ else
 {
     <script>
         window.fbAsyncInit = function () {
-            FB.init({ appId: '@UIConfiguration.APP_ID', channelUrl: '//' + window.location.hostname + '/channel', status: true, cookie: true, xfbml: true, });
+            FB.init({ appId: '@Configuration.AppId', channelUrl: '//' + window.location.hostname + '/channel', status: true, cookie: true, xfbml: true, });
 
             FB.Event.subscribe('auth.statusChange', function (response) {
                 if (response.authResponse) {

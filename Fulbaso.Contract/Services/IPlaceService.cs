@@ -21,11 +21,11 @@ namespace Fulbaso.Contract
 
         IEnumerable<string> GetForAutocomplete(string prefixText, int count);
 
-        IEnumerable<Place> GetList(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int page, int rows, out int count);
+        IEnumerable<Place> GetList(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int init, int rows, out int count);
 
         IEnumerable<Place> GetList(string name);
 
-        IEnumerable<Place> GetList(string value, int page, int rows, out int count);
+        IEnumerable<Place> GetList(string value, int init, int rows, out int count);
 
         IEnumerable<Tuple<Place, double?>> GetNearest(Place place, int count = 10, double distance = 0);
 

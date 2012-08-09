@@ -47,10 +47,42 @@
     <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados @query</p>
 </div>
 
-@Url.Action("ItemsList", "Home", new { 
+<div id="places"></div>
+
+<a id="loadmore" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
 
 <script>
     $(function () {
-        $.get("@Url.Action(
+        function loadMore() {
+            $("#loadmore").addClass("disabled");
+            $("#loadmore").html("Buscando");
+
+            $.get("@Url.Action("List", "Home")?init=" + $(".place-info").length + "&query=@ViewBag.Query", function (data) { 
+                $("#loadmore").removeClass("disabled");
+                $(data)
+                    .hide()
+                    .appendTo("#places")
+                    .fadeIn();
+
+                if ($(".place-info").length == @ViewBag.Places) {
+                    $("#loadmore").hide();
+                }
+            }).error(function () {
+                $("#loadmore").hide();
+            });
+            $("#loadmore").html("Mostrar más");
+        }
+
+        $("#loadmore").click(function () {
+            loadMore();
+        });
+
+        $(window).scroll(function () {
+            if (document.documentElement.clientHeight + $(document).scrollTop() >= document.body.offsetHeight) {
+                loadMore();
+            }
+        });
+        
+        loadMore();
     });
 </script>

@@ -48,7 +48,7 @@ namespace Fulbaso.Common
 
                 if (!string.IsNullOrEmpty(Token))
                 {
-                    var obj = FacebookUtil.CreateCall<FacebookUser>("https://graph.facebook.com/me/?access_token=" + Token);
+                    var obj = new FacebookUser { Id = "15", UserName = "test", Name = "test", }; // FacebookUtil.CreateCall<FacebookUser>("https://graph.facebook.com/me/?access_token=" + Token);
 
                     HttpContext.Current.Session[usersession] = obj;
 

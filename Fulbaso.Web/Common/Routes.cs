@@ -40,9 +40,9 @@ namespace Fulbaso.UI
             routes.MapRoute("ConfigurationEditRout", "editar/{id}/config/{court}/editar/{config}", new { controller = "Configuration", action = "Edit", });
             routes.MapRoute("ConfigurationAddRoute", "editar/{id}/config/{court}/agregar", new { controller = "Configuration", action = "Add", });
 
-            routes.MapRoute("PlacesQuery", "{controller}/{action}?q={query}", new { controller = "Home", action = "Index" });
-            routes.MapRoute("Default", "{controller}/{action}?q={query}", new { controller = "Home", action = "Index" });
+            routes.MapRoute("PlacesQuery", "q={query}", new { controller = "Home", action = "Search", });
             //, string p, string j, string s, string l, bool? ind, bool? lig)
+            routes.MapRoute("Default", "{controller}/{action}", new { controller = "Home", action = "Index" });
         }
     }
 }

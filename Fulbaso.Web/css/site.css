@@ -13,5 +13,4 @@
 
 .fb-comments, .fb-comments iframe[style] { width: 100% !important; }
 
-.place-info { margin-bottom: 20px; }
-.place-info:hover .ui-info { text-shadow: 0 0 3px #66a; }
+.place-info { margin-bottom: 20px; text-decoration: none !important; }
