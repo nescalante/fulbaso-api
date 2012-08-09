@@ -1,0 +1,1025 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ObjectContextModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ObjectContextModelStoreContainer">
+          <EntitySet Name="Clients" EntityType="ObjectContextModel.Store.Clients" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CourtBooks" EntityType="ObjectContextModel.Store.CourtBooks" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CourtConfigurations" EntityType="ObjectContextModel.Store.CourtConfigurations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Courts" EntityType="ObjectContextModel.Store.Courts" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CourtTypes" EntityType="ObjectContextModel.Store.CourtTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FloorTypes" EntityType="ObjectContextModel.Store.FloorTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Locations" EntityType="ObjectContextModel.Store.Locations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Places" EntityType="ObjectContextModel.Store.Places" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PlaceServices" EntityType="ObjectContextModel.Store.PlaceServices" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Regions" EntityType="ObjectContextModel.Store.Regions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Territories" EntityType="ObjectContextModel.Store.Territories" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserFavourites" EntityType="ObjectContextModel.Store.UserFavourites" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserPlaces" EntityType="ObjectContextModel.Store.UserPlaces" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PlaceViews" EntityType="ObjectContextModel.Store.PlaceViews" store:Type="Views" store:Schema="dbo" store:Name="PlaceViews">
+            <DefiningQuery>SELECT 
+      [PlaceViews].[ID] AS [ID], 
+      [PlaceViews].[Name] AS [Name], 
+      [PlaceViews].[Address] AS [Address], 
+      [PlaceViews].[Phone] AS [Phone], 
+      [PlaceViews].[Page] AS [Page], 
+      [PlaceViews].[Location] AS [Location], 
+      [PlaceViews].[Region] AS [Region], 
+      [PlaceViews].[Courts] AS [Courts], 
+      [PlaceViews].[exp] AS [exp]
+      FROM [dbo].[PlaceViews] AS [PlaceViews]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Clients_Places" Association="ObjectContextModel.Store.FK_Clients_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="Clients" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourtBooks_Clients" Association="ObjectContextModel.Store.FK_CourtBooks_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="CourtBooks" EntitySet="CourtBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourtBooks_Courts" Association="ObjectContextModel.Store.FK_CourtBooks_Courts">
+            <End Role="Courts" EntitySet="Courts" />
+            <End Role="CourtBooks" EntitySet="CourtBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourtConfigurations_Courts" Association="ObjectContextModel.Store.FK_CourtConfigurations_Courts">
+            <End Role="Courts" EntitySet="Courts" />
+            <End Role="CourtConfigurations" EntitySet="CourtConfigurations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Courts_CourtTypes" Association="ObjectContextModel.Store.FK_Courts_CourtTypes">
+            <End Role="CourtTypes" EntitySet="CourtTypes" />
+            <End Role="Courts" EntitySet="Courts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Courts_FloorTypes" Association="ObjectContextModel.Store.FK_Courts_FloorTypes">
+            <End Role="FloorTypes" EntitySet="FloorTypes" />
+            <End Role="Courts" EntitySet="Courts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Courts_Places" Association="ObjectContextModel.Store.FK_Courts_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="Courts" EntitySet="Courts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Locations_Regions" Association="ObjectContextModel.Store.FK_Locations_Regions">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Places_Locations" Association="ObjectContextModel.Store.FK_Places_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Places" EntitySet="Places" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlaceServices_Places" Association="ObjectContextModel.Store.FK_PlaceServices_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="PlaceServices" EntitySet="PlaceServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Regions_Territories" Association="ObjectContextModel.Store.FK_Regions_Territories">
+            <End Role="Territories" EntitySet="Territories" />
+            <End Role="Regions" EntitySet="Regions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserFavourites_Places" Association="ObjectContextModel.Store.FK_UserFavourites_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="UserFavourites" EntitySet="UserFavourites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPlaces_Places" Association="ObjectContextModel.Store.FK_UserPlaces_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="UserPlaces" EntitySet="UserPlaces" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="Phone" Type="varchar" MaxLength="200" />
+          <Property Name="PlaceId" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourtBooks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CourtId" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+          <Property Name="Price" Type="decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ReserveRequired" Type="bit" Nullable="false" />
+          <Property Name="Reserve" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="Paid" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="200" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourtConfigurations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CourtId" Type="int" Nullable="false" />
+          <Property Name="StartHour" Type="tinyint" />
+          <Property Name="EndHour" Type="tinyint" />
+          <Property Name="Days" Type="tinyint" />
+          <Property Name="Price" Type="decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Order" Type="tinyint" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Courts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PlaceId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="Players" Type="int" />
+          <Property Name="CourtTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="FloorTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="IsIndoor" Type="bit" Nullable="false" />
+          <Property Name="IsLighted" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourtTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FloorTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="RegionId" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Places">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="Phone" Type="varchar" MaxLength="200" />
+          <Property Name="HowToArrive" Type="varchar(max)" />
+          <Property Name="Logo" Type="image" />
+          <Property Name="DateFrom" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Page" Type="varchar" MaxLength="50" />
+          <Property Name="MapLocation" Type="varchar" MaxLength="200" />
+          <Property Name="MapUa" Type="decimal" Precision="28" Scale="20" />
+          <Property Name="MapVa" Type="decimal" Precision="28" Scale="20" />
+        </EntityType>
+        <EntityType Name="PlaceServices">
+          <Key>
+            <PropertyRef Name="PlaceId" />
+            <PropertyRef Name="Service" />
+          </Key>
+          <Property Name="PlaceId" Type="int" Nullable="false" />
+          <Property Name="Service" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Regions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="TerritoryId" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Territories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserFavourites">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="PlaceId" />
+          </Key>
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="PlaceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserPlaces">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="PlaceId" />
+          </Key>
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="PlaceId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'CM.dbo.PlaceViews' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="PlaceViews">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Location" />
+            <PropertyRef Name="Region" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+          <Property Name="Phone" Type="varchar" MaxLength="200" />
+          <Property Name="Page" Type="varchar" MaxLength="50" />
+          <Property Name="Location" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Region" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Courts" Type="int" />
+          <Property Name="exp" Type="varchar" MaxLength="509" />
+        </EntityType>
+        <Association Name="FK_Clients_Places">
+          <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
+          <End Role="Clients" Type="ObjectContextModel.Store.Clients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clients">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourtBooks_Clients">
+          <End Role="Clients" Type="ObjectContextModel.Store.Clients" Multiplicity="1" />
+          <End Role="CourtBooks" Type="ObjectContextModel.Store.CourtBooks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtBooks">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourtBooks_Courts">
+          <End Role="Courts" Type="ObjectContextModel.Store.Courts" Multiplicity="1" />
+          <End Role="CourtBooks" Type="ObjectContextModel.Store.CourtBooks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtBooks">
+              <PropertyRef Name="CourtId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourtConfigurations_Courts">
+          <End Role="Courts" Type="ObjectContextModel.Store.Courts" Multiplicity="1" />
+          <End Role="CourtConfigurations" Type="ObjectContextModel.Store.CourtConfigurations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtConfigurations">
+              <PropertyRef Name="CourtId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Courts_CourtTypes">
+          <End Role="CourtTypes" Type="ObjectContextModel.Store.CourtTypes" Multiplicity="1" />
+          <End Role="Courts" Type="ObjectContextModel.Store.Courts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourtTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Courts">
+              <PropertyRef Name="CourtTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Courts_FloorTypes">
+          <End Role="FloorTypes" Type="ObjectContextModel.Store.FloorTypes" Multiplicity="1" />
+          <End Role="Courts" Type="ObjectContextModel.Store.Courts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FloorTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Courts">
+              <PropertyRef Name="FloorTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Courts_Places">
+          <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
+          <End Role="Courts" Type="ObjectContextModel.Store.Courts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Courts">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Locations_Regions">
+          <End Role="Regions" Type="ObjectContextModel.Store.Regions" Multiplicity="1" />
+          <End Role="Locations" Type="ObjectContextModel.Store.Locations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Locations">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Places_Locations">
+          <End Role="Locations" Type="ObjectContextModel.Store.Locations" Multiplicity="0..1" />
+          <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Places">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlaceServices_Places">
+          <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
+          <End Role="PlaceServices" Type="ObjectContextModel.Store.PlaceServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlaceServices">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Regions_Territories">
+          <End Role="Territories" Type="ObjectContextModel.Store.Territories" Multiplicity="1" />
+          <End Role="Regions" Type="ObjectContextModel.Store.Regions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Territories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Regions">
+              <PropertyRef Name="TerritoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserFavourites_Places">
+          <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
+          <End Role="UserFavourites" Type="ObjectContextModel.Store.UserFavourites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserFavourites">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPlaces_Places">
+          <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
+          <End Role="UserPlaces" Type="ObjectContextModel.Store.UserPlaces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPlaces">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ObjectContextModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="ObjectContextEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="ObjectContextModel.ClientEntity" />
+          <EntitySet Name="CourtBooks" EntityType="ObjectContextModel.CourtBookEntity" />
+          <EntitySet Name="CourtConfigurations" EntityType="ObjectContextModel.CourtConfigurationEntity" />
+          <EntitySet Name="Courts" EntityType="ObjectContextModel.CourtEntity" />
+          <EntitySet Name="CourtTypes" EntityType="ObjectContextModel.CourtTypeEntity" />
+          <EntitySet Name="FloorTypes" EntityType="ObjectContextModel.FloorTypeEntity" />
+          <EntitySet Name="Locations" EntityType="ObjectContextModel.LocationEntity" />
+          <EntitySet Name="Places" EntityType="ObjectContextModel.PlaceEntity" />
+          <EntitySet Name="PlaceServices" EntityType="ObjectContextModel.PlaceService" />
+          <EntitySet Name="Regions" EntityType="ObjectContextModel.RegionEntity" />
+          <EntitySet Name="Territories" EntityType="ObjectContextModel.TerritoryEntity" />
+          <EntitySet Name="UserFavourites" EntityType="ObjectContextModel.UserFavourite" />
+          <EntitySet Name="UserPlaces" EntityType="ObjectContextModel.UserPlace" />
+          <EntitySet Name="PlaceViews" EntityType="ObjectContextModel.PlaceView" />
+          <AssociationSet Name="FK_Clients_Places" Association="ObjectContextModel.FK_Clients_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="Clients" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourtBooks_Clients" Association="ObjectContextModel.FK_CourtBooks_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="CourtBooks" EntitySet="CourtBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourtBooks_Courts" Association="ObjectContextModel.FK_CourtBooks_Courts">
+            <End Role="Courts" EntitySet="Courts" />
+            <End Role="CourtBooks" EntitySet="CourtBooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourtConfigurations_Courts" Association="ObjectContextModel.FK_CourtConfigurations_Courts">
+            <End Role="Courts" EntitySet="Courts" />
+            <End Role="CourtConfigurations" EntitySet="CourtConfigurations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Courts_CourtTypes" Association="ObjectContextModel.FK_Courts_CourtTypes">
+            <End Role="CourtTypes" EntitySet="CourtTypes" />
+            <End Role="Courts" EntitySet="Courts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Courts_FloorTypes" Association="ObjectContextModel.FK_Courts_FloorTypes">
+            <End Role="FloorTypes" EntitySet="FloorTypes" />
+            <End Role="Courts" EntitySet="Courts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Courts_Places" Association="ObjectContextModel.FK_Courts_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="Courts" EntitySet="Courts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Locations_Regions" Association="ObjectContextModel.FK_Locations_Regions">
+            <End Role="Regions" EntitySet="Regions" />
+            <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Places_Locations" Association="ObjectContextModel.FK_Places_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="Places" EntitySet="Places" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlaceServices_Places" Association="ObjectContextModel.FK_PlaceServices_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="PlaceServices" EntitySet="PlaceServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserFavourites_Places" Association="ObjectContextModel.FK_UserFavourites_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="UserFavourites" EntitySet="UserFavourites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPlaces_Places" Association="ObjectContextModel.FK_UserPlaces_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="UserPlaces" EntitySet="UserPlaces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Regions_Territories" Association="ObjectContextModel.FK_Regions_Territories">
+            <End Role="Territories" EntitySet="Territories" />
+            <End Role="Regions" EntitySet="Regions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ClientEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="Phone" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="PlaceId" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Place" Relationship="ObjectContextModel.FK_Clients_Places" FromRole="Clients" ToRole="Places" />
+          <NavigationProperty Name="Books" Relationship="ObjectContextModel.FK_CourtBooks_Clients" FromRole="Clients" ToRole="CourtBooks" />
+        </EntityType>
+        <EntityType Name="CourtBookEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourtId" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ReserveRequired" Type="Boolean" Nullable="false" />
+          <Property Name="Reserve" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Paid" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="ObjectContextModel.FK_CourtBooks_Clients" FromRole="CourtBooks" ToRole="Clients" />
+          <NavigationProperty Name="Court" Relationship="ObjectContextModel.FK_CourtBooks_Courts" FromRole="CourtBooks" ToRole="Courts" />
+        </EntityType>
+        <EntityType Name="CourtConfigurationEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourtId" Type="Int32" Nullable="false" />
+          <Property Name="StartHour" Type="Byte" />
+          <Property Name="EndHour" Type="Byte" />
+          <Property Name="Days" Type="Byte" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Order" Type="Byte" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" />
+          <Property Name="EndDate" Type="DateTime" />
+          <NavigationProperty Name="Court" Relationship="ObjectContextModel.FK_CourtConfigurations_Courts" FromRole="CourtConfigurations" ToRole="Courts" />
+        </EntityType>
+        <EntityType Name="CourtEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlaceId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Players" Type="Int32" />
+          <Property Name="CourtTypeId" Type="Byte" Nullable="false" />
+          <Property Name="FloorTypeId" Type="Byte" Nullable="false" />
+          <Property Name="IsIndoor" Type="Boolean" Nullable="false" />
+          <Property Name="IsLighted" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Books" Relationship="ObjectContextModel.FK_CourtBooks_Courts" FromRole="Courts" ToRole="CourtBooks" />
+          <NavigationProperty Name="Configurations" Relationship="ObjectContextModel.FK_CourtConfigurations_Courts" FromRole="Courts" ToRole="CourtConfigurations" />
+          <NavigationProperty Name="Type" Relationship="ObjectContextModel.FK_Courts_CourtTypes" FromRole="Courts" ToRole="CourtTypes" />
+          <NavigationProperty Name="FloorType" Relationship="ObjectContextModel.FK_Courts_FloorTypes" FromRole="Courts" ToRole="FloorTypes" />
+          <NavigationProperty Name="Place" Relationship="ObjectContextModel.FK_Courts_Places" FromRole="Courts" ToRole="Places" />
+        </EntityType>
+        <EntityType Name="CourtTypeEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Courts" Relationship="ObjectContextModel.FK_Courts_CourtTypes" FromRole="CourtTypes" ToRole="Courts" />
+        </EntityType>
+        <EntityType Name="FloorTypeEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Courts" Relationship="ObjectContextModel.FK_Courts_FloorTypes" FromRole="FloorTypes" ToRole="Courts" />
+        </EntityType>
+        <EntityType Name="LocationEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Region" Relationship="ObjectContextModel.FK_Locations_Regions" FromRole="Locations" ToRole="Regions" />
+          <NavigationProperty Name="Places" Relationship="ObjectContextModel.FK_Places_Locations" FromRole="Locations" ToRole="Places" />
+        </EntityType>
+        <EntityType Name="PlaceEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Address" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="HowToArrive" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="DateFrom" Type="DateTime" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Page" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="MapLocation" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="MapUa" Type="Decimal" Precision="28" Scale="20" />
+          <Property Name="MapVa" Type="Decimal" Precision="28" Scale="20" />
+          <NavigationProperty Name="Clients" Relationship="ObjectContextModel.FK_Clients_Places" FromRole="Places" ToRole="Clients" />
+          <NavigationProperty Name="Courts" Relationship="ObjectContextModel.FK_Courts_Places" FromRole="Places" ToRole="Courts" />
+          <NavigationProperty Name="Location" Relationship="ObjectContextModel.FK_Places_Locations" FromRole="Places" ToRole="Locations" />
+          <NavigationProperty Name="Services" Relationship="ObjectContextModel.FK_PlaceServices_Places" FromRole="Places" ToRole="PlaceServices" />
+          <NavigationProperty Name="Favourites" Relationship="ObjectContextModel.FK_UserFavourites_Places" FromRole="Places" ToRole="UserFavourites" />
+          <NavigationProperty Name="Admins" Relationship="ObjectContextModel.FK_UserPlaces_Places" FromRole="Places" ToRole="UserPlaces" />
+        </EntityType>
+        <EntityType Name="PlaceService">
+          <Key>
+            <PropertyRef Name="PlaceId" />
+            <PropertyRef Name="Service" />
+          </Key>
+          <Property Name="PlaceId" Type="Int32" Nullable="false" />
+          <Property Name="Service" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Place" Relationship="ObjectContextModel.FK_PlaceServices_Places" FromRole="PlaceServices" ToRole="Places" />
+        </EntityType>
+        <EntityType Name="RegionEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="TerritoryId" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Locations" Relationship="ObjectContextModel.FK_Locations_Regions" FromRole="Regions" ToRole="Locations" />
+          <NavigationProperty Name="Territory" Relationship="ObjectContextModel.FK_Regions_Territories" FromRole="Regions" ToRole="Territories" />
+        </EntityType>
+        <EntityType Name="TerritoryEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Regions" Relationship="ObjectContextModel.FK_Regions_Territories" FromRole="Territories" ToRole="Regions" />
+        </EntityType>
+        <EntityType Name="UserFavourite">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="PlaceId" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="PlaceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Place" Relationship="ObjectContextModel.FK_UserFavourites_Places" FromRole="UserFavourites" ToRole="Places" />
+        </EntityType>
+        <EntityType Name="UserPlace">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="PlaceId" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="PlaceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Place" Relationship="ObjectContextModel.FK_UserPlaces_Places" FromRole="UserPlaces" ToRole="Places" />
+        </EntityType>
+        <EntityType Name="PlaceView">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Location" />
+            <PropertyRef Name="Region" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="Address" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="Phone" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="Page" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Location" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Region" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Courts" Type="Int32" />
+          <Property Name="exp" Type="String" MaxLength="509" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Clients_Places">
+          <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="1" />
+          <End Role="Clients" Type="ObjectContextModel.ClientEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clients">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourtBooks_Clients">
+          <End Role="Clients" Type="ObjectContextModel.ClientEntity" Multiplicity="1" />
+          <End Role="CourtBooks" Type="ObjectContextModel.CourtBookEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtBooks">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourtBooks_Courts">
+          <End Role="Courts" Type="ObjectContextModel.CourtEntity" Multiplicity="1" />
+          <End Role="CourtBooks" Type="ObjectContextModel.CourtBookEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtBooks">
+              <PropertyRef Name="CourtId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourtConfigurations_Courts">
+          <End Role="Courts" Type="ObjectContextModel.CourtEntity" Multiplicity="1" />
+          <End Role="CourtConfigurations" Type="ObjectContextModel.CourtConfigurationEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Courts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtConfigurations">
+              <PropertyRef Name="CourtId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Courts_CourtTypes">
+          <End Role="CourtTypes" Type="ObjectContextModel.CourtTypeEntity" Multiplicity="1" />
+          <End Role="Courts" Type="ObjectContextModel.CourtEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourtTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Courts">
+              <PropertyRef Name="CourtTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Courts_FloorTypes">
+          <End Role="FloorTypes" Type="ObjectContextModel.FloorTypeEntity" Multiplicity="1" />
+          <End Role="Courts" Type="ObjectContextModel.CourtEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FloorTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Courts">
+              <PropertyRef Name="FloorTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Courts_Places">
+          <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="1" />
+          <End Role="Courts" Type="ObjectContextModel.CourtEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Courts">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Locations_Regions">
+          <End Role="Regions" Type="ObjectContextModel.RegionEntity" Multiplicity="1" />
+          <End Role="Locations" Type="ObjectContextModel.LocationEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Regions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Locations">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Places_Locations">
+          <End Role="Locations" Type="ObjectContextModel.LocationEntity" Multiplicity="0..1" />
+          <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Places">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlaceServices_Places">
+          <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="1" />
+          <End Role="PlaceServices" Type="ObjectContextModel.PlaceService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlaceServices">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserFavourites_Places">
+          <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="1" />
+          <End Role="UserFavourites" Type="ObjectContextModel.UserFavourite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserFavourites">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPlaces_Places">
+          <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="1" />
+          <End Role="UserPlaces" Type="ObjectContextModel.UserPlace" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPlaces">
+              <PropertyRef Name="PlaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Regions_Territories">
+          <End Role="Territories" Type="ObjectContextModel.TerritoryEntity" Multiplicity="1" />
+          <End Role="Regions" Type="ObjectContextModel.RegionEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Territories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Regions">
+              <PropertyRef Name="TerritoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ObjectContextModelStoreContainer" CdmEntityContainer="ObjectContextEntities">
+          <EntitySetMapping Name="Clients"><EntityTypeMapping TypeName="ObjectContextModel.ClientEntity"><MappingFragment StoreEntitySet="Clients">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Phone" ColumnName="Phone" />
+            <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CourtBooks"><EntityTypeMapping TypeName="ObjectContextModel.CourtBookEntity"><MappingFragment StoreEntitySet="CourtBooks">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CourtId" ColumnName="CourtId" />
+            <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+            <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+            <ScalarProperty Name="Price" ColumnName="Price" />
+            <ScalarProperty Name="ReserveRequired" ColumnName="ReserveRequired" />
+            <ScalarProperty Name="Reserve" ColumnName="Reserve" />
+            <ScalarProperty Name="Paid" ColumnName="Paid" />
+            <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+            <ScalarProperty Name="Comment" ColumnName="Comment" />
+            <ScalarProperty Name="UserId" ColumnName="UserId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CourtConfigurations"><EntityTypeMapping TypeName="ObjectContextModel.CourtConfigurationEntity"><MappingFragment StoreEntitySet="CourtConfigurations">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CourtId" ColumnName="CourtId" />
+            <ScalarProperty Name="StartHour" ColumnName="StartHour" />
+            <ScalarProperty Name="EndHour" ColumnName="EndHour" />
+            <ScalarProperty Name="Days" ColumnName="Days" />
+            <ScalarProperty Name="Price" ColumnName="Price" />
+            <ScalarProperty Name="Order" ColumnName="Order" />
+            <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+            <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Courts"><EntityTypeMapping TypeName="ObjectContextModel.CourtEntity"><MappingFragment StoreEntitySet="Courts">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Players" ColumnName="Players" />
+            <ScalarProperty Name="CourtTypeId" ColumnName="CourtTypeId" />
+            <ScalarProperty Name="FloorTypeId" ColumnName="FloorTypeId" />
+            <ScalarProperty Name="IsIndoor" ColumnName="IsIndoor" />
+            <ScalarProperty Name="IsLighted" ColumnName="IsLighted" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CourtTypes"><EntityTypeMapping TypeName="ObjectContextModel.CourtTypeEntity"><MappingFragment StoreEntitySet="CourtTypes">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="FloorTypes"><EntityTypeMapping TypeName="ObjectContextModel.FloorTypeEntity"><MappingFragment StoreEntitySet="FloorTypes">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Locations"><EntityTypeMapping TypeName="ObjectContextModel.LocationEntity"><MappingFragment StoreEntitySet="Locations">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Places"><EntityTypeMapping TypeName="ObjectContextModel.PlaceEntity"><MappingFragment StoreEntitySet="Places">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="Address" ColumnName="Address" />
+            <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+            <ScalarProperty Name="Phone" ColumnName="Phone" />
+            <ScalarProperty Name="HowToArrive" ColumnName="HowToArrive" />
+            <ScalarProperty Name="Logo" ColumnName="Logo" />
+            <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+            <ScalarProperty Name="Page" ColumnName="Page" />
+            <ScalarProperty Name="MapLocation" ColumnName="MapLocation" />
+            <ScalarProperty Name="MapUa" ColumnName="MapUa" />
+            <ScalarProperty Name="MapVa" ColumnName="MapVa" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="PlaceServices"><EntityTypeMapping TypeName="ObjectContextModel.PlaceService"><MappingFragment StoreEntitySet="PlaceServices">
+            <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
+            <ScalarProperty Name="Service" ColumnName="Service" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Regions"><EntityTypeMapping TypeName="ObjectContextModel.RegionEntity"><MappingFragment StoreEntitySet="Regions">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="TerritoryId" ColumnName="TerritoryId" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Territories"><EntityTypeMapping TypeName="ObjectContextModel.TerritoryEntity"><MappingFragment StoreEntitySet="Territories">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="UserFavourites"><EntityTypeMapping TypeName="ObjectContextModel.UserFavourite"><MappingFragment StoreEntitySet="UserFavourites">
+            <ScalarProperty Name="UserId" ColumnName="UserId" />
+            <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="UserPlaces"><EntityTypeMapping TypeName="ObjectContextModel.UserPlace"><MappingFragment StoreEntitySet="UserPlaces">
+            <ScalarProperty Name="UserId" ColumnName="UserId" />
+            <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="PlaceViews"><EntityTypeMapping TypeName="ObjectContextModel.PlaceView"><MappingFragment StoreEntitySet="PlaceViews">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Address" ColumnName="Address" />
+            <ScalarProperty Name="Phone" ColumnName="Phone" />
+            <ScalarProperty Name="Page" ColumnName="Page" />
+            <ScalarProperty Name="Location" ColumnName="Location" />
+            <ScalarProperty Name="Region" ColumnName="Region" />
+            <ScalarProperty Name="Courts" ColumnName="Courts" />
+            <ScalarProperty Name="exp" ColumnName="exp" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="ObjectContext" ZoomLevel="89">
+        <EntityTypeShape EntityType="ObjectContextModel.ClientEntity" Width="1.5" PointX="9.75" PointY="4.375" Height="2.3648893229166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.CourtBookEntity" Width="1.5" PointX="12" PointY="3.75" Height="3.5186979166666656" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.CourtConfigurationEntity" Width="1.5" PointX="15" PointY="8.625" Height="2.9417936197916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.CourtEntity" Width="1.5" PointX="12.75" PointY="8.25" Height="3.7109993489583353" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.CourtTypeEntity" Width="1.5" PointX="10.5" PointY="8.875" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.FloorTypeEntity" Width="1.5" PointX="10.5" PointY="19.5" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.LocationEntity" Width="1.5" PointX="5.25" PointY="8" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.PlaceEntity" Width="1.5" PointX="7.5" PointY="6.625" Height="4.8648079427083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.PlaceService" Width="1.5" PointX="9.75" PointY="12" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.RegionEntity" Width="1.5" PointX="3" PointY="8" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.TerritoryEntity" Width="1.5" PointX="0.75" PointY="8.25" Height="1.787985026041671" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.UserFavourite" Width="1.5" PointX="9.75" PointY="14.25" Height="1.5956835937500031" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.UserPlace" Width="1.5" PointX="9.75" PointY="16.625" Height="1.5956835937500031" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.PlaceView" Width="1.5" PointX="0.75" PointY="0.75" Height="2.7494921875000031" IsExpanded="true" />
+        <AssociationConnector Association="ObjectContextModel.FK_Clients_Places" ManuallyRouted="false">
+          <ConnectorPoint PointX="9" PointY="7.7761951614583324" />
+          <ConnectorPoint PointX="10.09375" PointY="7.7761951614583324" />
+          <ConnectorPoint PointX="10.09375" PointY="6.7398893229166656" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_CourtBooks_Clients" ManuallyRouted="false">
+          <ConnectorPoint PointX="11.25" PointY="5.5574446614583328" />
+          <ConnectorPoint PointX="12" PointY="5.5574446614583328" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_CourtBooks_Courts" ManuallyRouted="false">
+          <ConnectorPoint PointX="13.125" PointY="8.25" />
+          <ConnectorPoint PointX="13.125" PointY="7.2686979166666656" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_CourtConfigurations_Courts" ManuallyRouted="false">
+          <ConnectorPoint PointX="14.25" PointY="10.095896809895834" />
+          <ConnectorPoint PointX="15" PointY="10.095896809895834" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_Courts_CourtTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="12" PointY="9.7689925130208337" />
+          <ConnectorPoint PointX="12.75" PointY="9.7689925130208337" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_Courts_FloorTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="12" PointY="20.393992513020834" />
+          <ConnectorPoint PointX="13.5" PointY="20.393992513020834" />
+          <ConnectorPoint PointX="13.5" PointY="11.960999348958335" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_Courts_Places" ManuallyRouted="false">
+          <ConnectorPoint PointX="9" PointY="11.107646484375" />
+          <ConnectorPoint PointX="12.75" PointY="11.107646484375" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_Locations_Regions" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="9.0862939453125" />
+          <ConnectorPoint PointX="5.25" PointY="9.0862939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_Places_Locations" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.75" PointY="9.0862939453125" />
+          <ConnectorPoint PointX="7.5" PointY="9.0862939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_PlaceServices_Places" ManuallyRouted="false">
+          <ConnectorPoint PointX="8.25" PointY="11.489807942708332" />
+          <ConnectorPoint PointX="8.25" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.5729191666666669" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.7395858333333347" PointY="12.797841796875" />
+          <ConnectorPoint PointX="9.75" PointY="12.797841796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_UserFavourites_Places" ManuallyRouted="false">
+          <ConnectorPoint PointX="8.6562525" PointY="11.489807942708332" />
+          <ConnectorPoint PointX="8.6562525" PointY="15.047841796875002" />
+          <ConnectorPoint PointX="9.75" PointY="15.047841796875002" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_UserPlaces_Places" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.8437475" PointY="11.489807942708332" />
+          <ConnectorPoint PointX="7.8437475" PointY="17.422841796875" />
+          <ConnectorPoint PointX="9.75" PointY="17.422841796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_Regions_Territories" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="9.1439925130208355" />
+          <ConnectorPoint PointX="3" PointY="9.1439925130208355" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

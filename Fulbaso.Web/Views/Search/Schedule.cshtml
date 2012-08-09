@@ -1,0 +1,157 @@
+﻿@using Fulbaso.Contract
+@using Fulbaso.UI
+
+@model IEnumerable<Court>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var query = "";
+    
+    var time = (DateTime)ViewBag.Time;
+    
+    var players = (Request.QueryString["j"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s));
+    var locations = (Request.QueryString["l"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s));
+    var floors = (Request.QueryString["s"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s)).Select(i => Convert.ToInt32(i));
+    var ind = Convert.ToBoolean(Request.QueryString["ind"] ?? "False");
+    var lig = Convert.ToBoolean(Request.QueryString["lig"] ?? "False");
+    var hour = Convert.ToInt32(Request.QueryString["h"]);
+    
+    if (players.Count() > 0 || locations.Count() > 0 || floors.Count() > 0 || Request.QueryString["ind"] != null || Request.QueryString["lig"] != null)
+    {
+        if (players.Count() > 0)
+        {
+            query += "para " + InterfaceUtil.GetJoin(players) + " jugadores, ";
+        }
+
+        if (locations.Count() > 0)
+        {
+            query += "en " + InterfaceUtil.GetJoin(locations) + ", ";
+        }
+
+        if (floors.Count() > 0)
+        {
+            query += "con " + CoreUtil.GetFloors(floors) + ", ";
+        }
+
+        if (ind)
+        {
+            query += "techada, ";
+        }
+
+        if (ind)
+        {
+            query += "con luz, ";
+        }
+
+        query = query.Length > 0 ? (query.Substring(0, query.Length - 2) + ".") : "";
+    }
+
+    var pagesCount = 7;
+}
+
+@section Header
+{
+    <div class="page-header">
+        <h1>
+            Búsqueda avanzada
+        </h1>
+    </div>
+}
+
+@helper DisplayPages(int pages, int init, int pagesCount, int currentPage, string request)
+{
+    if (pages > 1)
+    {
+        <div class="pagination">
+            <ul>
+            @if (init > 1)
+            {
+                <li>@Html.ActionLink("«", "Index", new { p = 1, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], })</li>
+            }
+            @foreach (var p in Enumerable.Range(init, pages >= pagesCount ? pagesCount : pages))
+            {
+                if (p == currentPage)
+                {
+                    <li class="active"><a href="#">@p</a></li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(p.ToString(), "Index", new { p = p, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], })</li>
+                }
+            }
+            @if ((init + pagesCount) <= pages)
+            {
+                <li>@Html.ActionLink("»", "Index", new { p = pages, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], })</li>
+            }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div style="margin: 20px;"></div>
+    }
+}
+
+@{
+    <div style="padding: 0.2em 0px;">
+        <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> canchas encontradas @query</p>
+    </div>
+    
+    int currentPage = 1;
+    if (Request.QueryString["p"] != null && !int.TryParse(Request.QueryString["p"], out currentPage))
+    {
+        currentPage = 1;
+    }
+    
+    var pages = (int)Math.Ceiling((decimal)ViewBag.Places / UIConfiguration.ROWS_COUNT);
+    
+    // get pages
+    var init = (currentPage - (pagesCount / 2)) <= 1 ? 1 : currentPage - (pagesCount / 2);
+    init = init + (pagesCount - 1) > pages ? pages - (pagesCount - 1) : init;
+    init = init < 1 ? 1 : init;
+    
+    @DisplayPages(pages, init, pagesCount, currentPage, Request.QueryString["q"])
+    
+    if (Model != null)
+    {
+        <table id="courts" class="table table-condensed">
+                @foreach (var m in Model.GroupBy(i => new { desc = i.Place.Description, page = i.Place.Page }))
+                {
+                    <tr>
+                        <td colspan="3"><strong>@m.Key.desc</strong></td>
+                    </tr>
+                    foreach (var k in m)
+                    {
+                        var price = CoreUtil.GetPrice(k.Configuration, new DateTime(time.Year, time.Month, time.Day, hour, 0, 0));
+                        
+                        <tr>
+                            <td>@Html.ActionLink(k.FloorType + ", " + (k.IsIndoor ? "techada, " : "") + (k.IsLighted ? "con luz, " : "") + k.Players + " jugadores", "ItemView", "Place", new { id = m.Key.page }, null)</td>
+                            <td>@(price != 0 ? ("$ " + price.ToString("F2") + " / h") : "")</td>
+                            <td style="width: 1px;">
+                                <div style="opacity: 1;">
+                                    @Html.ActionImage("ItemView", "Place", new { id = m.Key.page }, null, "Ver detalle", Url.Content("~/img/information.png"), null)
+                                    @Html.ActionImage("Schedule", "Place", new { id = m.Key.page }, null, "Consultar disponibilidad", Url.Content("~/img/calendar.png"), null)
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+        </table>
+        
+        <div class="clearAll"></div>
+        
+        if (UIConfiguration.ROWS_COUNT == Model.Count())
+        {
+            @DisplayPages(pages, init, pagesCount, currentPage, Request.QueryString["q"])
+        }
+    }
+}
+
+@section StyleSheets
+{
+    <style>
+        #courts div { white-space: nowrap; }
+        #courts img { border: 0px; }
+        div#grid-contain table { width: 100%; }
+    </style>
+}

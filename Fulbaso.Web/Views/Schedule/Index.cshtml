@@ -1,0 +1,351 @@
+﻿@using Fulbaso.Contract
+@using Fulbaso.UI
+@using Fulbaso.UI.Models
+
+@model Place
+
+@{
+    ViewBag.Title = UIConfiguration.APP_TITLE + " - " + Model.Description;
+    ViewBag.FormTitle = Model.Description;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var day = (DateTime)ViewBag.Time;
+    var range = CoreUtil.GetRange(Model.CourtsInfo, day);
+}
+
+@section StyleSheets
+{
+    <style>
+        td, th { padding: 8px; line-height: 18px; text-align: left; vertical-align: top; border-top: 1px solid #DDD; border-left: 1px solid #DDD; white-space: nowrap; }
+        tbody tr:hover { background-color: #f5f5f5; }
+        td:hover { background-color: #ededed; }
+        table { width: 100%; }
+        .reserved:hover { background-color: #fdfdde; }
+        .selected:hover { background-color: #effddf; }
+        .paid:hover { background-color: #dcead8; }
+        .reserved { background-color: #fcfcca; }
+        .selected { background-color: #defdcf; }
+        .paid { background-color: #eaffea; }
+        .editable, .reserved, .selected, .paid { cursor: pointer; }
+    </style>
+}
+
+@section Header
+{
+    <div class="page-header">
+        <h1>
+            @Model.Description
+            <small>Calendario</small>
+        </h1>
+    </div>
+}
+
+@helper DisplayBook(CourtBook book)
+{
+    <td class="@((book.Paid ?? 0)!= 0 ? "paid" : (book.ReserveRequired && (book.Reserve ?? 0) == 0) ? "reserved" : "selected")" data-id="@book.Id" data-courtid="@book.Court.Id" data-name="@book.Court.Description" data-starthour="@book.StartTime.Hour" data-startminute="@book.StartTime.Minute" data-endhour="@book.EndTime.Hour" data-endminute="@book.EndTime.Minute" data-price="@book.Price.ToString("F2")" data-paid="@((book.Paid ?? 0).ToString("F2"))" data-reserverequired="@book.ReserveRequired" data-reserve="@((book.Reserve ?? 0).ToString("F2"))" data-clientid="@book.Client.Id" data-clientname="@book.Client.Description" data-clientphone="@book.Client.Phone" rowspan="@((book.EndTime - book.StartTime).TotalMinutes / 30)">
+        <a name="delete" class="close">×</a>
+        <span>@book.Client.Description (@(string.IsNullOrEmpty(book.Client.Phone) ? "sin teléfono" : book.Client.Phone))</span><br />
+        <span>$ @book.Price.ToString("F2") @((book.Paid ?? 0) != 0 ? ("(pagó: $ " + book.Paid.Value.ToString("F2") + ")") : book.ReserveRequired ? ((book.Reserve != null && book.Reserve != 0)? ("(dejó reserva: $ " + book.Reserve.Value.ToString("F2") + ")") : "(debe reserva)") : "")</span>
+    </td>
+}
+
+@Html.Partial("Menu", Model.Page)
+
+<div style="margin: 10px;"></div>
+
+@using (Html.BeginForm("Index", "Schedule", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    @Html.TextBox("current", day.ToShortDateString())
+    <button type="submit" class="btn">Buscar</button>
+}
+
+<table id="books" class="table-bordered" data-year="@day.Year" data-month="@day.Month" data-day="@day.Day">
+	<thead>
+		<tr>
+            <th style="width: 1px;"></th>
+            @foreach (var c in Model.CourtsInfo)
+            {
+                <th>@c.Description</th>
+            }
+		</tr>
+	</thead>
+    <tbody>
+    @foreach (var h in range)
+    {
+        <tr data-hour="@h" data-minute="0">
+            <td>@h : 00</td>
+            @foreach (var c in Model.CourtsInfo)
+            {
+                var time = new DateTime(day.Year, day.Month, day.Day, h, 0, 0);
+
+                var book = c.Books.FirstOrDefault(b => b.StartTime == time);
+                if (book != null)
+                {
+                    @DisplayBook(book);
+                }
+                else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
+                {
+                    var price = CoreUtil.GetPrice(c.Configuration, time);
+                    
+                    <td data-name="@c.Description" data-courtid="@c.Id" data-price="@price.ToString("F2")" class="editable"><span class="muted">@(price == 0 ? "" : ("$ " + price.ToString("F2")))</span></td>
+                }
+            }
+        </tr>
+        <tr data-hour="@h" data-minute="30">
+            <td>@h : 30</td>
+            @foreach (var c in Model.CourtsInfo)
+            {
+                var time = new DateTime(day.Year, day.Month, day.Day, h, 30, 0);
+
+                var book = c.Books.FirstOrDefault(b => b.StartTime == time);
+                if (book != null)
+                {
+                    @DisplayBook(book);
+                }
+                else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
+                {
+                    var price = CoreUtil.GetPrice(c.Configuration, time);
+                    
+                    <td data-name="@c.Description" data-courtid="@c.Id" data-price="@price.ToString("F2")" class="editable"><span class="muted">@(price == 0 ? "" : "\"")</span></td>
+                }
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+
+@using (Html.BeginForm("DeleteBook", "Schedule"))
+{
+    @Html.Hidden("deleteId")
+    @Html.Hidden("placepage", Model.Page)
+    @Html.Hidden("currentday", day)
+    <div class="modal" id="dialog-confirm" style="display: none;">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>@UIConfiguration.APP_TITLE</h3>
+        </div>
+        <div class="modal-body">
+            <p>¿Está seguro que desea eliminar el item seleccionado?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <a id="delete-cancel" data-dismiss="modal" class="btn">Cancelar</a>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("EditBook", "Schedule"))
+{
+    <div class="modal" id="dialog-book" style="display: none;">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3 id="modal-title">@UIConfiguration.APP_TITLE</h3>
+        </div>
+        <div class="modal-body form-horizontal">
+            <fieldset>
+                @Html.Hidden("Court.Place.Id", Model.Id)
+                @Html.Hidden("Court.Place.Page", Model.Page)
+                @Html.Hidden("Client.Place.Id", Model.Id)
+                @Html.Hidden("Client.Id")
+                @Html.Hidden("Court.Id")
+                @Html.Hidden("Id")
+                @Html.Hidden("Day", day.ToShortDateString())
+                @Html.Hidden("StartTime")
+                <div class="control-group">
+                    <label class="control-label" for="StartTime">Día</label>
+                    <div class="controls">
+                        <span class="span2 uneditable-input">@day.ToShortDateString()</span>                    
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="StartTime">Horario de inicio</label>
+                    <div class="controls">
+                        <span id="starttimespan" class="span2 uneditable-input"></span>                    
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="EndTime">Horario de finalización</label>
+                    <div class="controls">
+                        <select id="EndTime" name="EndTime" class="span2">
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Price">Precio</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">$</span>@Html.Editor("Price")
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Reserve">Reserva</label>
+                    <div class="controls">
+                        @Html.CheckBox("ReserveRequired")
+                        <div class="input-prepend">
+                            <span class="add-on">$</span>@Html.Editor("Reserve")
+                        </div>
+                    </div>                
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Paid">Pagó</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">$</span>@Html.Editor("Paid")
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="control-group client-group">
+                    <label class="control-label" for="Client.Description">Cliente</label>
+                    <div class="controls">
+                        @Html.TextBox("Client.Description", null, new { @class = "input-large", autocomplete = "off", })
+                    </div>
+                </div>
+                <div class="control-group client-group">
+                    <label class="control-label" for="Client.Phone">Teléfono</label>
+                    <div class="controls">
+                        @Html.TextBox("Client.Phone", null, new { @class = "input-large", autocomplete = "off", })
+                    </div>
+                </div>
+            </fieldset> 
+        </div>
+        <div class="modal-footer">
+            <button id="book-accept" type="submit" class="btn btn-primary">Aceptar</button>
+            <a id="book-cancel" data-dismiss="modal" class="btn">Cancelar</a>
+        </div>
+    </div>
+}
+
+<script src="@Url.Content("~/Scripts/jquery-ui-datepicker-es.js")" type="text/javascript"></script>
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+
+    $(function () {
+        function showRange(court, starthour, startminute)
+        {
+            var h = starthour;
+            var m = startminute;
+
+            $("#EndTime option").remove();
+
+            while (!(h == (@range.Last() + 1) && m == 00) && 
+                ($("[data-courtid=" + court + "][data-starthour=" + h + "][data-startminute=" + m + "]").length == 0)
+                || (h == starthour && m == startminute))
+            {
+                m = m == 0 ? 30 : 0;
+                h = m == 0 ? h + 1 : h;
+                $("#EndTime").append("<option>" + h + (m == 0 ? ":00" : ":30") + "</option>");   
+            }
+        }
+
+        var reserve;
+
+        $("#dialog-confirm").modal({
+            show: false
+        });
+        $("#delete-cancel").click(function () {
+            $("#dialog-confirm").modal("hide");
+        });
+
+        $("a:[name=delete]").click(function () {
+            $("#deleteId").val($(this).parent().data("id"));
+            $("#dialog-confirm").modal("show");
+            return false;
+        });
+
+        var cache = {}, lastReq;
+        $("[name='Client.Description'],[name='Client.Phone']").typeahead({
+            source: function (typeahead, query) {
+                var term = query;
+                if (term in cache) {
+                    typeahead.process(cache[term]);
+                    return;
+                }
+                lastReq = $.getJSON('@Url.Action("Find", "Client")', { term: query, place: @Model.Id }, function (data, status, req) {
+                    cache[term] = data;
+                    if (req === lastReq) {
+                        typeahead.process(data);
+                    }
+                });
+            },
+            onselect: function (item) {
+                $("[name='Client.Description']").val(item.name)
+                $("[name='Client.Phone']").val(item.phone)
+                $("[name='Client.Id']").val(item.id);
+                $("#book-accept").focus();
+                $(".client-group").addClass("success");
+            }
+        }).change(function () {
+            $(".client-group").removeClass("success");
+            $(".client-group").removeClass("error");
+            $("[name='Client.Id']").val("");
+        });
+        $("#book-accept").click(function () {
+            if ($("[name='Client.Description']").val() == ""){
+                $(".client-group").addClass("error");
+                return false;
+            };
+        });
+
+        $("#current").datepicker();
+
+        $(".editable").click(function () {
+            showRange($(this).data("courtid"), $(this).parent().data("hour"), $(this).parent().data("minute"));
+            $(".client-group").removeClass("success");
+            var startTime = $(this).parent().data("hour") + ":" + ($(this).parent().data("minute") == 0 ? "00" : "30");
+            var endTime = ($(this).parent().data("hour") + 1) + ":" + ($(this).parent().data("minute") == 0 ? "00" : "30")
+
+            $("#modal-title").html($(this).data("name"));
+            $("[name='Court.Id']").val($(this).data("courtid"));
+            $("#Price").val($(this).data("price"));
+            $("#StartTime").val(startTime);
+            $("#starttimespan").html(startTime);
+            $("#EndTime").val(endTime);
+            $("#ReserveRequired").attr("checked", "checked");
+            $("#Reserve").val("");
+            $("#Paid").val("");
+            $("[name='Client.Description']").val("");
+            $("[name='Client.Phone']").val("");
+            $("[name='Client.Id']").val("");
+            $("#Id").val("");
+
+            if ($("#EndTime option:selected").val() != endTime) {
+                $("#EndTime option").last().attr("selected", true);
+            }
+
+            $("#dialog-book").modal("show");
+            $("#StartTime").focus();
+        });
+        $(".reserved, .selected, .paid").click(function () {
+            showRange($(this).data("courtid"), $(this).data("starthour"), $(this).data("startminute"));
+            var startTime = $(this).data("starthour") + ":" + ($(this).data("startminute") == 0 ? "00" : "30");
+            $(".client-group").addClass("success");
+
+            $("#modal-title").html($(this).data("name"));
+            $("[name='Court.Id']").val($(this).data("courtid"));
+            $("#Price").val($(this).data("price"));
+            $("#StartTime").val(startTime);
+            $("#starttimespan").html(startTime);
+            $("#EndTime").val($(this).data("endhour") + ":" + ($(this).data("endminute") == 0 ? "00" : "30"));
+            if ($(this).data("reserverequired") == "True") {
+                $("#ReserveRequired").attr("checked", "checked");
+            }
+            else {
+                $("#ReserveRequired").removeAttr("checked");
+            }
+
+            $("#Reserve").val($(this).data("reserve"));
+            $("#Paid").val($(this).data("paid"));
+            $("[name='Client.Description']").val($(this).data("clientname"));
+            $("[name='Client.Phone']").val($(this).data("clientphone"));
+            $("[name='Client.Id']").val($(this).data("clientid"));
+            $("#Id").val($(this).data("id"));
+
+            $("#dialog-book").modal("show");
+            $("#StartTime").focus();
+        });
+        $("#dialog-book").modal({
+            show: false
+        });
+    });
+</script>

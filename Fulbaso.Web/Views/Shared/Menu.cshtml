@@ -1,0 +1,11 @@
+﻿@using Fulbaso.UI
+
+@model string
+
+<ul class="nav nav-pills">
+    <li class="@(ViewContext.CheckRoute("Admin", "Home") ? "active" : "")">@Html.ActionLink("Inicio", "Admin", "Home", new { id = Model }, null)</li>
+    <li class="@(ViewContext.CheckRoute("Edit", "Place") ? "active" : "")">@Html.ActionLink("Editar", "Edit", "Place", new { id = Model }, null)</li>
+    <li class="@(ViewContext.CheckRoute("Index", "Court") || ViewContext.CheckRoute("Add", "Court")|| ViewContext.CheckRoute("Edit", "Court") || ViewContext.CheckRoute("Index", "Configuration") || ViewContext.CheckRoute("Edit", "Configuration") || ViewContext.CheckRoute("Add", "Configuration") ? "active" : "")">@Html.ActionLink("Listar canchas", "Index", "Court", new { id = Model }, null)</li>
+    <li class="@(ViewContext.CheckRoute("Index", "Schedule") ? "active" : "")">@Html.ActionLink("Calendario", "Index", "Schedule", new { id = Model }, null)</li>
+    <li class="@(ViewContext.CheckRoute("Index", "Client") ? "active" : "")">@Html.ActionLink("Clientes", "Index", "Client", new { id = Model }, null)</li>
+</ul>

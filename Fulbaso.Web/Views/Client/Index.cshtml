@@ -1,0 +1,123 @@
+﻿@using Fulbaso.Contract
+@using Fulbaso.UI
+
+@model IEnumerable<Client>
+
+@{
+    ViewBag.FormTitle = ViewBag.Place;
+    ViewBag.Title = UIConfiguration.APP_TITLE + " - " + ViewBag.Place;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header
+{
+    <div class="page-header">
+        <h1>
+            @ViewBag.Place
+            <small>Clientes</small>
+        </h1>
+    </div>
+}
+
+@Html.Partial("Menu", (string)ViewBag.PlacePage)
+
+<div id="grid-contain">
+    @if (Model != null && Model.Count() > 0)
+    {
+        <table id="clients" class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Reservas</th>
+                    <th>Última reserva</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    string rowstyle = "";
+                    if (!c.IsActive)
+                    {
+                        rowstyle = "opacity: 0.5;";
+                    }
+                    <tr style="@rowstyle">
+                        <td>
+                            @c.Description
+                        </td>
+                        <td>
+                            @c.Phone
+                        </td>
+                        <td>
+                            @c.Books
+                        </td>
+                        <td>
+                            @(c.LastBook != null ? c.LastBook.Value.ToShortDateString() : "")
+                        </td>
+                        <td style="width: 1px;">
+                            @if (c.IsActive || c.Books == 0)
+                            {
+                                <div style="opacity: 1;">
+                                    <a data-toggle="modal" href="#dialog-confirm" name="delete" data-id="@c.Id" data-books="@c.Books">
+                                        <img title="Borrar" src="@Url.Content("~")img/delete.png" alt="Borrar" />
+                                    </a>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<div class="modal" id="dialog-confirm" style="display: none;">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>@UIConfiguration.APP_TITLE</h3>
+    </div>
+    <div class="modal-body">
+        <p>¿Está seguro que desea eliminar el item seleccionado?</p>
+    </div>
+    <div class="modal-footer">
+        <a id="delete-item" data-dismiss="modal" class="btn btn-danger">Eliminar</a> 
+        <a id="delete-cancel" data-dismiss="modal" class="btn">Cancelar</a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var row;
+
+        $("#dialog-confirm").modal({
+            show: false
+        });
+        $("#delete-item").click(function () {
+            $.post('@Url.Action("Delete", "Client")', { id: row.data("id") });
+            if (row.data("books") > 0) {
+                row.parent().parent().parent().css("opacity", "0.5")
+                row.parent().remove();
+            }
+            else {
+                row.parent().parent().parent().remove();
+            }
+            $("#dialog-confirm").hide();
+        });
+        $("#delete-cancel").click(function () {
+            $("#dialog-confirm").hide();
+        });
+
+        $("a:[name=delete]").click(function () {
+            row = $(this);
+            $("#dialog-confirm").show();
+        });
+    });
+</script>
+
+@section StyleSheets
+{
+    <style>
+        #clients div { white-space: nowrap; }
+        #clients img { border: 0px; }
+        div#grid-contain table { width: 100%; }
+    </style>
+}

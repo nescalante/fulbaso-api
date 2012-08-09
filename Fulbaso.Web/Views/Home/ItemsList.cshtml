@@ -1,0 +1,21 @@
+﻿@using Fulbaso.Contract
+
+@model IEnumerable<Place>
+
+@if (Model != null)
+{
+    for (int i = 0; i < Model.Count(); i++)
+    {
+        if ((i % 2 == 0 && i != 0) || i == 0)
+        {
+            @Html.Raw("<div class=\"row-fluid\">")
+        }
+        <div class="span6">
+            @Html.Partial("Item", Model.ToList()[i])        
+        </div>
+        if ((i % 2 != 0 && i != 0) || i == Model.Count())
+        {
+            @Html.Raw("</div>")
+        }
+    }
+}

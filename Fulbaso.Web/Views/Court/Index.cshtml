@@ -1,0 +1,114 @@
+﻿@using Fulbaso.Contract
+@using Fulbaso.UI
+@using Fulbaso.UI.Models
+
+@model Place
+@{
+    ViewBag.FormTitle = Model.Description;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Header
+{
+    <div class="page-header">
+        <h1>
+            @Model.Description
+            <small>Canchas</small>
+        </h1>
+    </div>
+}
+
+@Html.Partial("Menu", Model.Page)
+
+@Html.Partial("PlaceInfo", Model)
+<div style="margin-bottom: 10px;">
+    @Html.ActionLink("Agregar cancha", "Add", new { id = Model.Page }, new { @class = "btn" })
+</div>
+<div id="grid-contain">
+    @if (Model != null && Model.CourtsInfo.Count() > 0)
+    {
+        <table id="courts" class="table">
+            <tbody>
+                @for (int i = 0; i < Model.CourtsInfo.Count(); i++)
+                {
+                    string rowstyle = "";
+                    var c = Model.CourtsInfo.ToList()[i];
+                    if (!c.IsActive)
+                    {
+                        rowstyle = "opacity: 0.5;";
+                    }
+                    <tr style="@rowstyle">
+                        <td style="width: 1px; white-space: nowrap;">
+                            @("# " + (i + 1))
+                        </td>
+                        <td>
+                            @c.Description
+                        </td>
+                        <td>
+                            @c.CourtType
+                        </td>
+                        <td>
+                            @c.FloorType
+                        </td>
+                        <td style="width: 1px;">
+                            <div style="opacity: 1;">
+                                @Html.ActionImage("Index", "Configuration", new { court = c.Id, id = Model.Page }, null, "Configuración", Url.Content("~") + "img/cog.png", null)
+                                @Html.ActionImage("Edit", new { court = c.Id, id = Model.Page }, "Editar", Url.Content("~") + "img/pencil.png")
+                                <a data-toggle="modal" href="#dialog-confirm" name="delete" data-id="@c.Id">
+                                    <img title="Borrar" src="@Url.Content("~")img/delete.png" alt="Borrar" />
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<div style="margin-bottom: 10px;">
+    @Html.ActionLink("Volver", "Admin", "Home", new { id = Model.Page }, new { @class = "btn" })
+</div>
+<div class="modal" id="dialog-confirm" style="display: none;">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>@UIConfiguration.APP_TITLE</h3>
+    </div>
+    <div class="modal-body">
+        <p>¿Está seguro que desea eliminar el item seleccionado?</p>
+    </div>
+    <div class="modal-footer">
+        <a id="delete-item" data-dismiss="modal" class="btn btn-danger">Eliminar</a> 
+        <a id="delete-cancel" data-dismiss="modal" class="btn">Cancelar</a>
+    </div>
+</div>
+<script>
+    $(function () {
+        var row;
+
+        $("#dialog-confirm").modal({
+            show: false
+        });
+        $("#delete-item").click(function () {
+            $.post('@Url.Action("Delete", "Court")', { id: row.data("id") });
+            row.parent().parent().parent().remove();
+            $("#courtscount").html($("#courts tbody tr").length);
+            $("#dialog-confirm").hide();
+        });
+        $("#delete-cancel").click(function () {
+            $("#dialog-confirm").hide();
+        });
+
+        $("a:[name=delete]").click(function () {
+            row = $(this);
+            $("#dialog-confirm").show();
+        });
+    });
+</script>
+
+@section StyleSheets
+{
+    <style>
+        #courts div { white-space: nowrap; }
+        #courts img { border: 0px; }
+        div#grid-contain table { width: 100%; }
+    </style>
+}

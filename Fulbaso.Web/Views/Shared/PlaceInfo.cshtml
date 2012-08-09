@@ -1,0 +1,21 @@
+﻿@using Fulbaso.Contract;
+@using Fulbaso.UI;
+
+@model Place
+
+<fieldset>
+    <dl>
+        @if (Model.Address != null)
+        {
+            <dt>Dirección</dt>
+            <dd>@CoreUtil.GetAddress(Model.Address, Model.Location)</dd>
+        }
+        @if (Model.Phone != null)
+        {
+            <dt>Teléfono</dt>
+            <dd>@Model.Phone</dd>
+        }
+        <dt>Canchas</dt>
+        <dd id="courtscount">@Model.Courts</dd>
+    </dl>
+</fieldset>

@@ -1,0 +1,255 @@
+﻿@using Fulbaso.UI.Models
+@using Fulbaso.UI
+
+@model PlaceModel
+           
+@{
+    ViewBag.FormTitle = Model.Place.Description;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var keywords = Model.Place.Description + ", " + Model.Place.Location + ", " + Model.Place.Location.Region + ", " + string.Join(", ", Model.Place.CourtsInfo.GroupBy(c => c.CourtType.Description).Select(c => c.Key));
+}
+
+@section Header
+{
+    <div class="page-header">
+        <h1>
+            @ViewBag.FormTitle
+            @if (Request.IsAuthenticated)
+            {
+                if (Model.IsFavourite)
+                {
+                    <a id="favourite" class="btn btn-mini active" title="Quitar de favoritos"><i class="icon-star"></i></a>
+                }
+                else
+                {
+                    <a id="favourite" class="btn btn-mini" title="Agregar a favoritos"><i class="icon-star"></i></a>
+                }
+            }
+        </h1>
+    </div>
+}
+
+@section StyleSheets
+{
+    <style>
+        .fb-comments, .fb-comments iframe[style] {width: 100% !important;}
+    </style>
+}
+
+
+@if (Model.HasAdmin)
+{
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#">Información</a>
+        </li>
+        <li>@Html.ActionLink("Disponibilidad", "Schedule", new { id = Model.Place.Page })</li>
+    </ul>
+}
+
+<div class="row-fluid show-grid">
+    <div class="span8">
+        <fieldset>
+            @if (Model.Place.Info != null)
+            {
+                <div class="ui-info info">@Model.Place.Info</div>
+            }
+            @if (Model.Place.Address != null)
+            {
+                <div class="ui-info address">@CoreUtil.GetAddress(Model.Place.Address, Model.Place.Location)</div>
+            }
+            @if (Model.Place.Phone != null)
+            {
+                <div class="ui-info phone">@Model.Place.Phone</div>
+            }
+            @if (Model.Place.HowToArrive != null)
+            {
+                <div class="ui-info howToArrive">@Html.Raw(HttpUtility.HtmlEncode(Model.Place.HowToArrive).Replace(Environment.NewLine, "<br>"))</div>
+            }
+            @if (Model.Place.Services != null && Model.Place.Services.Count() > 0)
+            {
+                <div class="ui-info tags">
+                    @foreach (var s in Model.Place.Services)
+                    {
+                        <span class="label label-info">@s.GetDescription()</span>
+                    }
+                </div>
+            }
+        </fieldset>
+        @foreach (var c in Model.Place.CourtsInfo.GroupBy(c => c.CourtType.Description).ToList())
+        {
+            var title = c.Key + " - " + c.Count() + " cancha" + (c.Count() > 1 ? "s" : "");
+            var typeList = new List<string>();
+
+            if (c.ToList().GroupBy(i => i.FloorType.Description).Count() == 1)
+            {
+                typeList.Add(c.ToList().First().FloorType.ToString());
+            }
+
+            if (c.ToList().GroupBy(i => i.IsIndoor).Count() == 1 && c.ToList().First().IsIndoor)
+            {
+                typeList.Add("Techada" + (c.Count() > 1 ? "s" : ""));
+            }
+
+            if (c.ToList().GroupBy(i => i.IsLighted).Count() == 1 && c.ToList().First().IsLighted)
+            {
+                typeList.Add("Con luz");
+            }
+
+            var info = c.ToList().GroupBy(g => new { FloorType = g.FloorType.Description, IsLighted = g.IsLighted, IsIndoor = g.IsIndoor, g.Players });
+            bool showCourts = true;
+
+            if (info.Count() == 1 && info.First().First().Players != null)
+            {
+                typeList.Add(info.First().First().Players + " jugadores");
+                showCourts = false;
+            }
+            <h3 style="margin: 10px 0 5px;">
+                @title
+            </h3>
+            if (typeList.Any())
+            {
+                <div class="alert alert-info" style="padding: 4px 0;margin:0;">
+                    <dl style="padding: 4px; margin:0;">
+                    @foreach (var i in typeList)
+                    {
+                        <dd>@i</dd>
+                    }
+                    </dl>
+                </div>            
+            }
+            <dl>
+                @if (showCourts)
+                {
+                    foreach (var i in info.OrderByDescending(i => i.Count()))
+                    {
+                        var list = new List<string>();
+                        var courtsInfo = i.Count() + " cancha" + (i.Count() > 1 ? "s" : "");
+
+                        if (!typeList.Contains(i.Key.FloorType.ToString()))
+                        {
+                            list.Add(i.Key.FloorType.ToString());
+                        }
+                        if (!typeList.Contains("Con luz") && i.Key.IsLighted)
+                        {
+                            list.Add("Con luz");
+                        }
+                        if (!typeList.Contains("Techada") && !typeList.Contains("Techadas") && i.Key.IsIndoor)
+                        {
+                            list.Add("Techada" + (i.Count() > 1 ? "s" : ""));
+                        }
+                        if (i.Key.Players != null)
+                        {
+                            list.Add(i.Key.Players + " jugadores");
+                        }
+
+                        <dt>@courtsInfo</dt>
+                        foreach (var l in list)
+                        {
+                            <dd>@l</dd>
+                        }
+                    }
+                }
+            </dl>
+        }
+        <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" data-show-faces="false"></div>
+        <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
+    </div>
+    <div class="span4">
+        <div class="ui-result ui-widget-content span4" id="map_canvas" style="min-height: 400px;"></div>
+            @if (Model.NearPlaces != null && Model.NearPlaces.Any())
+            {
+                var first = true;
+                <h4 style="margin-top: 10px; display:block;">Complejos cercanos</h4>
+                <div id="placerefs">
+                    @foreach (var p in Model.NearPlaces.Take(5))
+                    {
+                        if (!first)
+                        {
+                            <span>, </span>
+                        }
+                        else
+                        {
+                            first = false;
+                        }
+                        <a data-ua="@p.Item1.MapUa.ToString().Replace(',', '.')" data-va="@p.Item1.MapVa.ToString().Replace(',', '.')" data-id="@p.Item1.Id" href="@Url.Action("ItemView", new { id = p.Item1.Page })">@p.Item1.Description @(p.Item2.HasValue ? "(" + p.Item2.Value.ToString("F1") + " km)" : "")</a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#favourite").click(function () {
+            if ($(this).hasClass("active")) {
+                $(this).removeClass("active");
+                $.ajax({
+                    url: '@Url.Action("DeleteFavourite", "Place")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { favourite: @Model.Place.Id },
+                });                
+            }
+            else {
+                $(this).addClass("active");
+                $.ajax({
+                    url: '@Url.Action("AddFavourite", "Place")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { favourite: @Model.Place.Id },
+                });     
+            }
+        });
+    });
+</script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+@if (Model.Place.MapUa != null && Model.Place.MapVa != null)
+{
+    <script>
+        $(function () {
+            var latlng = new google.maps.LatLng('@Model.Place.MapUa.ToString().Replace(',', '.')', '@Model.Place.MapVa.ToString().Replace(',', '.')');
+            var myOptions = { zoom: 15, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP }
+            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            map.setCenter(latlng);
+            new google.maps.Marker({ map: map, title: '@Html.Raw(Model.Place.Description)', position: latlng });
+            @foreach (var p in Model.NearPlaces)
+            {
+                <text>
+                    new google.maps.Marker({ map: map, title: '@Html.Raw(p.Item1.Description)', icon: new google.maps.MarkerImage('@Url.Content("~")img/sport_soccer.png'), position: new google.maps.LatLng('@p.Item1.MapUa.ToString().Replace(',', '.')', '@p.Item1.MapVa.ToString().Replace(',', '.')') });
+                </text>
+            }
+
+            $("#placerefs a").hover(function() {
+                map.setCenter(new google.maps.LatLng($(this).data("ua"), $(this).data("va")));
+                map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+            });
+        });
+    </script>
+}
+else
+{
+    <script>
+        var geocoder;
+        var map;
+
+        $(function () {
+            var address = '@Model.Place.MapLocation';
+            geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var latlng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+                    var myOptions = { zoom: 15, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP }
+                    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({ map: map, title: '@Html.Raw(Model.Place.Description)', position: results[0].geometry.location });
+                }
+            });
+        });
+    </script>
+}
+
+@section Metadata
+{
+    <meta name="KEYWORDS" content="@Html.Raw(keywords)" />
+}

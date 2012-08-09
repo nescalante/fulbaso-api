@@ -1,0 +1,23 @@
+﻿@using Fulbaso.Contract
+@using Fulbaso.UI
+
+@model Place
+
+@{
+    ViewBag.Title = UIConfiguration.APP_TITLE + " - " + Model.Description;
+    ViewBag.FormTitle = Model.Description;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Header
+{
+    <div class="page-header">
+        <h1>@Model.Description</h1>
+    </div>
+}
+
+@Html.Partial("Menu", Model.Page)
+
+<div style="margin: 10px;"></div>
+
+@Html.Partial("PlaceInfo", Model)
