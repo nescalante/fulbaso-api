@@ -23,3 +23,22 @@
         }
     }
 }
+
+<script>
+    $('.place-info').unbind('hover');
+    $('.place-info').hover(function () { 
+        $(this).animate({
+            borderTopColor: '#999',
+            borderLeftColor: '#999',
+            borderBottomColor: '#999',
+            borderRightColor: '#999'
+        }, 300);
+    }, function () {
+        $(this).animate({
+            borderTopColor: '#fff',
+            borderLeftColor: '#fff',
+            borderBottomColor: '#fff',
+            borderRightColor: '#fff'
+        }, 100);
+    });
+</script>

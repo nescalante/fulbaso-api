@@ -53,7 +53,7 @@
     </td>
 }
 
-@using (Html.BeginForm("Schedule", "Home", FormMethod.Get, new { @class = "form-horizontal" }))
+@using (Html.BeginForm("Schedule", "Place", FormMethod.Get, new { @class = "form-horizontal" }))
 {
     @Html.TextBox("current", day.ToShortDateString(), new { style = "width:120px;", })
     <button type="submit" class="btn">Buscar</button>

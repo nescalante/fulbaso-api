@@ -21,17 +21,10 @@
 
         <div>
             <p>Canchas mas usadas:</p>
-            @foreach (var p in Model.TopUsedPlaces)
-            {
-                @Html.Partial("Item", p)
-            }
+            @Html.Partial("List", Model.TopUsedPlaces)
             <div class="clearAll"></div>
-    
             <p>Canchas mas votadas:</p>
-            @foreach (var p in Model.TopVotedPlaces)
-            {
-                @Html.Partial("Item", p)
-            }
+            @Html.Partial("List", Model.TopVotedPlaces)
             <div class="clearAll"></div>
         </div>
     </div>
