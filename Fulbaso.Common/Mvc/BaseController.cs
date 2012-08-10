@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
-using Fulbaso.Common;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Common
 {
     public class BaseController : Controller
     {
@@ -9,7 +8,7 @@ namespace Fulbaso.UI
         {
             if (FacebookLogin.User != null)
             {
-                filterContext.HttpContext.User = new FacebookPrincipal(new FacebookIdentity(FacebookLogin.User.Name, FacebookLogin.Id, FacebookLogin.Token));
+                filterContext.HttpContext.User = new FacebookPrincipal(new FacebookIdentity(FacebookLogin.User));
             }
 
             base.OnAuthorization(filterContext);

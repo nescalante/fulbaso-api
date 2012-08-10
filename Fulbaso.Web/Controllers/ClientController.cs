@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using Fulbaso.Common;
 using Fulbaso.Contract;
 
 namespace Fulbaso.UI.Controllers

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
-using Fulbaso.EntityFramework.BusinessLogic;
+using Fulbaso.Common;
 using Fulbaso.Contract;
 
 namespace Fulbaso.UI.Controllers

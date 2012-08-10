@@ -2,33 +2,32 @@
 @using Fulbaso.UI.Models
 
 @model IndexModel
-
+           
 <div id="fb-root"></div>
-<div class="row show-grid">
-    <div class="span8">
-        <p><span class="badge badge-info">@Model.CourtsCount</span> canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos.</p>
-        <p><span class="badge badge-info">@Model.OwnedPlaces</span> complejos siendo administrados.</p>
-        <div>
-            @if (Request.QueryString.Count == 0)
-            {
-                using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
-                {
-                    <input id="searchtext" name="searchtext" type="text" autocomplete="off" value="@ViewBag.Query" />
-                    <button class="btn" type="submit">Buscar</button>
-                }
-            }
-        </div>
 
-        <div>
-            <p>Canchas mas usadas:</p>
-            @Html.Partial("List", Model.TopUsedPlaces)
-            <div class="clearAll"></div>
-            <p>Canchas mas votadas:</p>
-            @Html.Partial("List", Model.TopVotedPlaces)
-            <div class="clearAll"></div>
-        </div>
-    </div>
-    @*<div class="span4">
-        <div class="fb-like-box" data-href="http://www.facebook.com/platform" data-width="292" data-show-faces="true" data-stream="true" data-header="true"></div>
-    </div>*@
+<p><span class="badge badge-info">@Model.CourtsCount</span> canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos.</p>
+<p><span class="badge badge-info">@Model.OwnedPlaces</span> complejos siendo administrados.</p>
+
+<div>
+    @if (Request.QueryString.Count == 0)
+    {
+        using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+        <input id="searchtext" name="searchtext" type="text" autocomplete="off" value="@ViewBag.Query" />
+        <button class="btn" type="submit">
+            Buscar</button>
+        }
+    }
 </div>
+
+<p>Canchas mas usadas:</p>
+@Html.Partial("List", Model.TopUsedPlaces)
+<div class="clearAll"></div>
+
+<p>Canchas mas votadas:</p>
+@Html.Partial("List", Model.TopVotedPlaces)
+<div class="clearAll"></div>
+
+@*<div class="span4">
+    <div class="fb-like-box" data-href="http://www.facebook.com/platform" data-width="292" data-show-faces="true" data-stream="true" data-header="true"></div>
+</div>*@ 

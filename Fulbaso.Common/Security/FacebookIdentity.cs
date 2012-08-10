@@ -4,11 +4,11 @@ namespace Fulbaso.Common
 {
     public class FacebookIdentity : IIdentity
     {
-        public FacebookIdentity(string name, long id, string token)
+        public FacebookIdentity(FacebookUser user)
         {
-            this.Name = name;
-            this.Id = id;
-            this.Token = token;
+            this.Name = user.Name;
+            this.Id = user.Id;
+            this.Token = user.Token;
         }
 
         public string AuthenticationType

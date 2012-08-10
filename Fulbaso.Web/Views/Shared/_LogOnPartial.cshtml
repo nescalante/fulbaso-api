@@ -27,19 +27,27 @@ else
 {
     <script>
         window.fbAsyncInit = function () {
+            var logged = false;
+
             FB.init({ appId: '@Configuration.AppId', channelUrl: '//' + window.location.hostname + '/channel', status: true, cookie: true, xfbml: true, });
 
             FB.Event.subscribe('auth.statusChange', function (response) {
                 if (response.authResponse) {
                     FB.api('/me', function (me) {
-                        $("#token").val(response.authResponse.accessToken);
-                        $("#loginform").submit();
+                        if (logged) {
+                            $("#token").val(response.authResponse.accessToken);
+                            $("#loginform").submit();
+                        }
+                        else {
+                            $.post("@Url.Action("Login", "Home")", { token: response.authResponse.accessToken });
+                        }
                     })
                 }
             });
 
             // respond to clicks on the login and logout links
-            document.getElementById('facebooklogin').addEventListener('click', function () {
+            $("#facebooklogin").click(function () {
+                logged = true;
                 FB.login();
             });
         } 

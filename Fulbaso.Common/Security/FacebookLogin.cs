@@ -1,34 +1,52 @@
 ﻿using System;
 using System.Web;
 using System.Web.Security;
+using Facebook;
 
 namespace Fulbaso.Common
 {
     public class FacebookLogin
     {
         static string usersession = "facebookuser_key";
-        static string tokensession = "token_key";
 
         public static void Login(string token)
         {
-            if (Token != token)
+            try
             {
-                Token = token;
-                HttpContext.Current.Cache.Remove("Places");
-                FacebookLogin.User = null;
-            }
+                if (FacebookLogin.User != null && FacebookLogin.User.Token == token) return;
 
-            if (FacebookLogin.User != null)
+                var fc = new FacebookClient(token);
+                var user = fc.Get("me") as dynamic;
+
+                FacebookLogin.User = new FacebookUser
+                {
+                    Id = Convert.ToInt64(user.id),
+                    Name = user.name,
+                    UserName = user.username,
+                    FirstName = user.first_name,
+                    LastName = user.last_name,
+                    Token = token,
+                };
+
+                if (FacebookLogin.User != null)
+                {
+                    HttpContext.Current.Session.Remove("Places");
+                }
+            }
+            catch
             {
-                HttpContext.Current.Cache.Remove("Places");
+                FacebookLogin.User = null;
+                HttpContext.Current.Session.Remove("Places");
+                FormsAuthentication.SignOut();
+
+                throw new UnauthorizedAccessException("Invalid token");
             }
         }
 
         public static void Logout()
         {
-            HttpContext.Current.Cache.Remove("Places");
+            HttpContext.Current.Session.Remove("Places");
             FormsAuthentication.SignOut();
-            Token = null;
         }
 
         public static long Id
@@ -42,20 +60,7 @@ namespace Fulbaso.Common
             {
                 if (HttpContext.Current == null) return null;
 
-                var user = HttpContext.Current.Session[usersession];
-
-                if (user != null) return user as FacebookUser;
-
-                if (!string.IsNullOrEmpty(Token))
-                {
-                    var obj = new FacebookUser { Id = "15", UserName = "test", Name = "test", }; // FacebookUtil.CreateCall<FacebookUser>("https://graph.facebook.com/me/?access_token=" + Token);
-
-                    HttpContext.Current.Session[usersession] = obj;
-
-                    return obj;
-                }
-
-                return null;
+                return HttpContext.Current.Session[usersession] as FacebookUser;
             }
 
             private set
@@ -68,16 +73,7 @@ namespace Fulbaso.Common
         {
             get
             {
-                return FacebookUtil.GetSessionValue<string>(tokensession);
-            }
-            set
-            {
-                FacebookUtil.SetSessionValue(tokensession, value);
-
-                if (value == null)
-                {
-                    FacebookLogin.User = null;
-                }
+                return User.Token;
             }
         }
     }
