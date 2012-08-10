@@ -26,7 +26,7 @@ namespace Fulbaso.UI
             routes.MapRoute("DeleteFavouriteRoute", "eliminarfavorito", new { controller = "Place", action = "DeleteFavourite", });
             routes.MapRoute("AddFavouriteRoute", "agregarfavorito", new { controller = "Place", action = "AddFavourite", });
             routes.MapRoute("PlaceEditRoute", "editar/{id}", new { controller = "Place", action = "Edit", });
-            routes.MapRoute("PlaceCalendarRoute", "p/{id}/agenda", new { controller = "Place", action = "Schedule", current = UrlParameter.Optional });
+            routes.MapRoute("PlaceCalendarRoute", "p/{id}/agenda", new { controller = "Place", action = "Schedule" });
             routes.MapRoute("PlaceRoute", "p/{id}", new { controller = "Place", action = "ItemView", });
 
             // schedule routes
@@ -40,8 +40,6 @@ namespace Fulbaso.UI
             routes.MapRoute("ConfigurationEditRout", "editar/{id}/config/{court}/editar/{config}", new { controller = "Configuration", action = "Edit", });
             routes.MapRoute("ConfigurationAddRoute", "editar/{id}/config/{court}/agregar", new { controller = "Configuration", action = "Add", });
 
-            routes.MapRoute("PlacesQuery", "q={query}", new { controller = "Home", action = "Search", });
-            //, string p, string j, string s, string l, bool? ind, bool? lig)
             routes.MapRoute("Default", "{controller}/{action}", new { controller = "Home", action = "Index" });
         }
     }
