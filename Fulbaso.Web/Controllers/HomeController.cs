@@ -33,75 +33,42 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult List(int init, string query)
+        public ActionResult List(int init, string q, string j, string s, string l, bool? ind, bool? lig)
         {
             int count;
-            var model = _placeService.GetList(query == "*" ? string.Empty : query, init, Configuration.RowsPerRequest, out count);
-
-            return View("List", model);
-        }
-
-        [HttpGet]
-        public ActionResult Search(string query)
-        {
-            query = query == "*" ? string.Empty : query;
-            int count;
-            var model = _placeService.GetList(query, 0, Configuration.RowsPerRequest, out count);
-            ViewBag.Query = query;
-            ViewBag.Count = count;
-
-            if (count == 1)
-            {
-                return RedirectToAction("ItemView", "Place", new { id = model.First().Page, });
-            }
-
-            return View("Places", model);
+            return View("List", GetPlacesList(init, q, j, s, l, ind, lig, out count));
         }
 
         [HttpGet]
         public ActionResult Index(string q, string p, string j, string s, string l, bool? ind, bool? lig)
         {
-            int currentPage, count;
-            if (p == null)
-                currentPage = 1;
-            else
-                if (!int.TryParse(p, out currentPage))
-                    currentPage = 1;
-            IEnumerable<Place> model;
-
-            if (j != null || s != null || l != null || ind != null || lig != null)
+            if (j == null && s == null && l == null && ind == null && lig == null && string.IsNullOrEmpty(q))
             {
-                model = _placeService.GetList(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, currentPage, Configuration.RowsPerRequest, out count);
-                ViewBag.Places = count;
+                var index = new IndexModel
+                {
+                    TopUsedPlaces = _reportService.GetTopVotedPlaces(2),
+                    TopVotedPlaces = _reportService.GetTopUsedPlaces(2),
+                    PlacesCount = _reportService.GetPlacesCount(),
+                    CourtsCount = _reportService.GetCourtsCount(),
+                    OwnedPlaces = _reportService.GetOwnedPlaces(),
+                };
+
+                return View(index);
             }
             else
             {
-                if (string.IsNullOrEmpty(q))
-                {
-                    var index = new IndexModel
-                    {
-                        TopUsedPlaces = _reportService.GetTopVotedPlaces(2),
-                        TopVotedPlaces = _reportService.GetTopUsedPlaces(2),
-                        PlacesCount = _reportService.GetPlacesCount(),
-                        CourtsCount = _reportService.GetCourtsCount(),
-                        OwnedPlaces = _reportService.GetOwnedPlaces(),
-                    };
+                int count;
+                var model = GetPlacesList(0, q, j, s, l, ind, lig, out count);
 
-                    return View(index);
-                }
-
-                var query = q == "*" ? string.Empty : q;
-                model = _placeService.GetList(query, currentPage, Configuration.RowsPerRequest, out count);
                 ViewBag.Places = count;
-                ViewBag.Query = query;
 
-                if (model.Count() == 1 && currentPage == 1)
+                if (model.Count() == 1)
                 {
                     return RedirectToAction("ItemView", "Place", new { id = model.First().Page, });
                 }
+
+                return View("Places", model);
             }
-            
-            return View("Places", model);
         }
 
         [HttpPost]
@@ -143,6 +110,19 @@ namespace Fulbaso.UI.Controllers
                 });
 
             return Json(lista, JsonRequestBehavior.AllowGet);
+        }
+
+        private IEnumerable<Place> GetPlacesList(int init, string q, string j, string s, string l, bool? ind, bool? lig, out int count)
+        {
+            if (j != null || s != null || l != null || ind != null || lig != null)
+            {
+                return _placeService.GetList(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, init, Configuration.RowsPerRequest, out count);
+            }
+            else
+            {
+                var query = q == "*" ? string.Empty : q;
+                return _placeService.GetList(query, init, Configuration.RowsPerRequest, out count);
+            }
         }
     }
 }

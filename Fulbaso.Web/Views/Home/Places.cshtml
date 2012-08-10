@@ -1,6 +1,8 @@
 ﻿@using Fulbaso.Contract
 @using Fulbaso.UI
 
+@model IEnumerable<Place>
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     var query = !string.IsNullOrEmpty(Request.QueryString["q"]) && Request.QueryString["q"] != "*" ? ("para \"" + Request.QueryString["q"] + "\"") : "";
@@ -47,30 +49,52 @@
     <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados @query</p>
 </div>
 
-<div id="places"></div>
+<div id="places">
+    @Html.Partial("List", Model)
+</div>
 
 <a id="loadmore" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
 
 <script>
     $(function () {
+        var last;
         function loadMore() {
-            $("#loadmore").addClass("disabled");
-            $("#loadmore").html("Buscando");
+            var init = $(".place-info").length;
 
-            $.get("@Url.Action("List", "Home")?init=" + $(".place-info").length + "&query=@ViewBag.Query", function (data) { 
-                $("#loadmore").removeClass("disabled");
-                $(data)
-                    .hide()
-                    .appendTo("#places")
-                    .fadeIn();
+            if (init != last) {
+                last = init;
 
-                if ($(".place-info").length == @ViewBag.Places) {
-                    $("#loadmore").hide();
-                }
-            }).error(function () {
                 $("#loadmore").hide();
-            });
-            $("#loadmore").html("Mostrar más");
+                $.get("@Html.Raw(Url.Action("List", "Home", new { q = Request.QueryString["q"], j = Request.QueryString["j"], l = Request.QueryString["l"], s = Request.QueryString["s"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], }))&init=" + init, function (data) { 
+                    $("#loadmore").removeClass("disabled");
+                    $(data)
+                        .hide()
+                        .appendTo("#places")
+                        .fadeIn();
+                    $("#loadmore").show();
+
+                    if ($(".place-info").length == @ViewBag.Places) {
+                        $("#loadmore").hide();
+                    }
+
+                    $('.place-info').unbind('hover');
+                    $('.place-info').hover(function () { 
+                        $(this).animate({
+                            borderTopColor: '#999',
+                            borderLeftColor: '#999',
+                            borderBottomColor: '#999',
+                            borderRightColor: '#999'
+                        }, 300);
+                    }, function () {
+                        $(this).animate({
+                            borderTopColor: '#fff',
+                            borderLeftColor: '#fff',
+                            borderBottomColor: '#fff',
+                            borderRightColor: '#fff'
+                        }, 100);
+                    });
+                });
+            }
         }
 
         $("#loadmore").click(function () {
@@ -78,7 +102,7 @@
         });
 
         $(window).scroll(function () {
-            if (document.documentElement.clientHeight + $(document).scrollTop() >= document.body.offsetHeight) {
+            if (document.documentElement.clientHeight + $(document).scrollTop() >= document.body.offsetHeight - 100) {
                 loadMore();
             }
         });

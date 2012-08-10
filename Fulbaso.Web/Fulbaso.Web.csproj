@@ -351,6 +351,7 @@
     <None Include="Content\bootstrap\less\utilities.less" />
     <None Include="Content\bootstrap\less\variables.less" />
     <None Include="Content\bootstrap\less\wells.less" />
+    <None Include="Content\bootstrap\less\site.less" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
