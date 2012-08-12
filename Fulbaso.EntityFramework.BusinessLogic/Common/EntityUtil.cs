@@ -2,7 +2,7 @@
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Reflection;
-using Fulbaso.Common;
+using Fulbaso.Helpers;
 
 namespace Fulbaso.EntityFramework.BusinessLogic
 {

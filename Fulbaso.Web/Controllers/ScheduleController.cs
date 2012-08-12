@@ -43,7 +43,7 @@ namespace Fulbaso.UI.Controllers
 
             book.StartTime = new DateTime(day.Year, day.Month, day.Day, book.StartTime.Hour, book.StartTime.Minute, 0);
             book.EndTime = new DateTime(day.Year, day.Month, day.Day, book.EndTime.Hour, book.EndTime.Minute, 0);
-            book.User = FacebookLogin.Id;
+            book.User = Authentication.Id;
 
             if (book.Id == 0)
             {

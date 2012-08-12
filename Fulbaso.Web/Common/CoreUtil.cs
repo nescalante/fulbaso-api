@@ -27,7 +27,7 @@ namespace Fulbaso.UI
             {
                 if (HttpContext.Current.Session["Places"] == null)
                 {
-                    HttpContext.Current.Session["Places"] = ContainerUtil.GetApplicationContainer().Resolve<IPlaceService>().GetByUser(FacebookLogin.Id);
+                    HttpContext.Current.Session["Places"] = ContainerUtil.GetApplicationContainer().Resolve<IPlaceService>().GetByUser(Authentication.Id);
                 }
 
                 return HttpContext.Current.Session["Places"] as List<Place>;

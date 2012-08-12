@@ -57,12 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dtos\EntityCollection.cs" />
-    <Compile Include="Dtos\PrimaryField.cs" />
-    <Compile Include="Dtos\EntityWithId.cs" />
-    <Compile Include="Dtos\Entity.cs" />
-    <Compile Include="Interfaces\IEntity.cs" />
-    <Compile Include="Interfaces\IEntityWithID.cs" />
     <Compile Include="Mvc\BaseController.cs" />
     <Compile Include="Mvc\WindsorControllerFactory.cs" />
     <Compile Include="Mvc\ContainerUtil.cs" />
@@ -73,11 +67,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Error.resx</DependentUpon>
     </Compile>
-    <Compile Include="Security\FacebookIdentity.cs" />
-    <Compile Include="Security\FacebookLogin.cs" />
-    <Compile Include="Security\FacebookPrincipal.cs" />
-    <Compile Include="Security\FacebookUser.cs" />
-    <Compile Include="Security\FacebookUtil.cs" />
+    <Compile Include="Facebook\FacebookIdentity.cs" />
+    <Compile Include="Security\Authentication.cs" />
+    <Compile Include="Facebook\FacebookPrincipal.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Error.resx">
@@ -87,6 +79,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fulbaso.Contract\Fulbaso.Contract.csproj">
+      <Project>{D39C7B19-28B4-461C-9F91-190442C173B5}</Project>
+      <Name>Fulbaso.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.BusinessLogic.csproj">
+      <Project>{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}</Project>
+      <Name>Fulbaso.Facebook.BusinessLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

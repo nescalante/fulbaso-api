@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Fulbaso.Common
+namespace Fulbaso.Helpers
 {
     [Serializable]
     public class EntityCollection<T> : IEnumerable<T>, IComparable, IFormattable

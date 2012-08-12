@@ -13,11 +13,13 @@ namespace Fulbaso.UI.Controllers
     {
         private IPlaceService _placeService;
         private IReportService _reportService;
+        private Authentication _authentication;
 
-        public HomeController(IPlaceService placeService, IReportService reportService)
+        public HomeController(IPlaceService placeService, IReportService reportService, Authentication authentication)
         {
             _placeService = placeService;
             _reportService = reportService;
+            _authentication = authentication;
         }
 
         [HttpGet]
@@ -86,7 +88,7 @@ namespace Fulbaso.UI.Controllers
         [HttpGet]
         public ActionResult LogOut()
         {
-            FacebookLogin.Logout();
+            _authentication.Logout();
 
             return RedirectToAction("Index", "Home");
         }
@@ -94,7 +96,7 @@ namespace Fulbaso.UI.Controllers
         [HttpPost]
         public ActionResult Login(string token, FormCollection collection)
         {
-            FacebookLogin.Login(token);
+            _authentication.Login(token);
             return Redirect(Request.UrlReferrer.AbsolutePath);
         }
 

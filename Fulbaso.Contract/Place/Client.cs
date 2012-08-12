@@ -1,5 +1,5 @@
 ﻿using System;
-using Fulbaso.Common;
+using Fulbaso.Helpers;
 
 namespace Fulbaso.Contract
 {

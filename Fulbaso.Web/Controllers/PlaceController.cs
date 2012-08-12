@@ -63,7 +63,7 @@ namespace Fulbaso.UI.Controllers
                 {
                     Place = place,
                     HasAdmin = _placeService.PlaceHasAdmin(place.Id),
-                    IsFavourite = _favouriteService.IsFavourite(place.Id, FacebookLogin.Id),
+                    IsFavourite = _favouriteService.IsFavourite(place.Id, Authentication.Id),
                     NearPlaces = _placeService.GetNearest(place, 10, 3),
                 };
 
@@ -84,7 +84,7 @@ namespace Fulbaso.UI.Controllers
 
             if (model != null)
             {
-                ViewBag.IsFavourite = _favouriteService.IsFavourite(model.Id, FacebookLogin.Id);
+                ViewBag.IsFavourite = _favouriteService.IsFavourite(model.Id, Authentication.Id);
                 return View(model);
             }
             else
@@ -95,14 +95,14 @@ namespace Fulbaso.UI.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public void DeleteFavourite(int favourite)
         {
-            _favouriteService.Remove(favourite, FacebookLogin.Id);
+            _favouriteService.Remove(favourite, Authentication.Id);
         }
 
         [Authorize]
         [AcceptVerbs(HttpVerbs.Post)]
         public void AddFavourite(int favourite)
         {
-            _favouriteService.Add(favourite, FacebookLogin.Id);
+            _favouriteService.Add(favourite, Authentication.Id);
         }
     }
 }

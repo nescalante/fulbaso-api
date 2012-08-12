@@ -107,6 +107,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\ControllerInstaller.cs" />
+    <Compile Include="Infrastructure\AuthenticationInstaller.cs" />
     <Compile Include="Infrastructure\ServiceInstaller.cs" />
     <Compile Include="Models\IndexModel.cs" />
     <Compile Include="Models\LayoutModels.cs" />
@@ -378,6 +379,10 @@
     <ProjectReference Include="..\Fulbaso.Contract\Fulbaso.Contract.csproj">
       <Project>{D39C7B19-28B4-461C-9F91-190442C173B5}</Project>
       <Name>Fulbaso.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.BusinessLogic.csproj">
+      <Project>{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}</Project>
+      <Name>Fulbaso.Facebook.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fulbaso.Helpers\Fulbaso.Helpers.csproj">
       <Project>{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}</Project>

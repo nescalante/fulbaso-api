@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Fulbaso.Common;
 using Fulbaso.Contract;
-using Fulbaso.EntityFramework;
+using Fulbaso.Helpers;
 
 namespace Fulbaso.EntityFramework.BusinessLogic
 {

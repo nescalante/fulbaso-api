@@ -32,7 +32,8 @@
 @section StyleSheets
 {
     <style>
-        .fb-comments, .fb-comments iframe[style] {width: 100% !important;}
+        .fb-comments, .fb-comments iframe[style] { width: 100% !important; }
+        #fbcomments, .fb_iframe_widget, .fb_iframe_widget[style], .fb_iframe_widget iframe[style], #fbcomments iframe[style] { width: 100% !important; }
     </style>
 }
 
@@ -152,11 +153,9 @@
                 }
             </dl>
         }
-        <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" data-show-faces="false"></div>
-        <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
     </div>
     <div class="span4">
-        <div class="ui-result ui-widget-content span4" id="map_canvas" style="min-height: 400px;"></div>
+        <div class="ui-result ui-widget-content" id="map_canvas" style="min-height: 300px; height: 100%; width:100%; "></div>
             @if (Model.NearPlaces != null && Model.NearPlaces.Any())
             {
                 var first = true;
@@ -178,6 +177,8 @@
             }
         </div>
     </div>
+    <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
+    <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
 </div>
 <script>
     $(function () {

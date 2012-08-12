@@ -45,6 +45,7 @@ namespace Fulbaso.UI
             _container = new WindsorContainer();
             _container.Install(
                 new ServiceInstaller(),
+                new AuthenticationInstaller(),
                 new ControllerInstaller()
             );
 

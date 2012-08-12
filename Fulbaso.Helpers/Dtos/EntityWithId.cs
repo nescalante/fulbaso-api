@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fulbaso.Common
+namespace Fulbaso.Helpers
 {
     [Serializable]
     public abstract class EntityWithId : IEntityWithId

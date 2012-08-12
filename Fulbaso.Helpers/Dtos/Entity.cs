@@ -6,7 +6,7 @@ using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace Fulbaso.Common
+namespace Fulbaso.Helpers
 {
     /// <summary>
     /// class manages three fields: ID, Description and IsActive. Class inherits from IComparable, 

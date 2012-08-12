@@ -5,13 +5,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D39C7B19-28B4-461C-9F91-190442C173B5}</ProjectGuid>
+    <ProjectGuid>{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fulbaso.Contract</RootNamespace>
-    <AssemblyName>Fulbaso.Contract</AssemblyName>
+    <RootNamespace>Fulbaso.Facebook.BusinessLogic</RootNamespace>
+    <AssemblyName>Fulbaso.Facebook.BusinessLogic</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,10 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>..\packages\Facebook.6.0.20\lib\net40-client\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,38 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Court\CourtConfiguration.cs" />
-    <Compile Include="Court\CourtBook.cs" />
-    <Compile Include="Place\Service.cs" />
-    <Compile Include="Services\IFloorTypeService.cs" />
-    <Compile Include="Services\ICourtTypeService.cs" />
-    <Compile Include="Services\IClientService.cs" />
-    <Compile Include="Services\ICourtBookService.cs" />
-    <Compile Include="Services\ICourtConfigurationService.cs" />
-    <Compile Include="Services\ICourtService.cs" />
-    <Compile Include="Services\IFavouriteService.cs" />
-    <Compile Include="Services\IRegionService.cs" />
-    <Compile Include="Services\ITerritoryService.cs" />
-    <Compile Include="Services\ILocationService.cs" />
-    <Compile Include="Services\IPlaceService.cs" />
-    <Compile Include="Place\Client.cs" />
-    <Compile Include="Configuration\Region.cs" />
-    <Compile Include="Court\Court.cs" />
-    <Compile Include="Place\Place.cs" />
-    <Compile Include="Configuration\Location.cs" />
+    <Compile Include="FacebookService.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IReportService.cs" />
-    <Compile Include="Services\IUserService.cs" />
-    <Compile Include="User\User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fulbaso.Helpers\Fulbaso.Helpers.csproj">
-      <Project>{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}</Project>
-      <Name>Fulbaso.Helpers</Name>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fulbaso.Contract\Fulbaso.Contract.csproj">
+      <Project>{D39C7B19-28B4-461C-9F91-190442C173B5}</Project>
+      <Name>Fulbaso.Contract</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

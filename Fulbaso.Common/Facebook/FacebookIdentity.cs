@@ -1,10 +1,11 @@
 ﻿using System.Security.Principal;
+using Fulbaso.Contract;
 
 namespace Fulbaso.Common
 {
     public class FacebookIdentity : IIdentity
     {
-        public FacebookIdentity(FacebookUser user)
+        public FacebookIdentity(User user)
         {
             this.Name = user.Name;
             this.Id = user.Id;

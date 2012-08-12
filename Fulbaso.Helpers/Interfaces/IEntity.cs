@@ -1,4 +1,4 @@
-﻿namespace Fulbaso.Common
+﻿namespace Fulbaso.Helpers
 {
     public interface IEntity : IEntityWithId
     {

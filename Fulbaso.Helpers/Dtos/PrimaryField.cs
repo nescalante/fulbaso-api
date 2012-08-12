@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fulbaso.Common
+namespace Fulbaso.Helpers
 {
     [AttributeUsage(AttributeTargets.All)]
     public class PrimaryField : Attribute
