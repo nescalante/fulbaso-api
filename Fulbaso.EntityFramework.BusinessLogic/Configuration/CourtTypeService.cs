@@ -5,13 +5,13 @@ using System.Linq.Expressions;
 using Fulbaso.Contract;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class CourtTypeService : ICourtTypeService
     {
         public EntityDataObject Get(int courtTypeId)
         {
-            return CourtTypeService.Get(r => r.Id == courtTypeId).Single();
+            return CourtTypeService.Get(r => r.Id == courtTypeId).SingleOrDefault();
         }
 
         public IEnumerable<EntityDataObject> Get(string name = null)

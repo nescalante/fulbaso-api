@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 
 namespace Fulbaso.Common
 {
@@ -6,6 +7,8 @@ namespace Fulbaso.Common
     {
         public FacebookPrincipal(FacebookIdentity identity)
         {
+            if (identity == null) throw new ArgumentNullException("identity");
+
             this.Identity = identity;
         }
 

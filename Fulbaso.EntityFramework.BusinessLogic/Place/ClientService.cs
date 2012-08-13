@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Fulbaso.Contract;
 using Fulbaso.EntityFramework;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class ClientService : IClientService
     {

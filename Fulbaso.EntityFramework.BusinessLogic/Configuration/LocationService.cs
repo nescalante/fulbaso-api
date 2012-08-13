@@ -6,13 +6,13 @@ using Fulbaso.Contract;
 using Fulbaso.EntityFramework;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class LocationService : ILocationService
     {
         public Location Get(int locationId)
         {
-            return LocationService.Get(r => r.Id == locationId).Single();
+            return LocationService.Get(r => r.Id == locationId).SingleOrDefault();
         }
 
         public IEnumerable<Location> Get(string name = null)

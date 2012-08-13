@@ -65,7 +65,7 @@
         <div class="control-group">
             <label class="control-label" for="floors">Suelo</label>
             <div class="controls">
-                @foreach (var f in (IEnumerable<EntityDataObject>)ViewBag.FloorTypes)
+                @foreach (var f in (IEnumerable<Fulbaso.Helpers.EntityDataObject>)ViewBag.FloorTypes)
                 {
                     <label class="checkbox">
                         @Html.CheckBox("floor-" + f.Id, true)

@@ -7,7 +7,7 @@ using Fulbaso.Contract;
 using Fulbaso.EntityFramework;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class PlaceService : IPlaceService
     {
@@ -87,8 +87,9 @@ namespace Fulbaso.EntityFramework.BusinessLogic
 
         public IEnumerable<Place> GetByUser(long userId)
         {
-            var query = EntityUtil.Context.UserPlaces.Where(u => u.UserId == userId)
-                .Select(u => new Place { Description = u.Place.Name, Page = u.Place.Page, Id = u.PlaceId, });
+            var query = EntityUtil.Context.Users.Where(u => u.Id == userId)
+                .SelectMany(u => u.Places)
+                .Select(p => new Place { Description = p.Name, Page = p.Page, Id = p.Id, });
 
             return query.ToList();
         }

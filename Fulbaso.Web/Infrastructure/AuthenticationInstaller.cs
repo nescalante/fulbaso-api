@@ -4,7 +4,7 @@ using System.Linq;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Fulbaso.Facebook.BusinessLogic;
+using Fulbaso.Facebook.Logic;
 using Fulbaso.Common;
 
 namespace Fulbaso.UI
@@ -15,38 +15,17 @@ namespace Fulbaso.UI
         {
             container.Register(
              AllTypes
-              .FromAssemblyContaining<UserService>()
-              .Where(t => t.Name.EndsWith("Service"))
-              .WithService.Select(ByConvention)
+              .FromAssemblyContaining<FacebookService>()
+              .Where(t => t.Name.StartsWith("Facebook"))
               .LifestylePerThread()
             );
 
             container.Register(
              Classes
-              .FromAssemblyContaining<Authentication>()
+              .FromAssemblyContaining<UserAuthentication>()
               .Where(t => t.Name.EndsWith("Authentication"))
               .LifestylePerThread()
             );
-        }
-
-        private IEnumerable<Type> ByConvention(Type type, Type[] types)
-        {
-            Type[] interfaces = type.GetInterfaces();
-            foreach (Type interfaceType in interfaces)
-            {
-                string name = interfaceType.Name;
-                if (name.StartsWith("I"))
-                {
-                    name = name.Remove(0, 1);
-                }
-
-                if (type.Name.EndsWith(name))
-                {
-                    return new[] { interfaceType };
-                }
-            }
-
-            return Enumerable.Empty<Type>();
         }
     }
 }

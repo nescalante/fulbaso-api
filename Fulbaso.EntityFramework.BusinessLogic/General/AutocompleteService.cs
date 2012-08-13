@@ -4,7 +4,7 @@ using Fulbaso.Contract;
 using Fulbaso.EntityFramework;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     internal static class AutocompleteService
     {

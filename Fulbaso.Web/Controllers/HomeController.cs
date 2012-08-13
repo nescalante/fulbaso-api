@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Fulbaso.EntityFramework.BusinessLogic;
+using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Common;
 using Fulbaso.Contract;
 using Fulbaso.UI.Models;
@@ -13,9 +13,9 @@ namespace Fulbaso.UI.Controllers
     {
         private IPlaceService _placeService;
         private IReportService _reportService;
-        private Authentication _authentication;
+        private UserAuthentication _authentication;
 
-        public HomeController(IPlaceService placeService, IReportService reportService, Authentication authentication)
+        public HomeController(IPlaceService placeService, IReportService reportService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _reportService = reportService;

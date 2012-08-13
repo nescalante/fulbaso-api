@@ -368,9 +368,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fulbaso.EntityFramework.BusinessLogic\Fulbaso.EntityFramework.BusinessLogic.csproj">
+    <ProjectReference Include="..\Fulbaso.Authentication.BusinessLogic\Fulbaso.Authentication.Logic.csproj">
+      <Project>{674D5B8F-313A-4C61-BD83-EAD2A8587B93}</Project>
+      <Name>Fulbaso.Authentication.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fulbaso.EntityFramework.BusinessLogic\Fulbaso.EntityFramework.Logic.csproj">
       <Project>{63319B1F-B305-4E2F-87D2-245074135436}</Project>
-      <Name>Fulbaso.EntityFramework.BusinessLogic</Name>
+      <Name>Fulbaso.EntityFramework.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fulbaso.Common\Fulbaso.Common.csproj">
       <Project>{E165A33D-72DC-4863-BACF-531243CF3FA4}</Project>
@@ -380,9 +384,9 @@
       <Project>{D39C7B19-28B4-461C-9F91-190442C173B5}</Project>
       <Name>Fulbaso.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.BusinessLogic.csproj">
+    <ProjectReference Include="..\Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.Logic.csproj">
       <Project>{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}</Project>
-      <Name>Fulbaso.Facebook.BusinessLogic</Name>
+      <Name>Fulbaso.Facebook.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fulbaso.Helpers\Fulbaso.Helpers.csproj">
       <Project>{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}</Project>

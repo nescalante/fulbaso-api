@@ -6,7 +6,7 @@ using Fulbaso.Contract;
 using Fulbaso.EntityFramework;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class CourtService : ICourtService
     {
@@ -61,7 +61,7 @@ namespace Fulbaso.EntityFramework.BusinessLogic
 
         public Court Get(int courtId)
         {
-            return CourtService.Get(r => r.Id == courtId).Single();
+            return CourtService.Get(r => r.Id == courtId).SingleOrDefault();
         }
 
         public IEnumerable<Court> GetByPlace(int placeId)

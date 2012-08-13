@@ -6,9 +6,9 @@ namespace Fulbaso.Common
     {
         protected override void OnAuthorization(AuthorizationContext filterContext)
         {
-            if (Authentication.User != null)
+            if (UserAuthentication.User != null)
             {
-                filterContext.HttpContext.User = new FacebookPrincipal(new FacebookIdentity(Authentication.User));
+                filterContext.HttpContext.User = new FacebookPrincipal(new FacebookIdentity(UserAuthentication.User));
             }
 
             base.OnAuthorization(filterContext);

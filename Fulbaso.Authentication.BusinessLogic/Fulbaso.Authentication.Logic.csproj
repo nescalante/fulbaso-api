@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{63319B1F-B305-4E2F-87D2-245074135436}</ProjectGuid>
+    <ProjectGuid>{674D5B8F-313A-4C61-BD83-EAD2A8587B93}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fulbaso.EntityFramework.BusinessLogic</RootNamespace>
-    <AssemblyName>Fulbaso.EntityFramework.BusinessLogic</AssemblyName>
+    <RootNamespace>Fulbaso.Authentication.Logic</RootNamespace>
+    <AssemblyName>Fulbaso.Authentication.Logic</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,10 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,40 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\FloorTypeService.cs" />
-    <Compile Include="Configuration\CourtTypeService.cs" />
-    <Compile Include="Configuration\TerritoryService.cs" />
-    <Compile Include="Configuration\LocationService.cs" />
-    <Compile Include="Configuration\RegionService.cs" />
-    <Compile Include="Place\ClientService.cs" />
-    <Compile Include="Place\FavouriteService.cs" />
-    <Compile Include="Court\ReportService.cs" />
-    <Compile Include="Court\CourtConfigurationService.cs" />
-    <Compile Include="Court\CourtService.cs" />
-    <Compile Include="Place\PlaceService.cs" />
-    <Compile Include="Court\CourtBookService.cs" />
-    <Compile Include="Common\EntityUtil.cs" />
-    <Compile Include="General\AutocompleteService.cs" />
+    <Compile Include="AuthenticationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\ReferenceHelper.cs" />
-    <Compile Include="Common\Repository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fulbaso.Common\Fulbaso.Common.csproj">
-      <Project>{E165A33D-72DC-4863-BACF-531243CF3FA4}</Project>
-      <Name>Fulbaso.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fulbaso.Contract\Fulbaso.Contract.csproj">
       <Project>{D39C7B19-28B4-461C-9F91-190442C173B5}</Project>
       <Name>Fulbaso.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fulbaso.EntityFramework.Data\Fulbaso.EntityFramework.csproj">
-      <Project>{1A2ACCCC-48B2-4EFE-B78E-FAE279CB8A2F}</Project>
-      <Name>Fulbaso.EntityFramework</Name>
+    <ProjectReference Include="..\Fulbaso.EntityFramework.BusinessLogic\Fulbaso.EntityFramework.Logic.csproj">
+      <Project>{63319B1F-B305-4E2F-87D2-245074135436}</Project>
+      <Name>Fulbaso.EntityFramework.Logic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fulbaso.Helpers\Fulbaso.Helpers.csproj">
-      <Project>{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}</Project>
-      <Name>Fulbaso.Helpers</Name>
+    <ProjectReference Include="..\Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.Logic.csproj">
+      <Project>{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}</Project>
+      <Name>Fulbaso.Facebook.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

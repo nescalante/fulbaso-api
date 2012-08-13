@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Fulbaso.Facebook.Logic")]
+[assembly: AssemblyTitle("Fulbaso.Authentication.Logic")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Fulbaso.Facebook.Logic")]
+[assembly: AssemblyProduct("Fulbaso.Authentication.Logic")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7386ee35-bcf9-4145-b378-74eff0cc2c01")]
+[assembly: Guid("fba3cc64-cbda-4a9f-bcec-f95f96d253c0")]
 
 // Version information for an assembly consists of the following four values:
 //

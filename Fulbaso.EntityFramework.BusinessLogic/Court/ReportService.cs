@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Fulbaso.Contract;
 using Fulbaso.EntityFramework;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class ReportService : IReportService
     {
@@ -37,7 +37,7 @@ namespace Fulbaso.EntityFramework.BusinessLogic
 
         public int GetOwnedPlaces()
         {
-            return EntityUtil.Context.UserPlaces.Select(u => u.PlaceId).Distinct().Count();
+            return EntityUtil.Context.Users.SelectMany(u => u.Places.Select(up => up.Id)).Distinct().Count();
         }
     }
 }   

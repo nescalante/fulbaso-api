@@ -6,13 +6,13 @@ using Fulbaso.Contract;
 using Fulbaso.EntityFramework;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class RegionService : IRegionService
     {
         public Region Get(int regionId)
         {
-            return RegionService.Get(r => r.Id == regionId).Single();
+            return RegionService.Get(r => r.Id == regionId).SingleOrDefault();
         }
 
         public IEnumerable<Region> Get(string name = null)

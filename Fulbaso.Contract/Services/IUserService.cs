@@ -2,8 +2,12 @@
 {
     public interface IUserService
     {
-        User GetUser();
+        void Add(User user);
 
-        void SetToken(string token);
+        void Delete(long userId);
+
+        User Get(long userId);
+
+        void Update(User user);
     }
 }

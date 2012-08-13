@@ -1,6 +1,6 @@
 ﻿using System.Data.Objects.DataClasses;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     internal class ReferenceHelper
     {

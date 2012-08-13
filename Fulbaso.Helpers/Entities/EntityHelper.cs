@@ -20,8 +20,7 @@ namespace Fulbaso.Helpers
         public static ObjectQuery<T> Include<T>(this IQueryable<T> queryable, Expression<Func<T, object>> path)
             where T : class,new()
         {
-            if (path == null)
-                throw new ArgumentNullException("path");
+            if (path == null) throw new ArgumentNullException("path");
 
             var body = path.Body as MemberExpression;
             if ((body == null || !body.Member.DeclaringType.IsAssignableFrom(typeof(T))) || body.Expression.NodeType != ExpressionType.Parameter)
@@ -32,8 +31,7 @@ namespace Fulbaso.Helpers
 
         public static string ToTraceString<T>(this IQueryable<T> query)
         {
-            if (query is ObjectQuery)
-                return ((ObjectQuery)query).ToTraceString();
+            if (query is ObjectQuery) return ((ObjectQuery)query).ToTraceString();
             return query.ToString();
         }
 

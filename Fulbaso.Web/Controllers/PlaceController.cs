@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Fulbaso.EntityFramework.BusinessLogic;
+using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Common;
 using Fulbaso.Contract;
 using Fulbaso.UI.Models;
@@ -63,7 +63,7 @@ namespace Fulbaso.UI.Controllers
                 {
                     Place = place,
                     HasAdmin = _placeService.PlaceHasAdmin(place.Id),
-                    IsFavourite = _favouriteService.IsFavourite(place.Id, Authentication.Id),
+                    IsFavourite = _favouriteService.IsFavourite(place.Id, UserAuthentication.UserId),
                     NearPlaces = _placeService.GetNearest(place, 10, 3),
                 };
 
@@ -84,7 +84,7 @@ namespace Fulbaso.UI.Controllers
 
             if (model != null)
             {
-                ViewBag.IsFavourite = _favouriteService.IsFavourite(model.Id, Authentication.Id);
+                ViewBag.IsFavourite = _favouriteService.IsFavourite(model.Id, UserAuthentication.UserId);
                 return View(model);
             }
             else
@@ -95,14 +95,14 @@ namespace Fulbaso.UI.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public void DeleteFavourite(int favourite)
         {
-            _favouriteService.Remove(favourite, Authentication.Id);
+            _favouriteService.Remove(favourite, UserAuthentication.UserId);
         }
 
         [Authorize]
         [AcceptVerbs(HttpVerbs.Post)]
         public void AddFavourite(int favourite)
         {
-            _favouriteService.Add(favourite, Authentication.Id);
+            _favouriteService.Add(favourite, UserAuthentication.UserId);
         }
     }
 }

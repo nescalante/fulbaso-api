@@ -5,12 +5,12 @@ using Fulbaso.Contract;
 
 namespace Fulbaso.Common
 {
-    public class Authentication
+    public class UserAuthentication
     {
-        private IUserService _userService;
+        private IAuthenticationService _userService;
         private const string usersession = "user_key";
 
-        public Authentication(IUserService userService)
+        public UserAuthentication(IAuthenticationService userService)
         {
             _userService = userService;
         }
@@ -19,15 +19,15 @@ namespace Fulbaso.Common
         {
             try
             {
-                if (Authentication.User != null && Authentication.User.Token == token) return;
+                if (UserAuthentication.User != null && UserAuthentication.User.Token == token) return;
 
                 _userService.SetToken(token);
                 HttpContext.Current.Session.Remove("Places");
-                Authentication.User = _userService.GetUser();
+                UserAuthentication.User = _userService.GetUser();
             }
             catch
             {
-                Authentication.User = null;
+                UserAuthentication.User = null;
                 HttpContext.Current.Session.Remove("Places");
                 FormsAuthentication.SignOut();
 
@@ -41,13 +41,13 @@ namespace Fulbaso.Common
             FormsAuthentication.SignOut();
         }
 
-        public static long Id
+        public static long UserId
         {
             get 
             {
-                if (Authentication.User == null) throw new InvalidOperationException("No user logged in.");
+                if (UserAuthentication.User == null) throw new InvalidOperationException("No user logged in.");
 
-                return Authentication.User.Id; 
+                return UserAuthentication.User.Id; 
             }
         }
 
@@ -70,9 +70,9 @@ namespace Fulbaso.Common
         {
             get
             {
-                if (Authentication.User == null) throw new InvalidOperationException("No user logged in.");
+                if (UserAuthentication.User == null) throw new InvalidOperationException("Cant get user token, no user logged in.");
 
-                return Authentication.User.Token;
+                return UserAuthentication.User.Token;
             }
         }
     }

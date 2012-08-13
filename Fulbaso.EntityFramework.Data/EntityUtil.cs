@@ -10,18 +10,14 @@ namespace Fulbaso.EntityFramework
         [ThreadStatic]
         private static ObjectContextEntities _context = null;
 
-        /// <summary>        
-        /// Private property to store the DataContext in the HttpContext.Current.Items or thread local storage        
-        /// </summary>
-        /// <value>Model data context</value>
         public static ObjectContextEntities Context
         {
             get
             {
                 if (HttpContext.Current == null)
                 {
-                    if (_context == null)
-                        _context = NewContext();
+                    if (_context == null) _context = NewContext();
+
                     return _context;
                 }
                 else
@@ -30,6 +26,7 @@ namespace Fulbaso.EntityFramework
                     {
                         HttpContext.Current.Items[DATACONTEXT_ITEMS_KEY] = new ObjectContextEntities();
                     }
+
                     return (ObjectContextEntities)HttpContext.Current.Items[DATACONTEXT_ITEMS_KEY];
                 }
             }

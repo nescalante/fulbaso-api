@@ -68,7 +68,7 @@
       <DependentUpon>Error.resx</DependentUpon>
     </Compile>
     <Compile Include="Facebook\FacebookIdentity.cs" />
-    <Compile Include="Security\Authentication.cs" />
+    <Compile Include="Security\UserAuthentication.cs" />
     <Compile Include="Facebook\FacebookPrincipal.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,9 +85,9 @@
       <Project>{D39C7B19-28B4-461C-9F91-190442C173B5}</Project>
       <Name>Fulbaso.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.BusinessLogic.csproj">
+    <ProjectReference Include="..\Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.Logic.csproj">
       <Project>{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}</Project>
-      <Name>Fulbaso.Facebook.BusinessLogic</Name>
+      <Name>Fulbaso.Facebook.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

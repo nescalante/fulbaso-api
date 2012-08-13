@@ -5,13 +5,13 @@ using System.Linq.Expressions;
 using Fulbaso.Contract;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class TerritoryService : ITerritoryService
     {
         public EntityDataObject Get(int territoryId)
         {
-            return TerritoryService.Get(r => r.Id == territoryId).Single();
+            return TerritoryService.Get(r => r.Id == territoryId).SingleOrDefault();
         }
 
         public IEnumerable<EntityDataObject> Get(string name = null)

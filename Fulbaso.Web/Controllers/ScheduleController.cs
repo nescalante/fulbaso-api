@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
-using Fulbaso.EntityFramework.BusinessLogic;
+using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Common;
 using Fulbaso.Contract;
 
@@ -43,7 +43,7 @@ namespace Fulbaso.UI.Controllers
 
             book.StartTime = new DateTime(day.Year, day.Month, day.Day, book.StartTime.Hour, book.StartTime.Minute, 0);
             book.EndTime = new DateTime(day.Year, day.Month, day.Day, book.EndTime.Hour, book.EndTime.Minute, 0);
-            book.User = Authentication.Id;
+            book.User = UserAuthentication.UserId;
 
             if (book.Id == 0)
             {

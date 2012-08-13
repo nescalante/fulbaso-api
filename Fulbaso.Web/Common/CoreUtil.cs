@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
-using Fulbaso.EntityFramework.BusinessLogic;
+using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Common;
 using Fulbaso.Contract;
 
@@ -27,7 +27,7 @@ namespace Fulbaso.UI
             {
                 if (HttpContext.Current.Session["Places"] == null)
                 {
-                    HttpContext.Current.Session["Places"] = ContainerUtil.GetApplicationContainer().Resolve<IPlaceService>().GetByUser(Authentication.Id);
+                    HttpContext.Current.Session["Places"] = ContainerUtil.GetApplicationContainer().Resolve<IPlaceService>().GetByUser(UserAuthentication.UserId);
                 }
 
                 return HttpContext.Current.Session["Places"] as List<Place>;

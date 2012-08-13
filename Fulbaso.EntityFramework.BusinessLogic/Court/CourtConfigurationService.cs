@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using Fulbaso.Contract;
 using Fulbaso.EntityFramework;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     public class CourtConfigurationService : ICourtConfigurationService
     {
@@ -71,7 +71,7 @@ namespace Fulbaso.EntityFramework.BusinessLogic
 
         public CourtConfiguration Get(int courtConfigurationId)
         {
-            return CourtConfigurationService.Get(r => r.Id == courtConfigurationId).Single();
+            return CourtConfigurationService.Get(r => r.Id == courtConfigurationId).SingleOrDefault();
         }
 
         public decimal GetPrice(int courtId, DateTime time)

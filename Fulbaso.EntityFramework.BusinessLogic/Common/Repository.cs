@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.EntityFramework.BusinessLogic
+namespace Fulbaso.EntityFramework.Logic
 {
     internal static class Repository<T> where T : EntityObject
     {

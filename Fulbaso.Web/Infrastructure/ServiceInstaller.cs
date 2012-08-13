@@ -4,7 +4,8 @@ using System.Linq;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Fulbaso.EntityFramework.BusinessLogic;
+using Fulbaso.Authentication.Logic;
+using Fulbaso.EntityFramework.Logic;
 
 namespace Fulbaso.UI
 {
@@ -15,6 +16,14 @@ namespace Fulbaso.UI
             container.Register(
              AllTypes
               .FromAssemblyContaining<PlaceService>()
+              .Where(t => t.Name.EndsWith("Service"))
+              .WithService.Select(ByConvention)
+              .LifestylePerThread()
+            );
+
+            container.Register(
+             AllTypes
+              .FromAssemblyContaining<AuthenticationService>()
               .Where(t => t.Name.EndsWith("Service"))
               .WithService.Select(ByConvention)
               .LifestylePerThread()
