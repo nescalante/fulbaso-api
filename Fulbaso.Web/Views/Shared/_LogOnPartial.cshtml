@@ -1,5 +1,27 @@
 ﻿@using Fulbaso.UI
 
+<script>
+    var logged = false;
+
+    window.fbAsyncInit = function () {
+        FB.init({ appId: '@Configuration.AppId', channelUrl: '//' + window.location.hostname + '/channel', status: true, cookie: true, xfbml: true, });
+
+        FB.Event.subscribe('auth.statusChange', function (response) {
+            if (response.authResponse) {
+                FB.api('/me', function (me) {
+                    if (logged) {
+                        $("#token").val(response.authResponse.accessToken);
+                        $("#loginform").submit();
+                    }
+                    else {
+                        $.post("@Url.Action("Login", "Home")", { token: response.authResponse.accessToken });
+                    }
+                })
+            }
+        });
+    }
+</script>
+
 @if (Request.IsAuthenticated)
 {
     <script>
@@ -26,31 +48,13 @@
 else
 {
     <script>
-        window.fbAsyncInit = function () {
-            var logged = false;
-
-            FB.init({ appId: '@Configuration.AppId', channelUrl: '//' + window.location.hostname + '/channel', status: true, cookie: true, xfbml: true, });
-
-            FB.Event.subscribe('auth.statusChange', function (response) {
-                if (response.authResponse) {
-                    FB.api('/me', function (me) {
-                        if (logged) {
-                            $("#token").val(response.authResponse.accessToken);
-                            $("#loginform").submit();
-                        }
-                        else {
-                            $.post("@Url.Action("Login", "Home")", { token: response.authResponse.accessToken });
-                        }
-                    })
-                }
-            });
-
+        $(function () {
             // respond to clicks on the login and logout links
             $("#facebooklogin").click(function () {
                 logged = true;
                 FB.login();
             });
-        } 
+        });
     </script>
     
     using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id="loginform", @class = "nav navbar-form pull-right", }))

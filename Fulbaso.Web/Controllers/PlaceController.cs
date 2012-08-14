@@ -63,7 +63,7 @@ namespace Fulbaso.UI.Controllers
                 {
                     Place = place,
                     HasAdmin = _placeService.PlaceHasAdmin(place.Id),
-                    IsFavourite = _favouriteService.IsFavourite(place.Id, UserAuthentication.UserId),
+                    IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(place.Id, UserAuthentication.UserId),
                     NearPlaces = _placeService.GetNearest(place, 10, 3),
                 };
 
@@ -84,7 +84,7 @@ namespace Fulbaso.UI.Controllers
 
             if (model != null)
             {
-                ViewBag.IsFavourite = _favouriteService.IsFavourite(model.Id, UserAuthentication.UserId);
+                ViewBag.IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(model.Id, UserAuthentication.UserId);
                 return View(model);
             }
             else

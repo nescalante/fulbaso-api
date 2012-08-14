@@ -37,6 +37,7 @@ namespace Fulbaso.Common
 
         public void Logout()
         {
+            UserAuthentication.User = null;
             HttpContext.Current.Session.Remove("Places");
             FormsAuthentication.SignOut();
         }
