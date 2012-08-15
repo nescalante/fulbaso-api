@@ -5,8 +5,8 @@ namespace Fulbaso.Contract
 {
     public interface IFloorTypeService
     {
-        EntityDataObject Get(int floorTypeId);
+        FloorType Get(int floorTypeId);
 
-        IEnumerable<EntityDataObject> Get(string name = null);
+        IEnumerable<FloorType> Get(string name = null);
     }
 }

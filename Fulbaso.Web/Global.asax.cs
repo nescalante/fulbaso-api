@@ -31,7 +31,7 @@ namespace Fulbaso.UI
         protected void Application_Start()
         {
             MvcHandler.DisableMvcResponseHeader = true;
-
+            ModelMetadataProviders.Current = new DataAnnotationsModelMetadataProvider();
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);

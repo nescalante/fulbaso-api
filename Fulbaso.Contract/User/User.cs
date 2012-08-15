@@ -3,6 +3,7 @@ using Fulbaso.Helpers;
 
 namespace Fulbaso.Contract
 {
+    [Serializable]
     public class User
     {
         public long Id { get; set; }

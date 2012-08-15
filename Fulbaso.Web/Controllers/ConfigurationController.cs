@@ -19,16 +19,16 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(string id, int court)
+        public ActionResult Index(string place, int court)
         {
-            var place = CoreUtil.ValidatePlace(id);
+            var placeModel = CoreUtil.ValidatePlace(place);
             var courtModel = _courtService.Get(court);
 
-            if (place != null && courtModel != null)
+            if (placeModel != null && courtModel != null)
             {
-                ViewBag.PlacePage = place.Page;
-                ViewBag.Place = place.Description;
-                ViewBag.PlaceId = place.Id;
+                ViewBag.PlacePage = placeModel.Page;
+                ViewBag.Place = placeModel.Description;
+                ViewBag.PlaceId = placeModel.Id;
                 courtModel.Configuration = _courtConfigurationService.GetByCourt(court);
 
                 return View("Index", courtModel);
@@ -38,16 +38,16 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Add(string id, int court)
+        public ActionResult Add(string place, int court)
         {
-            var place = CoreUtil.ValidatePlace(id);
+            var placeModel = CoreUtil.ValidatePlace(place);
             var courtModel = _courtService.Get(court);
 
-            if (place != null)
+            if (placeModel != null)
             {
-                ViewBag.PlacePage = place.Page;
-                ViewBag.Place = place.Description;
-                ViewBag.PlaceId = place.Id;
+                ViewBag.PlacePage = placeModel.Page;
+                ViewBag.Place = placeModel.Description;
+                ViewBag.PlaceId = placeModel.Id;
                 ViewBag.CourtId = court;
                 ViewBag.CourtName = courtModel.Description;
 
@@ -58,28 +58,28 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(CourtConfiguration config, FormCollection collection)
+        public ActionResult Add(CourtConfiguration configModel, FormCollection collection)
         {
-            config.Court = Court.Create<Court>(Convert.ToInt32(collection["courtid"]));
-            config.Days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Where(d => collection[d.ToString()] != null);
+            configModel.Court = Court.Create<Court>(Convert.ToInt32(collection["courtid"]));
+            configModel.Days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Where(d => collection[d.ToString()] != null);
 
-            _courtConfigurationService.Add(config);
+            _courtConfigurationService.Add(configModel);
 
-            return RedirectToAction("Index", new { id = collection["placepage"], court = config.Court.Id });
+            return RedirectToAction("Index", new { place = collection["placepage"], court = configModel.Court.Id });
         }
 
         [HttpGet]
-        public ActionResult Edit(string id, int court, int config)
+        public ActionResult Edit(string place, int court, int config)
         {
-            var place = CoreUtil.ValidatePlace(id);
+            var placeModel = CoreUtil.ValidatePlace(place);
             var courtModel = _courtService.Get(court);
             var courtConfigModel = _courtConfigurationService.Get(config);
 
-            if (place != null && courtModel != null && courtConfigModel != null)
+            if (placeModel != null && courtModel != null && courtConfigModel != null)
             {
-                ViewBag.PlacePage = place.Page;
-                ViewBag.Place = place.Description;
-                ViewBag.PlaceId = place.Id;
+                ViewBag.PlacePage = placeModel.Page;
+                ViewBag.Place = placeModel.Description;
+                ViewBag.PlaceId = placeModel.Id;
                 ViewBag.CourtId = court;
                 courtConfigModel.Court = courtModel;
 
@@ -90,14 +90,14 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(CourtConfiguration config, FormCollection collection)
+        public ActionResult Edit(CourtConfiguration configModel, FormCollection collection)
         {
-            config.Court = Court.Create<Court>(Convert.ToInt32(collection["courtid"]));
-            config.Days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Where(d => collection[d.ToString()] != null);
+            configModel.Court = Court.Create<Court>(Convert.ToInt32(collection["courtid"]));
+            configModel.Days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Where(d => collection[d.ToString()] != null);
 
-            _courtConfigurationService.Update(config);
+            _courtConfigurationService.Update(configModel);
 
-            return RedirectToAction("Index", new { id = collection["placepage"], court = config.Court.Id });
+            return RedirectToAction("Index", new { place = collection["placepage"], court = configModel.Court.Id });
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

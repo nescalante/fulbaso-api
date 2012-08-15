@@ -5,8 +5,8 @@ namespace Fulbaso.Contract
 {
     public interface ICourtTypeService
     {
-        EntityDataObject Get(int courtTypeId);
+        CourtType Get(int courtTypeId);
 
-        IEnumerable<EntityDataObject> Get(string name = null);
+        IEnumerable<CourtType> Get(string name = null);
     }
 }

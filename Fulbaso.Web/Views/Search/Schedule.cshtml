@@ -66,7 +66,7 @@
             <ul>
             @if (init > 1)
             {
-                <li>@Html.ActionLink("«", "Index", new { p = 1, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], })</li>
+                <li>@Html.ActionLink("«", "Schedule", new { p = 1, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"]})</li>
             }
             @foreach (var p in Enumerable.Range(init, pages >= pagesCount ? pagesCount : pages))
             {
@@ -76,12 +76,12 @@
                 }
                 else
                 {
-                    <li>@Html.ActionLink(p.ToString(), "Index", new { p = p, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], })</li>
+                    <li>@Html.ActionLink(p.ToString(), "Schedule", new { p = p, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"] })</li>
                 }
             }
             @if ((init + pagesCount) <= pages)
             {
-                <li>@Html.ActionLink("»", "Index", new { p = pages, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], })</li>
+                <li>@Html.ActionLink("»", "Schedule", new { p = pages, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"] })</li>
             }
             </ul>
         </div>
@@ -103,7 +103,7 @@
         currentPage = 1;
     }
     
-    var pages = (int)Math.Ceiling((decimal)ViewBag.Places / UIConfiguration.ROWS_COUNT);
+    var pages = (int)Math.Ceiling((decimal)ViewBag.Places / Configuration.RowsPerRequest);
     
     // get pages
     var init = (currentPage - (pagesCount / 2)) <= 1 ? 1 : currentPage - (pagesCount / 2);
@@ -140,7 +140,7 @@
         
         <div class="clearAll"></div>
         
-        if (UIConfiguration.ROWS_COUNT == Model.Count())
+        if (Configuration.RowsPerRequest == Model.Count())
         {
             @DisplayPages(pages, init, pagesCount, currentPage, Request.QueryString["q"])
         }

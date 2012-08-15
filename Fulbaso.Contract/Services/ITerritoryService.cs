@@ -5,8 +5,8 @@ namespace Fulbaso.Contract
 {
     public interface ITerritoryService
     {
-        EntityDataObject Get(int territoryId);
+        Territory Get(int territoryId);
 
-        IEnumerable<EntityDataObject> Get(string name = null);
+        IEnumerable<Territory> Get(string name = null);
     }
 }

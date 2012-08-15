@@ -27,14 +27,14 @@
     <p>Los precios tienen un orden de prioridad, la configuración que se encuentre más arriba tendrá más importancia por sobre el resto. Si desea modificar el orden de prioridad arrastre las configuraciones en el orden deseado.</p>
     @if (Model.Configuration.Count() == 0)
     {
-        <p>Comience agregando un precio y su respectiva configuración @Html.ActionLink("haciendo click aquí", "Add", new { court = Model.Id, id = ViewBag.PlacePage }).</p>
+        <p>Comience agregando un precio y su respectiva configuración @Html.ActionLink("haciendo click aquí", "Add", new { court = Model.Id, place = ViewBag.PlacePage }).</p>
     }
 </div>
 
 @if (Model.Configuration.Count() != 0)
 {
     <div style="margin-bottom: 10px;">
-        @Html.ActionLink("Agregar configuración", "Add", new { court = Model.Id, id = ViewBag.PlacePage }, new { @class = "btn" })
+        @Html.ActionLink("Agregar configuración", "Add", new { court = Model.Id, place = ViewBag.PlacePage }, new { @class = "btn" })
     </div>
 }
 
@@ -44,7 +44,7 @@
     {
 	    <li class="well" data-id="@c.Id">
             <a name="delete" class="close">&times;</a>
-            <a name="edit" href="@Url.Action("Edit", new { court = Model.Id, config = c.Id, id = ViewBag.PlacePage })">
+            <a name="edit" href="@Url.Action("Edit", new { court = Model.Id, config = c.Id, place = ViewBag.PlacePage })">
                 <dl>
                     <dt>Vigencia</dt>
                     @if (c.StartHour != null || c.EndHour != null)
@@ -94,13 +94,13 @@
 </div>
 
 <div style="margin-bottom: 10px;">
-    @Html.ActionLink("Volver", "Index", "Court", new { id = ViewBag.PlacePage }, new { @class = "btn" })
+    @Html.ActionLink("Volver", "Index", "Court", new { place = ViewBag.PlacePage }, new { @class = "btn" })
 </div>
 
 <div class="modal" id="dialog-confirm" style="display:none;">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">×</a>
-    <h3>@UIConfiguration.APP_TITLE</h3>
+    <h3>@Configuration.AppTitle</h3>
   </div>
   <div class="modal-body">
     <p>¿Está seguro que desea eliminar el item seleccionado?</p>

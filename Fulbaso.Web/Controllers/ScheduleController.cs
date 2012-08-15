@@ -19,14 +19,14 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(string id, string current)
+        public ActionResult Index(string place, string current)
         {
-            var place = CoreUtil.ValidatePlace(id);
-            if (place == null) throw new UnauthorizedAccessException();
+            var placeModel = CoreUtil.ValidatePlace(place);
+            if (placeModel == null) throw new UnauthorizedAccessException();
 
             DateTime date;
             var time = DateTime.TryParse(current, out date) ? date : DateTime.Today;
-            var model = _placeService.Get(place, time);
+            var model = _placeService.Get(placeModel, time);
 
             ViewBag.Time = time;
 
@@ -37,24 +37,24 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditBook(CourtBook book, FormCollection collection)
+        public ActionResult EditBook(CourtBook bookModel, FormCollection collection)
         {
             var day = Convert.ToDateTime(collection["Day"]);
 
-            book.StartTime = new DateTime(day.Year, day.Month, day.Day, book.StartTime.Hour, book.StartTime.Minute, 0);
-            book.EndTime = new DateTime(day.Year, day.Month, day.Day, book.EndTime.Hour, book.EndTime.Minute, 0);
-            book.User = UserAuthentication.UserId;
+            bookModel.StartTime = new DateTime(day.Year, day.Month, day.Day, bookModel.StartTime.Hour, bookModel.StartTime.Minute, 0);
+            bookModel.EndTime = new DateTime(day.Year, day.Month, day.Day, bookModel.EndTime.Hour, bookModel.EndTime.Minute, 0);
+            bookModel.User = UserAuthentication.UserId;
 
-            if (book.Id == 0)
+            if (bookModel.Id == 0)
             {
-                _courtBookService.Add(book);
+                _courtBookService.Add(bookModel);
             }
             else
             {
-                _courtBookService.Update(book);
+                _courtBookService.Update(bookModel);
             }
 
-            return RedirectToAction("Index", "Schedule", new { id = book.Court.Place.Page, current = day.ToShortDateString(), });
+            return RedirectToAction("Index", "Schedule", new { place = bookModel.Court.Place.Page, current = day.ToShortDateString(), });
         }
 
         [HttpPost]
@@ -62,7 +62,7 @@ namespace Fulbaso.UI.Controllers
         {
             _courtBookService.Delete(deleteId);
 
-            return RedirectToAction("Index", "Schedule", new { id = placepage, current = Convert.ToDateTime(currentday).ToShortDateString(), });
+            return RedirectToAction("Index", "Schedule", new { place = placepage, current = Convert.ToDateTime(currentday).ToShortDateString(), });
         }
     }
 }

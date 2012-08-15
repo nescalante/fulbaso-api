@@ -14,10 +14,10 @@ namespace Fulbaso.Contract
         public int? Players { get; set; }
 
         [Display(Name = "Deporte:")]
-        public EntityDataObject CourtType { get; set; }
+        public CourtType CourtType { get; set; }
 
         [Display(Name = "Tipo de suelo:")]
-        public EntityDataObject FloorType { get; set; }
+        public FloorType FloorType { get; set; }
 
         [Display(Name = "Techada:")]
         public bool IsIndoor { get; set; }

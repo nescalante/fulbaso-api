@@ -24,12 +24,8 @@
     <title>@ViewBag.Title</title>
     @RenderSection("StyleSheets", false)
     <style>
-      @@media (min-width: 980px) {
-        body { padding-top: 140px; padding-bottom: 40px; }
-        .frontnav { display:block; }
-      }
       @@media (max-width: 979px) {
-        body { padding-top: 60px; padding-bottom: 40px; }
+        body { padding-top: 0px !important; }
         .frontnav { display:none; }
         .navbar-fixed-top { margin-left: -20px; margin-right: -20px; }
       }
@@ -46,7 +42,7 @@
     <script src="@Url.Content("~/Scripts/bootstrap.autocomplete.js")" type="text/javascript"></script>
     <script>        (function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1&appId=@Configuration.AppId"; fjs.parentNode.insertBefore(js, fjs); } (document, 'script', 'facebook-jssdk'));</script>
 </head>
-<body data-spy="scroll" data-target=".subnav" data-offset="140" data-twttr-rendered="true" style="padding-left: 10px; padding-right: 10px;">
+<body data-spy="scroll" data-target=".subnav" data-offset="140" data-twttr-rendered="true" style="padding: 140px 10px 40px;">
     <div id="fb-root"></div>
     <div class="navbar navbar-fixed-top">
         <div class="frontnav" style="height: 90px; width: 100%; background: white; padding-left: 60px;">
@@ -72,14 +68,14 @@
                                 <ul class="dropdown-menu">
                                     @foreach (var p in places)
                                     {
-                                        <li>@Html.ActionLink((string)p.Description, "Admin", "Home", new { id = p.Page }, null)</li>
+                                        <li>@Html.ActionLink((string)p.Description, "Admin", "Home", new { place = p.Page }, null)</li>
                                     }
                                 </ul>
                             </li>
                         }
                         else if (places != null && places.Count == 1)
                         {
-                            <li>@Html.ActionLink(places.First().Description, "Admin", "Home", new { id = places.First().Page }, null)</li>
+                            <li>@Html.ActionLink(places.First().Description, "Admin", "Home", new { place = places.First().Page }, null)</li>
                         }
                     </ul>
                     @if (!(ViewContext.CheckRoute("Index", "Home") && Request.QueryString.Count == 0))

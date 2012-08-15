@@ -9,19 +9,19 @@ namespace Fulbaso.EntityFramework.Logic
 {
     public class CourtTypeService : ICourtTypeService
     {
-        public EntityDataObject Get(int courtTypeId)
+        public CourtType Get(int courtTypeId)
         {
             return CourtTypeService.Get(r => r.Id == courtTypeId).SingleOrDefault();
         }
 
-        public IEnumerable<EntityDataObject> Get(string name = null)
+        public IEnumerable<CourtType> Get(string name = null)
         {
             return CourtTypeService.Get(c => string.IsNullOrEmpty(name) || c.Description.Contains(name));
         }
 
-        internal static IEnumerable<EntityDataObject> Get(Expression<Func<CourtTypeEntity, bool>> predicate)
+        internal static IEnumerable<CourtType> Get(Expression<Func<CourtTypeEntity, bool>> predicate)
         {
-            return Repository<CourtTypeEntity>.Get(predicate);
+            return Repository<CourtTypeEntity>.Get<CourtType>(predicate);
         }
     }
 }

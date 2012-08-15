@@ -44,7 +44,7 @@
         <li class="active">
             <a href="#">Información</a>
         </li>
-        <li>@Html.ActionLink("Disponibilidad", "Schedule", new { id = Model.Place.Page })</li>
+        <li>@Html.ActionLink("Disponibilidad", "Schedule", new { place = Model.Place.Page })</li>
     </ul>
 }
 
@@ -171,7 +171,7 @@
                         {
                             first = false;
                         }
-                        <a data-ua="@p.Item1.MapUa.ToString().Replace(',', '.')" data-va="@p.Item1.MapVa.ToString().Replace(',', '.')" data-id="@p.Item1.Id" href="@Url.Action("ItemView", new { id = p.Item1.Page })">@p.Item1.Description @(p.Item2.HasValue ? "(" + p.Item2.Value.ToString("F1") + " km)" : "")</a>
+                        <a data-ua="@p.Item1.MapUa.ToString().Replace(',', '.')" data-va="@p.Item1.MapVa.ToString().Replace(',', '.')" data-id="@p.Item1.Id" href="@Url.Action("ItemView", new { place = p.Item1.Page })">@p.Item1.Description @(p.Item2.HasValue ? "(" + p.Item2.Value.ToString("F1") + " km)" : "")</a>
                     }
                 </div>
             }

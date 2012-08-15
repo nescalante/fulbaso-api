@@ -25,14 +25,14 @@ namespace Fulbaso.UI.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string place)
         {
-            var place = CoreUtil.ValidatePlace(id);
+            var placeModel = CoreUtil.ValidatePlace(place);
 
-            if (place != null)
+            if (placeModel != null)
             {
                 ViewBag.Locations = _locationService.Get().GetOrdered().OrderBy(l => l.Region.Description).Where(l => l.Region.IsActive).GroupBy(l => l.Region.Id).ToList();
-                return View(place);
+                return View(placeModel);
             }
             else
                 return RedirectToAction("Index", "Home");
@@ -40,31 +40,31 @@ namespace Fulbaso.UI.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Edit(Place place, FormCollection collection)
+        public ActionResult Edit(Place placeModel, FormCollection collection)
         {
-            place.Id = Convert.ToInt32(collection["PlaceId"]);
-            place.Services = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null);
+            placeModel.Id = Convert.ToInt32(collection["PlaceId"]);
+            placeModel.Services = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null);
 
-            _placeService.Update(place);
+            _placeService.Update(placeModel);
 
-            return RedirectToAction("Admin", "Home", new { id = place.Page });
+            return RedirectToAction("Admin", "Home", new { place = placeModel.Page });
         }
 
         [HttpGet]
-        public ActionResult ItemView(string id)
+        public ActionResult ItemView(string place)
         {
-            var place = _placeService.Get(id);
+            var placeModel = _placeService.Get(place);
 
-            if (place != null)
+            if (placeModel != null)
             {
-                place.CourtsInfo = _courtService.GetByPlace(place.Id);
+                placeModel.CourtsInfo = _courtService.GetByPlace(placeModel.Id);
 
                 var model = new PlaceModel
                 {
-                    Place = place,
-                    HasAdmin = _placeService.PlaceHasAdmin(place.Id),
-                    IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(place.Id, UserAuthentication.UserId),
-                    NearPlaces = _placeService.GetNearest(place, 10, 3),
+                    Place = placeModel,
+                    HasAdmin = _placeService.PlaceHasAdmin(placeModel.Id),
+                    IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(placeModel.Id, UserAuthentication.UserId),
+                    NearPlaces = _placeService.GetNearest(placeModel, 10, 3),
                 };
 
                 return View("View", model);
@@ -74,11 +74,11 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Schedule(string id, string current)
+        public ActionResult Schedule(string place, string current)
         {
             DateTime date;
             var time = DateTime.TryParse(current, out date) ? date : DateTime.Today;
-            var model = _placeService.Get(id, time);
+            var model = _placeService.Get(place, time);
 
             ViewBag.Time = time;
 

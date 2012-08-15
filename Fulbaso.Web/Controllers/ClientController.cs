@@ -17,17 +17,17 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(string id)
+        public ActionResult Index(string place)
         {
-            var place = CoreUtil.ValidatePlace(id);
+            var placeModel = CoreUtil.ValidatePlace(place);
 
-            if (place != null)
+            if (placeModel != null)
             {
-                ViewBag.PlacePage = id;
-                ViewBag.Place = place.Description;
-                ViewBag.PlaceId = place.Id;
+                ViewBag.PlacePage = place;
+                ViewBag.Place = placeModel.Description;
+                ViewBag.PlaceId = placeModel.Id;
 
-                var model = _clientService.GetByPlace(place.Id);
+                var model = _clientService.GetByPlace(placeModel.Id);
 
                 return View(model);
             }

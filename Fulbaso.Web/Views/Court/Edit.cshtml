@@ -6,7 +6,7 @@
 
 @{
     ViewBag.FormTitle = ViewBag.Place;
-    ViewBag.Title = UIConfiguration.APP_TITLE + " - " + ViewBag.Place;
+    ViewBag.Title = Configuration.AppTitle + " - " + ViewBag.Place;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -77,7 +77,7 @@
         </div>
         <div class="form-actions">
             <button class="btn btn-primary" type="submit">Aceptar</button>
-            @Html.ActionLink("Cancelar", "Index", new { id = ViewBag.PlacePage }, new { @class = "btn", })
+            @Html.ActionLink("Cancelar", "Index", new { place = ViewBag.PlacePage }, new { @class = "btn", })
         </div>
     </fieldset> 
 }

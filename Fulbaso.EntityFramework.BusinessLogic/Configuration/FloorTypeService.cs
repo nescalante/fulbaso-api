@@ -9,19 +9,19 @@ namespace Fulbaso.EntityFramework.Logic
 {
     public class FloorTypeService : IFloorTypeService
     {
-        public EntityDataObject Get(int floorTypeId)
+        public FloorType Get(int floorTypeId)
         {
             return FloorTypeService.Get(r => r.Id == floorTypeId).SingleOrDefault();
         }
 
-        public IEnumerable<EntityDataObject> Get(string name = null)
+        public IEnumerable<FloorType> Get(string name = null)
         {
             return FloorTypeService.Get(c => string.IsNullOrEmpty(name) || c.Description.Contains(name));
         }
 
-        internal static IEnumerable<EntityDataObject> Get(Expression<Func<FloorTypeEntity, bool>> predicate)
+        internal static IEnumerable<FloorType> Get(Expression<Func<FloorTypeEntity, bool>> predicate)
         {
-            return Repository<FloorTypeEntity>.Get(predicate);
+            return Repository<FloorTypeEntity>.Get<FloorType>(predicate);
         }
     }
 }

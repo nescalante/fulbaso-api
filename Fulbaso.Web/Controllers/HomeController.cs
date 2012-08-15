@@ -24,9 +24,9 @@ namespace Fulbaso.UI.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult Admin(string id)
+        public ActionResult Admin(string place)
         {
-            var model = _placeService.Get(id);
+            var model = _placeService.Get(place);
 
             if (model != null)
                 return View(model);

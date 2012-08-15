@@ -20,29 +20,29 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(string id)
+        public ActionResult Index(string place)
         {
-            var place = CoreUtil.ValidatePlace(id);
+            var placeModel = CoreUtil.ValidatePlace(place);
 
-            if (place != null)
+            if (placeModel != null)
             {
-                place.CourtsInfo = _courtService.GetByPlace(place.Id);
-                return View(place);
+                placeModel.CourtsInfo = _courtService.GetByPlace(placeModel.Id);
+                return View(placeModel);
             }
             else
                 return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public ActionResult Add(string id)
+        public ActionResult Add(string place)
         {
-            var place = CoreUtil.ValidatePlace(id);
+            var placeModel = CoreUtil.ValidatePlace(place);
 
-            if (place != null)
+            if (placeModel != null)
             {
-                ViewBag.PlacePage = place.Page;
-                ViewBag.Place = place.Description;
-                ViewBag.PlaceId = place.Id;
+                ViewBag.PlacePage = placeModel.Page;
+                ViewBag.Place = placeModel.Description;
+                ViewBag.PlaceId = placeModel.Id;
                 ViewBag.CourtTypes = _courtTypeService.Get().GetOrdered();
                 ViewBag.FloorTypes = _floorTypeService.Get().GetOrdered();
 
@@ -53,25 +53,25 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Court court, FormCollection collection)
+        public ActionResult Add(Court courtModel, FormCollection collection)
         {
-            court.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));
-            _courtService.Add(court);
+            courtModel.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));
+            _courtService.Add(courtModel);
 
-            return RedirectToAction("Index", new { id = collection["placepage"] });
+            return RedirectToAction("Index", new { place = collection["placepage"] });
         }
 
         [HttpGet]
-        public ActionResult Edit(string id, int court)
+        public ActionResult Edit(string place, int court)
         {
-            var place = CoreUtil.ValidatePlace(id);
+            var placeModel = CoreUtil.ValidatePlace(place);
             var courtModel = _courtService.Get(court);
 
-            if (place != null && courtModel != null)
+            if (placeModel != null && courtModel != null)
             {
-                ViewBag.PlacePage = place.Page;
-                ViewBag.Place = place.Description;
-                ViewBag.PlaceId = place.Id;
+                ViewBag.PlacePage = placeModel.Page;
+                ViewBag.Place = placeModel.Description;
+                ViewBag.PlaceId = placeModel.Id;
                 ViewBag.CourtTypes = _courtTypeService.Get().GetOrdered();
                 ViewBag.FloorTypes = _floorTypeService.Get().GetOrdered();
 
@@ -82,13 +82,13 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Court court, FormCollection collection)
+        public ActionResult Edit(Court courtModel, FormCollection collection)
         {
-            court.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));
+            courtModel.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));
 
-            _courtService.Update(court);
+            _courtService.Update(courtModel);
 
-            return RedirectToAction("Index", new { id = collection["placepage"] });
+            return RedirectToAction("Index", new { place = collection["placepage"] });
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

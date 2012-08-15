@@ -21,7 +21,7 @@
 
 @Html.Partial("PlaceInfo", Model)
 <div style="margin-bottom: 10px;">
-    @Html.ActionLink("Agregar cancha", "Add", new { id = Model.Page }, new { @class = "btn" })
+    @Html.ActionLink("Agregar cancha", "Add", new { place = Model.Page }, new { @class = "btn" })
 </div>
 <div id="grid-contain">
     @if (Model != null && Model.CourtsInfo.Count() > 0)
@@ -65,12 +65,12 @@
     }
 </div>
 <div style="margin-bottom: 10px;">
-    @Html.ActionLink("Volver", "Admin", "Home", new { id = Model.Page }, new { @class = "btn" })
+    @Html.ActionLink("Volver", "Admin", "Home", new { place = Model.Page }, new { @class = "btn" })
 </div>
 <div class="modal" id="dialog-confirm" style="display: none;">
     <div class="modal-header">
         <a class="close" data-dismiss="modal">×</a>
-        <h3>@UIConfiguration.APP_TITLE</h3>
+        <h3>Configuration.AppTitle</h3>
     </div>
     <div class="modal-body">
         <p>¿Está seguro que desea eliminar el item seleccionado?</p>

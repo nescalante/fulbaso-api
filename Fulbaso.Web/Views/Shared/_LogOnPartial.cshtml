@@ -1,6 +1,7 @@
 ﻿@using Fulbaso.UI
 
 <script>
+    var loginclicked = false;
     var logged = false;
 
     window.fbAsyncInit = function () {
@@ -9,12 +10,15 @@
         FB.Event.subscribe('auth.statusChange', function (response) {
             if (response.authResponse) {
                 FB.api('/me', function (me) {
-                    if (logged) {
+                    if (loginclicked) {
                         $("#token").val(response.authResponse.accessToken);
                         $("#loginform").submit();
                     }
                     else {
-                        $.post("@Url.Action("Login", "Home")", { token: response.authResponse.accessToken });
+                        $.post("@Url.Action("Login", "Home")", { token: response.authResponse.accessToken }, function () { 
+                            logged = true; 
+                            $("#token").val(response.authResponse.accessToken);
+                        });
                     }
                 })
             }
@@ -51,7 +55,10 @@ else
         $(function () {
             // respond to clicks on the login and logout links
             $("#facebooklogin").click(function () {
-                logged = true;
+                if (logged) {
+                    $("#loginform").submit();
+                }
+                loginclicked = true;
                 FB.login();
             });
         });

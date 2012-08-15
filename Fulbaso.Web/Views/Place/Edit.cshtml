@@ -125,7 +125,7 @@
         </div>
         <div class="form-actions">
             <button class="btn btn-primary" type="submit">Aceptar</button>
-            @Html.ActionLink("Cancelar", "Admin", "Home", null, new { @class = "btn", })
+            @Html.ActionLink("Cancelar", "Admin", "Home", new { place = Model.Page, }, new { @class = "btn", })
         </div>
     </fieldset>
 }

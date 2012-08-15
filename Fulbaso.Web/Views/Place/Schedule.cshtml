@@ -25,7 +25,7 @@
 }
 
 <ul class="nav nav-tabs">
-    <li>@Html.ActionLink("Información", "ItemView", new { id = Model.Page })</li>
+    <li>@Html.ActionLink("Información", "ItemView", new { place = Model.Page })</li>
     <li class="active"><a href="#">Disponibilidad</a></li>
 </ul>
 
@@ -58,8 +58,8 @@
     @Html.TextBox("current", day.ToShortDateString(), new { style = "width:120px;", })
     <button type="submit" class="btn">Buscar</button>
     <div class="pull-right">
-        <a href="@Url.Action("Schedule", new { id = Model.Page, current = day.AddDays(-1).ToShortDateString() })" class="btn"><i class="icon-arrow-left"></i></a>
-        <a href="@Url.Action("Schedule", new { id = Model.Page, current = day.AddDays(1).ToShortDateString() })" class="btn"><i class="icon-arrow-right"></i></a>
+        <a href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(-1).ToShortDateString() })" class="btn"><i class="icon-arrow-left"></i></a>
+        <a href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(1).ToShortDateString() })" class="btn"><i class="icon-arrow-right"></i></a>
     </div>
 }
 

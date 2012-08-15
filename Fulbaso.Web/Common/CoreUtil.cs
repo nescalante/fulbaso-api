@@ -43,7 +43,7 @@ namespace Fulbaso.UI
             var maxs = configs.Where(c => c.EndHour != null).Select(c => (byte)c.EndHour);
 
             int min = mins.Count() > 0 ? mins.Min() : 0;
-            int max = maxs.Count() > 0 ? maxs.Max() : 23;
+            int max = maxs.Count() > 0 ? maxs.Max() : 24;
 
             return min <= max ? Enumerable.Range(min, max - min).ToArray() : new int[] { };
         }

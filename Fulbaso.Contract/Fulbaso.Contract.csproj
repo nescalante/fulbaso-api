@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Territory.cs" />
+    <Compile Include="Configuration\CourtType.cs" />
+    <Compile Include="Configuration\FloorType.cs" />
     <Compile Include="Court\CourtConfiguration.cs" />
     <Compile Include="Court\CourtBook.cs" />
     <Compile Include="Place\Service.cs" />
