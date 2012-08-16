@@ -125,12 +125,12 @@
                         var price = CoreUtil.GetPrice(k.Configuration, new DateTime(time.Year, time.Month, time.Day, hour, 0, 0));
                         
                         <tr>
-                            <td>@Html.ActionLink(k.FloorType + ", " + (k.IsIndoor ? "techada, " : "") + (k.IsLighted ? "con luz, " : "") + k.Players + " jugadores", "ItemView", "Place", new { id = m.Key.page }, null)</td>
+                            <td>@Html.ActionLink(k.FloorType + ", " + (k.IsIndoor ? "techada, " : "") + (k.IsLighted ? "con luz, " : "") + k.Players + " jugadores", "ItemView", "Place", new { place = m.Key.page }, null)</td>
                             <td>@(price != 0 ? ("$ " + price.ToString("F2") + " / h") : "")</td>
                             <td style="width: 1px;">
                                 <div style="opacity: 1;">
-                                    @Html.ActionImage("ItemView", "Place", new { id = m.Key.page }, null, "Ver detalle", Url.Content("~/img/information.png"), null)
-                                    @Html.ActionImage("Schedule", "Place", new { id = m.Key.page }, null, "Consultar disponibilidad", Url.Content("~/img/calendar.png"), null)
+                                    @Html.ActionImage("ItemView", "Place", new { place = m.Key.page }, null, "Ver detalle", Url.Content("~/img/information.png"), null)
+                                    @Html.ActionImage("Schedule", "Place", new { place = m.Key.page }, null, "Consultar disponibilidad", Url.Content("~/img/calendar.png"), null)
                                 </div>
                             </td>
                         </tr>

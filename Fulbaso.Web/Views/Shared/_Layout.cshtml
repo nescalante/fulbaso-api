@@ -23,13 +23,6 @@
     @RenderSection("Metadata", false)
     <title>@ViewBag.Title</title>
     @RenderSection("StyleSheets", false)
-    <style>
-      @@media (max-width: 979px) {
-        body { padding-top: 0px !important; }
-        .frontnav { display:none; }
-        .navbar-fixed-top { margin-left: -20px; margin-right: -20px; }
-      }
-    </style>
     <link rel="Shortcut Icon" href="@Url.Content("~/img/sport_soccer.png")" />
     <link href="@Url.Content("~/Content/bootstrap/less/bootstrap.less")" rel="Stylesheet" />
     <link href="@Url.Content("~/Content/bootstrap/less/responsive.less")" rel="Stylesheet" />
@@ -106,7 +99,7 @@
                         typeahead.process(cache[term]);
                         return;
                     }
-                    lastReq = $.getJSON('@Url.Action("Find", "Home")', { term: query, }, function (data, status, req) {
+                    lastReq = $.getJSON('@Url.Action("Find", "Home")', { term: query }, function (data, status, req) {
                         cache[term] = data;
                         if (req === lastReq) {
                             typeahead.process(data);

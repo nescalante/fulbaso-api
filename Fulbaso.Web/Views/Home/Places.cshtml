@@ -49,10 +49,20 @@
     <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados @query</p>
 </div>
 
-<div id="places">
-    @Html.Partial("List", Model)
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span8">
+            <div id="places">
+                @Html.Partial("List", Model)
+            </div>
+        </div>
+        <div class="span4">
+            <div class="hidden-phone">
+            sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />
+            </div>
+        </div>
+    </div>
 </div>
-
 <a id="loadmore" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
 
 <script>

@@ -13,4 +13,44 @@
 
 .fb-comments, .fb-comments iframe[style] { width: 100% !important; }
 
-.place-info { margin-bottom: 20px; text-decoration: none !important; border: solid 1px #fff; padding: 10px; }
+.place-info { margin-bottom: 20px; text-decoration: none !important; border: solid 1px #fff; padding: 10px; display: block; background-color: #e5e5ff; }
+.place-info:hover { animation: placeanimation 0.5s; -moz-animation: placeanimation 0.5s; -webkit-animation: placeanimation 0.5s; -o-animation: placeanimation 0.5s; background-color: white; border-color: #999; }
+
+@font-face
+{
+font-family: myFirstFont;
+src: url('Sansation_Bold.ttf'),
+     url('Sansation_Bold.eot'); /* IE9+ */
+font-weight:bold;
+}
+
+@keyframes placeanimation
+{
+	from { background: #e5e5ff; border-color: white; }
+	to { background: white; border-color: #999; }
+}
+
+@-moz-keyframes placeanimation /* Firefox */
+{
+	from { background: #e5e5ff; border-color: white; }
+	to { background: white; border-color: #999; }
+}
+
+@-webkit-keyframes placeanimation /* Safari and Chrome */
+{
+	from { background: #e5e5ff; border-color: white; }
+	to { background: white; border-color: #999; }
+}
+
+@-o-keyframes placeanimation /* Opera */
+{
+	from { background: #e5e5ff; border-color: white; }
+	to { background: white; border-color: #999; }
+}
+
+@media (max-width: 979px) {
+    body { padding-top: 0px !important; }
+    .frontnav { display:none; }
+	.navbar-fixed-top { margin-left: -20px; margin-right: -20px; }
+	#searchtext { width: 160px; }
+}

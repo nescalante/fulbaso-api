@@ -48,8 +48,8 @@ namespace Fulbaso.UI.Controllers
             {
                 var index = new IndexModel
                 {
-                    TopUsedPlaces = _reportService.GetTopVotedPlaces(2),
-                    TopVotedPlaces = _reportService.GetTopUsedPlaces(2),
+                    TopUsedPlaces = _reportService.GetTopVotedPlaces(4),
+                    TopVotedPlaces = _reportService.GetTopUsedPlaces(4),
                     PlacesCount = _reportService.GetPlacesCount(),
                     CourtsCount = _reportService.GetCourtsCount(),
                     OwnedPlaces = _reportService.GetOwnedPlaces(),
@@ -66,7 +66,7 @@ namespace Fulbaso.UI.Controllers
 
                 if (model.Count() == 1)
                 {
-                    return RedirectToAction("ItemView", "Place", new { id = model.First().Page, });
+                    return RedirectToAction("ItemView", "Place", new { place = model.First().Page, });
                 }
 
                 return View("Places", model);

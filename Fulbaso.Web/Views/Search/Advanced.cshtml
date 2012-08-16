@@ -129,7 +129,7 @@
                     typeahead.process(cache[term]);
                     return;
                 }
-                lastReq = $.getJSON('@Url.Action("FindLocation", "Search")', { term: query, }, function (data, status, req) {
+                lastReq = $.getJSON('@Url.Action("FindLocation", "Search")', { term: query }, function (data, status, req) {
                     cache[term] = data;
                     if (req === lastReq) {
                         typeahead.process(data);

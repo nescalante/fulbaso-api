@@ -5,28 +5,39 @@
            
 <div id="fb-root"></div>
 
-<p><span class="badge badge-info">@Model.CourtsCount</span> canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos.</p>
-<p><span class="badge badge-info">@Model.OwnedPlaces</span> complejos siendo administrados.</p>
+<div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+    <h3 style="margin-bottom: 10px;">¿Buscas una cancha para hoy? ¡Encontrala en @Configuration.AppTitle!</h3>
 
-<div>
-    @if (Request.QueryString.Count == 0)
-    {
-        using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
-        {
-        <input id="searchtext" name="searchtext" type="text" autocomplete="off" value="@ViewBag.Query" />
-        <button class="btn" type="submit">
-            Buscar</button>
-        }
-    }
+    <div class="row-fluid">
+        <div class="span8">
+            <p>Existen @Html.ActionLink(Model.CourtsCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos. @Html.ActionLink(Model.OwnedPlaces.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos siendo administrados.</p>
+            <p>Podes encontrar tu cancha haciendo una @Html.ActionLink("búsqueda avanzada", "Advanced", "Search") o buscarla en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*", }, null).</p>
+            <p>Para realizar una búsqueda rápida ingresá a continuación el nombre de algún <b>barrio</b>, <b>ciudad</b>, <b>calle</b>, o bien el nombre de alguna <b>cancha</b> que ya conozcas:</p>
+            <div style="margin-bottom: 20px;">
+                @if (Request.QueryString.Count == 0)
+                {
+                    using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        <input id="searchtext" name="searchtext" class="input-large" type="text" autocomplete="off" value="@ViewBag.Query" />
+                        <button class="btn" type="submit">Buscar</button>
+                    }
+                }
+            </div>
+            <div class="hidden-phone">
+                <h4 style="margin-bottom: 10px;">Canchas mas usadas:</h4>
+                @Html.Partial("List", Model.TopUsedPlaces)
+                <div class="clearAll"></div>
+
+                <h4 style="margin-bottom: 10px;">Canchas mas votadas:</h4>
+                @Html.Partial("List", Model.TopVotedPlaces)
+                <div class="clearAll"></div>
+            </div>
+        </div>
+        <div class="span4">
+            sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />sidebar<br />
+        </div>
+    </div>
 </div>
-
-<p>Canchas mas usadas:</p>
-@Html.Partial("List", Model.TopUsedPlaces)
-<div class="clearAll"></div>
-
-<p>Canchas mas votadas:</p>
-@Html.Partial("List", Model.TopVotedPlaces)
-<div class="clearAll"></div>
 
 @*<div class="span4">
     <div class="fb-like-box" data-href="http://www.facebook.com/platform" data-width="292" data-show-faces="true" data-stream="true" data-header="true"></div>

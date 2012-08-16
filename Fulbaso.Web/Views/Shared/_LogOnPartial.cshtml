@@ -5,24 +5,29 @@
     var logged = false;
 
     window.fbAsyncInit = function () {
-        FB.init({ appId: '@Configuration.AppId', channelUrl: '//' + window.location.hostname + '/channel', status: true, cookie: true, xfbml: true, });
+        FB.init({ appId: '@Configuration.AppId', channelUrl: '//' + window.location.hostname + '/channel', status: true, cookie: true, xfbml: true });
 
-        FB.Event.subscribe('auth.statusChange', function (response) {
-            if (response.authResponse) {
-                FB.api('/me', function (me) {
-                    if (loginclicked) {
-                        $("#token").val(response.authResponse.accessToken);
-                        $("#loginform").submit();
+        @if (!Request.IsAuthenticated)
+        {
+            <text>
+                FB.Event.subscribe('auth.statusChange', function (response) {
+                    if (response.authResponse) {
+                        FB.api('/me', function (me) {
+                            if (loginclicked) {
+                                $("#token").val(response.authResponse.accessToken);
+                                $("#loginform").submit();
+                            }
+                            else {
+                                $.post("@Url.Action("Login", "Home")", { token: response.authResponse.accessToken }, function () { 
+                                    logged = true; 
+                                    $("#token").val(response.authResponse.accessToken);
+                                });
+                            }
+                        })
                     }
-                    else {
-                        $.post("@Url.Action("Login", "Home")", { token: response.authResponse.accessToken }, function () { 
-                            logged = true; 
-                            $("#token").val(response.authResponse.accessToken);
-                        });
-                    }
-                })
-            }
-        });
+                });
+            </text>
+        }
     }
 </script>
 

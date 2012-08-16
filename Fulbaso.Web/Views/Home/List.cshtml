@@ -14,31 +14,12 @@
         {
             @Html.Raw("<div class=\"row\">")
         }
-        <div class="span6">
+        <div class="span4">
             @Html.Partial("Item", Model.ToList()[i])
         </div>
-        if ((i % 2 != 0 && i != 0) || i == Model.Count())
+        if ((i % 2 != 0 && i != 0) || i == Model.Count() - 1)
         {
             @Html.Raw("</div>")
         }
     }
 }
-
-<script>
-    $('.place-info').unbind('hover');
-    $('.place-info').hover(function () { 
-        $(this).animate({
-            borderTopColor: '#999',
-            borderLeftColor: '#999',
-            borderBottomColor: '#999',
-            borderRightColor: '#999'
-        }, 300);
-    }, function () {
-        $(this).animate({
-            borderTopColor: '#fff',
-            borderLeftColor: '#fff',
-            borderBottomColor: '#fff',
-            borderRightColor: '#fff'
-        }, 100);
-    });
-</script>
