@@ -190,6 +190,21 @@ namespace Fulbaso.EntityFramework.Logic
             return place;
         }
 
+        public string ValidatePage(string page)
+        {
+            var place = EntityUtil.Context.Places.Where(r => r.Page.ToLower() == page.ToLower()).Select(p => p.Page).ToList().FirstOrDefault();
+
+            int placeId;
+            bool parsed = int.TryParse(page, out placeId);
+
+            if (string.IsNullOrEmpty(place) && parsed)
+            {
+                place = EntityUtil.Context.Places.Where(r => r.Id == placeId).Select(p => p.Page).ToList().FirstOrDefault();
+            }
+
+            return place;
+        }
+
         public IEnumerable<Tuple<Place, double?>> GetNearest(Place place, int count = 10, double distance = 0)
         {
             var pi = (decimal)Math.PI;

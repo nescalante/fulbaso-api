@@ -68,6 +68,7 @@
       <DependentUpon>Error.resx</DependentUpon>
     </Compile>
     <Compile Include="Facebook\FacebookIdentity.cs" />
+    <Compile Include="Security\PlaceAuthorize.cs" />
     <Compile Include="Security\UserAuthentication.cs" />
     <Compile Include="Facebook\FacebookPrincipal.cs" />
   </ItemGroup>
@@ -88,6 +89,10 @@
     <ProjectReference Include="..\Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.Logic.csproj">
       <Project>{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}</Project>
       <Name>Fulbaso.Facebook.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fulbaso.Helpers\Fulbaso.Helpers.csproj">
+      <Project>{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}</Project>
+      <Name>Fulbaso.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -209,15 +209,24 @@
 {
     <script>
         $(function () {
+            function mark(map, title, lat, lng, icon) {
+                if (icon) {
+                    new google.maps.Marker({ map: map, title: title, icon: new google.maps.MarkerImage(icon), position: new google.maps.LatLng(lat, lng) });
+                }
+                else {
+                    new google.maps.Marker({ map: map, title: title, position: new google.maps.LatLng(lat, lng) });
+                }
+            }
+
             var latlng = new google.maps.LatLng('@Model.Place.MapUa.ToString().Replace(',', '.')', '@Model.Place.MapVa.ToString().Replace(',', '.')');
             var myOptions = { zoom: 15, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP }
             var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
             map.setCenter(latlng);
-            new google.maps.Marker({ map: map, title: '@Html.Raw(Model.Place.Description)', position: latlng });
+            mark(map, '@Html.Raw(Model.Place.Description)', '@Model.Place.MapUa.ToString().Replace(',', '.')', '@Model.Place.MapVa.ToString().Replace(',', '.')');
             @foreach (var p in Model.NearPlaces)
             {
                 <text>
-                    new google.maps.Marker({ map: map, title: '@Html.Raw(p.Item1.Description)', icon: new google.maps.MarkerImage('@Url.Content("~")img/sport_soccer.png'), position: new google.maps.LatLng('@p.Item1.MapUa.ToString().Replace(',', '.')', '@p.Item1.MapVa.ToString().Replace(',', '.')') });
+                    mark(map, '@Html.Raw(p.Item1.Description)', '@p.Item1.MapUa.ToString().Replace(',', '.')', '@p.Item1.MapVa.ToString().Replace(',', '.')', '@Url.Content("~")img/sport_soccer.png');
                 </text>
             }
 

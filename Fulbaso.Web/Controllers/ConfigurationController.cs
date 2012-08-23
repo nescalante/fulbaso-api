@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Fulbaso.Common;
+using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 
 namespace Fulbaso.UI.Controllers
@@ -19,6 +20,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        [PlaceAuthorize]
         public ActionResult Index(string place, int court)
         {
             var placeModel = CoreUtil.ValidatePlace(place);
@@ -38,6 +40,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        [PlaceAuthorize]
         public ActionResult Add(string place, int court)
         {
             var placeModel = CoreUtil.ValidatePlace(place);
@@ -69,6 +72,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        [PlaceAuthorize]
         public ActionResult Edit(string place, int court, int config)
         {
             var placeModel = CoreUtil.ValidatePlace(place);
@@ -100,7 +104,7 @@ namespace Fulbaso.UI.Controllers
             return RedirectToAction("Index", new { place = collection["placepage"], court = configModel.Court.Id });
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public void Delete(int id)
         {
             if (!User.GetPlaces().Any(up => up.Id == _courtConfigurationService.GetPlaceId(id)))
@@ -111,7 +115,7 @@ namespace Fulbaso.UI.Controllers
             _courtConfigurationService.Delete(id);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public void ChangeOrder(string ids)
         {
             //validar

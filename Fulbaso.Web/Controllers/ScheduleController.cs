@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
-using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Common;
+using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 
 namespace Fulbaso.UI.Controllers
@@ -19,14 +19,12 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        [PlaceAuthorize]
         public ActionResult Index(string place, string current)
         {
-            var placeModel = CoreUtil.ValidatePlace(place);
-            if (placeModel == null) throw new UnauthorizedAccessException();
-
             DateTime date;
             var time = DateTime.TryParse(current, out date) ? date : DateTime.Today;
-            var model = _placeService.Get(placeModel, time);
+            var model = _placeService.Get(place, time);
 
             ViewBag.Time = time;
 

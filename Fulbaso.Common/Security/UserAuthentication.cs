@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Security;
 using Fulbaso.Contract;
 
-namespace Fulbaso.Common
+namespace Fulbaso.Common.Security
 {
     public class UserAuthentication
     {

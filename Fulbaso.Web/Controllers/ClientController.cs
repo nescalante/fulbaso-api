@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Fulbaso.Common;
+using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 
 namespace Fulbaso.UI.Controllers
@@ -17,6 +18,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        [PlaceAuthorize]
         public ActionResult Index(string place)
         {
             var placeModel = CoreUtil.ValidatePlace(place);
@@ -35,7 +37,7 @@ namespace Fulbaso.UI.Controllers
                 return View("Index", "Home");
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public void Delete(int id)
         {
             if (!User.GetPlaces().Any(up => up.Id == _clientService.GetPlaceId(id)))
@@ -46,10 +48,10 @@ namespace Fulbaso.UI.Controllers
             _clientService.Delete(id);
         }
 
-        [AcceptVerbs(HttpVerbs.Get)]
+        [HttpGet]
         public JsonResult Find(string term, int place)
         {
-            var lista = _clientService.GetForAutocomplete(place, term, 10)
+            var list = _clientService.GetForAutocomplete(place, term, 10)
                 .Select(p => new
                 {
                     label = p.Description + (string.IsNullOrEmpty(p.Phone) ? string.Empty : (" (" + p.Phone + ")")),
@@ -59,7 +61,7 @@ namespace Fulbaso.UI.Controllers
                     phone = p.Phone,
                 });
 
-            return Json(lista, JsonRequestBehavior.AllowGet);
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
     }
 }

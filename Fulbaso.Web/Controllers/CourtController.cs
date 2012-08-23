@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Fulbaso.Common;
 using Fulbaso.Contract;
+using Fulbaso.Common.Security;
 
 namespace Fulbaso.UI.Controllers
 {
@@ -20,6 +21,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        [PlaceAuthorize]
         public ActionResult Index(string place)
         {
             var placeModel = CoreUtil.ValidatePlace(place);
@@ -34,6 +36,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        [PlaceAuthorize]
         public ActionResult Add(string place)
         {
             var placeModel = CoreUtil.ValidatePlace(place);
@@ -53,6 +56,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpPost]
+        [PlaceAuthorize]
         public ActionResult Add(Court courtModel, FormCollection collection)
         {
             courtModel.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));
@@ -62,6 +66,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
+        [PlaceAuthorize]
         public ActionResult Edit(string place, int court)
         {
             var placeModel = CoreUtil.ValidatePlace(place);

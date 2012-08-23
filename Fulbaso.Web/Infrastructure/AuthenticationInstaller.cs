@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Castle.MicroKernel.Registration;
+﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Fulbaso.Common.Security;
 using Fulbaso.Facebook.Logic;
-using Fulbaso.Common;
 
 namespace Fulbaso.UI
 {

@@ -268,6 +268,7 @@
     <Content Include="Global.asax" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
+    <Content Include="img\whitey.png" />
     <Content Include="README.jQuery.vsdoc.txt" />
     <Content Include="Scripts\bootstrap.autocomplete.js" />
     <Content Include="Scripts\bootstrap.js" />

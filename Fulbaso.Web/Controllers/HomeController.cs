@@ -6,6 +6,7 @@ using Fulbaso.Common;
 using Fulbaso.Contract;
 using Fulbaso.UI.Models;
 using System;
+using Fulbaso.Common.Security;
 
 namespace Fulbaso.UI.Controllers
 {
@@ -23,15 +24,12 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [PlaceAuthorize]
         public ActionResult Admin(string place)
         {
             var model = _placeService.Get(place);
 
-            if (model != null)
-                return View(model);
-            else
-                return RedirectToAction("Index", "Home");
+            return View(model);
         }
 
         [HttpGet]

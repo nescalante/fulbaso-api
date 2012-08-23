@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Common;
+using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 using Fulbaso.UI.Models;
 
@@ -24,7 +24,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [PlaceAuthorize]
         public ActionResult Edit(string place)
         {
             var placeModel = CoreUtil.ValidatePlace(place);
@@ -39,7 +39,7 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [PlaceAuthorize]
         public ActionResult Edit(Place placeModel, FormCollection collection)
         {
             placeModel.Id = Convert.ToInt32(collection["PlaceId"]);
@@ -64,7 +64,7 @@ namespace Fulbaso.UI.Controllers
                     Place = placeModel,
                     HasAdmin = _placeService.PlaceHasAdmin(placeModel.Id),
                     IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(placeModel.Id, UserAuthentication.UserId),
-                    NearPlaces = _placeService.GetNearest(placeModel, 10, 3),
+                    NearPlaces = _placeService.GetNearest(placeModel, 10),
                 };
 
                 return View("View", model);

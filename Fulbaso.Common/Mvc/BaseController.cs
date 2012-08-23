@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Fulbaso.Common.Security;
 
 namespace Fulbaso.Common
 {

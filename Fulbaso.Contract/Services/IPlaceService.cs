@@ -17,6 +17,13 @@ namespace Fulbaso.Contract
 
         Place Get(string page, DateTime day);
 
+        /// <summary>
+        /// Get page name from an id or page name
+        /// </summary>
+        /// <param name="page">page name</param>
+        /// <returns>page name from database</returns>
+        string ValidatePage(string page);
+
         IEnumerable<Place> GetByUser(long userId);
 
         IEnumerable<string> GetForAutocomplete(string prefixText, int count);
