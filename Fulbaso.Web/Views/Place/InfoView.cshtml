@@ -1,0 +1,36 @@
+﻿@using Fulbaso.Contract
+@using Fulbaso.UI
+
+@{
+    Layout = null;
+}
+
+@model Place
+
+@{
+    var address = CoreUtil.GetAddress(Model.Address, Model.Location);
+    var text = new[] { 
+        new { Class = "ui-info address", Text = address, },
+        new { Class = "ui-info phone", Text = Model.Phone, },
+        new { Class = "ui-info courts", Text = Model.Courts.ToString() + " cancha" + (Model.Courts > 1 ? "s" : ""), }, 
+    };
+}
+
+<div>
+    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h3>@Model.Description</h3></a>
+    <ul style="margin:0;padding:0;" data-id="@Model.Id">
+    @foreach (var t in text.Where(c => !string.IsNullOrEmpty(c.Text)))
+    {
+        <li class="@t.Class">@t.Text</li>
+    }
+    @if (Model.Services != null && Model.Services.Count() > 0)
+    {
+        <li class="ui-info tags">
+        @foreach (var s in Model.Services)
+        {
+            <span class="label label-info">@s.GetDescription()</span>
+        }
+        </li>
+    }
+    </ul>
+</div>

@@ -207,22 +207,53 @@ namespace Fulbaso.EntityFramework.Logic
 
         public IEnumerable<Tuple<Place, double?>> GetNearest(Place place, int count = 10, double distance = 0)
         {
+            return GetNearest(place.MapUa, place.MapVa, place.Id, count, distance);
+        }
+
+        public IEnumerable<Tuple<Place, double?>> GetNearest(string place, int count = 10, double distance = 0)
+        {
+            var page = ValidatePage(place);
+
+            if (string.IsNullOrEmpty(page)) return new List<Tuple<Place, double?>>();
+
+            var entity = EntityUtil.Context.Places.Where(i => i.Page == page).ToList().First();
+
+            return GetNearest(entity.MapUa, entity.MapVa, entity.Id, count, distance);
+        }
+
+        public IEnumerable<Tuple<Place, double?>> GetNearest(decimal? lat, decimal? lng, int id, int count = 10, double distance = 0)
+        {
             var pi = (decimal)Math.PI;
 
-            if (place.MapVa.HasValue && place.MapUa.HasValue)
+            if (lat.HasValue && lng.HasValue)
             {
-                var near = from p in EntityUtil.Context.Places.Where(i => i.MapUa != null && i.MapVa != null && i.Id != place.Id)
+                var near = from p in EntityUtil.Context.Places.Where(i => i.MapUa != null && i.MapVa != null && i.Id != id)
                            let la1 = (decimal)p.MapUa
                            let lo1 = (decimal)p.MapVa
-                           let la2 = (decimal)place.MapUa
-                           let lo2 = (decimal)place.MapVa
+                           let la2 = (decimal)lat
+                           let lo2 = (decimal)lng
                            let dist = (SqlFunctions.Acos(SqlFunctions.Sin(la1 * pi / 180M) * SqlFunctions.Sin(la2 * pi / 180M) + SqlFunctions.Cos(la1 * pi / 180M) * SqlFunctions.Cos(la2 * pi / 180M) * SqlFunctions.Cos((lo1 - lo2) * pi / 180M)) / Math.PI * 180) * 60.0 * 1.1515 * 1.609344
                            orderby dist
-                           select new { Place = new Place { Id = p.Id, Description = p.Name, Page = p.Page, MapUa = p.MapUa, MapVa = p.MapVa, }, Distance = dist };
+                           select new { 
+                               Place = new Place 
+                               { 
+                                   Id = p.Id, 
+                                   Description = p.Name, 
+                                   Page = p.Page,
+                                   Address = p.Address,
+                                   Phone = p.Phone,
+                                   Location = new Location { Description = p.Location.Description, Region = new Region { Description = p.Location.Region.Description }, },
+                                   Courts = p.Courts.Count(),
+                                   MapUa = p.MapUa, 
+                                   MapVa = p.MapVa, 
+                               }, 
+                               Distance = dist 
+                           };
 
                 if (distance != 0) near = near.Where(p => p.Distance < distance);
+                if (count != 0) near = near.Take(count);
 
-                return near.Take(count).ToList().Select(p => new Tuple<Place, double?>(p.Place, p.Distance)).ToList();
+                return near.ToList().Select(p => new Tuple<Place, double?>(p.Place, p.Distance)).ToList();
             }
 
             return new List<Tuple<Place, double?>>();

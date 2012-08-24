@@ -5,6 +5,7 @@ using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 using Fulbaso.UI.Models;
+using System.Collections.Generic;
 
 namespace Fulbaso.UI.Controllers
 {
@@ -71,6 +72,24 @@ namespace Fulbaso.UI.Controllers
             }
             else
                 return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult GetNearest(string place)
+        {
+            return Json(_placeService.GetNearest(place, 20), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetNearestLayout(string place)
+        {
+            return View("NearPlaces", _placeService.GetNearest(place, 5));
+        }
+
+        [HttpGet]
+        public ActionResult InfoView(Place placeModel)
+        {
+            return View(placeModel);
         }
 
         [HttpGet]

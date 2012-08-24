@@ -155,27 +155,8 @@
         }
     </div>
     <div class="span4">
-        <div class="ui-result ui-widget-content" id="map_canvas" style="min-height: 300px; height: 100%; width:100%; "></div>
-            @if (Model.NearPlaces != null && Model.NearPlaces.Any())
-            {
-                var first = true;
-                <h4 style="margin-top: 10px; display:block;">Complejos cercanos</h4>
-                <div id="placerefs">
-                    @foreach (var p in Model.NearPlaces.Take(5))
-                    {
-                        if (!first)
-                        {
-                            <span>, </span>
-                        }
-                        else
-                        {
-                            first = false;
-                        }
-                        <a data-ua="@p.Item1.MapUa.ToString().Replace(',', '.')" data-va="@p.Item1.MapVa.ToString().Replace(',', '.')" data-id="@p.Item1.Id" href="@Url.Action("ItemView", new { place = p.Item1.Page })">@p.Item1.Description @(p.Item2.HasValue ? "(" + p.Item2.Value.ToString("F1") + " km)" : "")</a>
-                    }
-                </div>
-            }
-        </div>
+        <div id="map_canvas" style="min-height: 350px;"></div>
+
     </div>
     <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
     <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
@@ -185,21 +166,11 @@
         $("#favourite").click(function () {
             if ($(this).hasClass("active")) {
                 $(this).removeClass("active");
-                $.ajax({
-                    url: '@Url.Action("DeleteFavourite", "Place")',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: { favourite: @Model.Place.Id },
-                });                
+                $.post("@Url.Action("DeleteFavourite", "Place")", { favourite: @Model.Place.Id });
             }
             else {
                 $(this).addClass("active");
-                $.ajax({
-                    url: '@Url.Action("AddFavourite", "Place")',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: { favourite: @Model.Place.Id },
-                });     
+                $.post("@Url.Action("AddFavourite", "Place")", { favourite: @Model.Place.Id });
             }
         });
     });
@@ -209,31 +180,9 @@
 {
     <script>
         $(function () {
-            function mark(map, title, lat, lng, icon) {
-                if (icon) {
-                    new google.maps.Marker({ map: map, title: title, icon: new google.maps.MarkerImage(icon), position: new google.maps.LatLng(lat, lng) });
-                }
-                else {
-                    new google.maps.Marker({ map: map, title: title, position: new google.maps.LatLng(lat, lng) });
-                }
-            }
-
-            var latlng = new google.maps.LatLng('@Model.Place.MapUa.ToString().Replace(',', '.')', '@Model.Place.MapVa.ToString().Replace(',', '.')');
-            var myOptions = { zoom: 15, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP }
-            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-            map.setCenter(latlng);
-            mark(map, '@Html.Raw(Model.Place.Description)', '@Model.Place.MapUa.ToString().Replace(',', '.')', '@Model.Place.MapVa.ToString().Replace(',', '.')');
-            @foreach (var p in Model.NearPlaces)
-            {
-                <text>
-                    mark(map, '@Html.Raw(p.Item1.Description)', '@p.Item1.MapUa.ToString().Replace(',', '.')', '@p.Item1.MapVa.ToString().Replace(',', '.')', '@Url.Content("~")img/sport_soccer.png');
-                </text>
-            }
-
-            $("#placerefs a").hover(function() {
-                map.setCenter(new google.maps.LatLng($(this).data("ua"), $(this).data("va")));
-                map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-            });
+            f.map.initialize("map_canvas", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')", "@Url.Action("InfoView", "Place")");
+            f.map.mark("@Html.Raw(Model.Place.Description)", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')");
+            f.map.markFrom("@Url.Action("GetNearest", "Place", new { place = @Model.Place.Page })", "@Url.Content("~")img/sport_soccer.png", "@Url.Action("GetNearestLayout", "Place", new { place = Model.Place.Page })");
         });
     </script>
 }

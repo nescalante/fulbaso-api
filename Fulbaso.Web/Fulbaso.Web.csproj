@@ -273,6 +273,7 @@
     <Content Include="Scripts\bootstrap.autocomplete.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\f.js" />
     <Content Include="Scripts\jquery-1.7.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-1.7.2.min.js" />
@@ -352,6 +353,8 @@
     <Content Include="Content\bootstrap\less\variables.less" />
     <Content Include="Content\bootstrap\less\wells.less" />
     <Content Include="Content\bootstrap\less\site.less" />
+    <Content Include="Views\Place\NearPlaces.cshtml" />
+    <Content Include="Views\Place\InfoView.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
