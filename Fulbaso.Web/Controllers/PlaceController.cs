@@ -65,7 +65,6 @@ namespace Fulbaso.UI.Controllers
                     Place = placeModel,
                     HasAdmin = _placeService.PlaceHasAdmin(placeModel.Id),
                     IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(placeModel.Id, UserAuthentication.UserId),
-                    NearPlaces = _placeService.GetNearest(placeModel, 10),
                 };
 
                 return View("View", model);
