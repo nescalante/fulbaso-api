@@ -15,6 +15,16 @@ var f = f || {
 
             return map;
         },
+        openWindow: function (infowindow, marker) {
+            infowindow.open(map, marker);
+            
+            if (map.lastWindow) {
+                console.log("closed");
+                map.lastWindow.close();
+            }
+
+            map.lastWindow = infowindow;
+        },
         mark: function (title, lat, lng, icon, place) {
             var marker;
 
@@ -34,15 +44,15 @@ var f = f || {
                     });
 
                     google.maps.event.addListener(marker, 'click', function () {
-                        infowindow.open(map, marker);
+                        f.map.openWindow(infowindow, marker);
                     });
 
                     if (place) {
                         container.find(".mapitem[data-id=" + place.Id + "]").hover(function () {
                             f.map.setCenter($(this).data("ua"), $(this).data("va"));
-                            infowindow.open(map, marker);
+                            f.map.openWindow(infowindow, marker);
                             return false;
-                        }, function () { infowindow.close(map, marker); })
+                        }, function () { infowindow.close(); })
                     }
                 });
             }
