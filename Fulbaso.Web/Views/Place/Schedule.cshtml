@@ -47,7 +47,7 @@
 
 @helper DisplayBook(CourtBook book)
 {
-    var type = !(book.ReserveRequired && (book.Reserve == null || book.Reserve == 0)) || !book.ReserveRequired || book.Paid != 0 ? "selected" : "reserved";
+    var type = !(book.ReserveRequired && (book.Reserve == null || book.Reserve == 0)) || !book.ReserveRequired || (book.Paid != 0 && book.Paid.HasValue) ? "selected" : "reserved";
     <td class="@type" rowspan="@((book.EndTime - book.StartTime).TotalMinutes / 30)">
         <span class="muted">@(type == "reserved" ? "Reservada" : "Ocupada")</span>
     </td>
