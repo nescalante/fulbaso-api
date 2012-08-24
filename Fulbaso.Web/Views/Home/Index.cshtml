@@ -2,6 +2,14 @@
 @using Fulbaso.UI.Models
 
 @model IndexModel
+
+@section StyleSheets
+{
+    <style>
+        .fb_ltr, .fb-comments, .fb-comments iframe[style] { width: 100% !important; }
+        .fb-like-box > span, #fbcomments, .fb_iframe_widget, .fb_iframe_widget[style], .fb_iframe_widget iframe[style], #fbcomments iframe[style] { width: 100% !important; }
+    </style>
+}
            
 <div id="fb-root"></div>
 

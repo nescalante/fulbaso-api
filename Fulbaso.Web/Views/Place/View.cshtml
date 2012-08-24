@@ -32,11 +32,10 @@
 @section StyleSheets
 {
     <style>
-        .fb-comments, .fb-comments iframe[style] { width: 100% !important; }
-        #fbcomments, .fb_iframe_widget, .fb_iframe_widget[style], .fb_iframe_widget iframe[style], #fbcomments iframe[style] { width: 100% !important; }
+        .fb_ltr, .fb-comments, .fb-comments iframe[style] { width: 100px !important; }
+        .fb-comments > span, #fbcomments, .fb_iframe_widget, .fb_iframe_widget[style], .fb_iframe_widget iframe[style], #fbcomments iframe[style] { width: 100% !important; }
     </style>
 }
-
 
 @if (Model.HasAdmin)
 {
@@ -157,8 +156,10 @@
     <div class="span4">
         <div id="map_canvas" style="min-height: 350px;"></div>
     </div>
-    <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
-    <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
+    <div class="span8" style="margin:0px;">
+        <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
+        <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
+    </div>
 </div>
 <script>
     $(function () {
