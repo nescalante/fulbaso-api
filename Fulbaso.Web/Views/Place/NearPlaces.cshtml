@@ -9,7 +9,7 @@
 @if (Model != null && Model.Any())
 {
     var first = true;
-    <h4 style="margin-top: 10px; display:block;">Complejos cercanos</h4>
+    <h4 id="nearheader" style="margin-top: 10px; display:block;">Complejos cercanos (distancia desde @ViewBag.Description)</h4>
     <div id="placerefs">
         @foreach (var p in Model)
         {

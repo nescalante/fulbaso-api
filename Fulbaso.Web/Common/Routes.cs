@@ -28,6 +28,8 @@ namespace Fulbaso.UI
             routes.MapRoute("PlaceCalendarRoute", "p/{place}/agenda", new { controller = "Place", action = "Schedule" });
             routes.MapRoute("PlaceGetNearest", "p/{place}/cercanas", new { controller = "Place", action = "GetNearest", });
             routes.MapRoute("PlaceGetNearestLayout", "p/{place}/distancias", new { controller = "Place", action = "GetNearestLayout", });
+            routes.MapRoute("PlaceInfoViewRoute", "infoview", new { controller = "Place", action = "InfoView", });
+            routes.MapRoute("PlaceGetNearestFromLocationRoute", "cercanas", new { controller = "Place", action = "GetNearestFromLocation", });
             routes.MapRoute("PlaceRoute", "p/{place}", new { controller = "Place", action = "ItemView", });
             routes.MapRoute("PlaceSearchRoute", "buscar", new { controller = "Home", action = "Find", });
 

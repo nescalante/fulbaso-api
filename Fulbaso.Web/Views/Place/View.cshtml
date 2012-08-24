@@ -156,7 +156,6 @@
     </div>
     <div class="span4">
         <div id="map_canvas" style="min-height: 350px;"></div>
-
     </div>
     <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
     <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
@@ -182,7 +181,10 @@
         $(function () {
             f.map.initialize("map_canvas", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')", "@Url.Action("InfoView", "Place")");
             f.map.mark("@Html.Raw(Model.Place.Description)", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')");
-            f.map.markFrom("@Url.Action("GetNearest", "Place", new { place = @Model.Place.Page })", "@Url.Content("~")img/sport_soccer.png", "@Url.Action("GetNearestLayout", "Place", new { place = Model.Place.Page })");
+            f.map.markFrom("@Url.Action("GetNearest", "Place", new { place = @Model.Place.Page })", "@Url.Content("~")img/sport_soccer.png", "@Url.Action("GetNearestLayout", "Place", new { place = Model.Place.Page, description = Model.Place.Description, })");
+            f.location.initialize("map_canvas", "@Url.Action("InfoView", "Place")", function (position) {
+                f.map.mark("¡Estás acá! (en un radio de " + position.coords.accuracy + " metros)", position.coords.latitude, position.coords.longitude, "@Url.Content("~")img/user.png");
+            });
         });
     </script>
 }

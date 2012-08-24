@@ -38,7 +38,7 @@ namespace Fulbaso.Contract
 
         IEnumerable<Tuple<Place, double?>> GetNearest(string place, int count = 10, double distance = 0);
 
-        IEnumerable<Tuple<Place, double?>> GetNearest(decimal? lat, decimal? lng, int id, int count = 10, double distance = 0);
+        IEnumerable<Tuple<Place, double?>> GetNearest(decimal? lat, decimal? lng, int count = 10, double distance = 0);
 
         bool PlaceHasAdmin(int placeId);
 

@@ -207,7 +207,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         public IEnumerable<Tuple<Place, double?>> GetNearest(Place place, int count = 10, double distance = 0)
         {
-            return GetNearest(place.MapUa, place.MapVa, place.Id, count, distance);
+            return GetNearest(place.MapUa, place.MapVa, count, distance);
         }
 
         public IEnumerable<Tuple<Place, double?>> GetNearest(string place, int count = 10, double distance = 0)
@@ -218,16 +218,16 @@ namespace Fulbaso.EntityFramework.Logic
 
             var entity = EntityUtil.Context.Places.Where(i => i.Page == page).ToList().First();
 
-            return GetNearest(entity.MapUa, entity.MapVa, entity.Id, count, distance);
+            return GetNearest(entity.MapUa, entity.MapVa, count, distance);
         }
 
-        public IEnumerable<Tuple<Place, double?>> GetNearest(decimal? lat, decimal? lng, int id, int count = 10, double distance = 0)
+        public IEnumerable<Tuple<Place, double?>> GetNearest(decimal? lat, decimal? lng, int count = 10, double distance = 0)
         {
             var pi = (decimal)Math.PI;
 
             if (lat.HasValue && lng.HasValue)
             {
-                var near = from p in EntityUtil.Context.Places.Where(i => i.MapUa != null && i.MapVa != null && i.Id != id)
+                var near = from p in EntityUtil.Context.Places.Where(i => i.MapUa != null && i.MapVa != null && i.MapUa != lat && i.MapVa != lng)
                            let la1 = (decimal)p.MapUa
                            let lo1 = (decimal)p.MapVa
                            let la2 = (decimal)lat

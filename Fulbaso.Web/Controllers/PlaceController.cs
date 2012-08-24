@@ -80,9 +80,16 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetNearestLayout(string place)
+        public ActionResult GetNearestLayout(string place, string description)
         {
+            ViewBag.Description = description;
             return View("NearPlaces", _placeService.GetNearest(place, 5));
+        }
+
+        [HttpGet]
+        public ActionResult GetNearestFromLocation(decimal lat, decimal lng)
+        {
+            return Json(_placeService.GetNearest(lat, lng, 30), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

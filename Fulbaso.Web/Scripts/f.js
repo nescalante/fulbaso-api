@@ -3,12 +3,15 @@
 var f = f || {
     map: {
         initialize: function (id, lat, lng, infoservice) {
-            var latlng = new google.maps.LatLng(lat, lng);
-            var options = { zoom: 15, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP }
-            map = new google.maps.Map(document.getElementById(id), options);
+            if (!map) {
+                var latlng = new google.maps.LatLng(lat, lng);
+                var options = { zoom: 15, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP }
+                map = new google.maps.Map(document.getElementById(id), options);
+                map.setCenter(latlng);
+            }
+
             map.id = id;
             map.infoservice = infoservice;
-            map.setCenter(latlng);
 
             return map;
         },
@@ -60,6 +63,22 @@ var f = f || {
         },
         setCenter: function (lat, lng) {
             map.setCenter(new google.maps.LatLng(lat, lng));
+        }
+    },
+    location: {
+        initialize: function (id, infoservice, successfunction) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success);
+            }
+
+            function success(position) {
+                f.map.initialize(id, position.coords.latitude, position.coords.longitude, infoservice);
+                $("#" + id).fadeIn();
+
+                if (successfunction) {
+                    successfunction(position);
+                }
+            }
         }
     }
 };
