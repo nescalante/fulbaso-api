@@ -85,6 +85,11 @@ namespace Fulbaso.EntityFramework.Logic
             return AutocompleteService.GetForAutocomplete(prefixText, count);
         }
 
+        public IEnumerable<Tuple<string, int>> GetTags()
+        {
+            return AutocompleteService.GetTags();
+        }
+
         public IEnumerable<Place> GetByUser(long userId)
         {
             var query = EntityUtil.Context.Users.Where(u => u.Id == userId)

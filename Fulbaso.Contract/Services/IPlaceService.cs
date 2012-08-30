@@ -28,6 +28,8 @@ namespace Fulbaso.Contract
 
         IEnumerable<string> GetForAutocomplete(string prefixText, int count);
 
+        IEnumerable<Tuple<string, int>> GetTags();
+
         IEnumerable<Place> GetList(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int init, int rows, out int count);
 
         IEnumerable<Place> GetList(string name);

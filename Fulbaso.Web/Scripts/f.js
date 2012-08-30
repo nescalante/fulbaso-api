@@ -17,8 +17,8 @@ var f = f || {
         },
         openWindow: function (infowindow, marker) {
             infowindow.open(map, marker);
-            
-            if (map.lastWindow) {
+
+            if (map.lastWindow && map.lastWindow != infowindow) {
                 console.log("closed");
                 map.lastWindow.close();
             }
@@ -45,6 +45,11 @@ var f = f || {
 
                     google.maps.event.addListener(marker, 'click', function () {
                         f.map.openWindow(infowindow, marker);
+                    });
+
+                    google.maps.event.addListener(map, 'click', function () {
+                        infowindow.close();
+                        map.lastWindow = undefined;
                     });
 
                     if (place) {

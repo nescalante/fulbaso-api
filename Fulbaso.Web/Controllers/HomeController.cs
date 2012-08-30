@@ -60,12 +60,13 @@ namespace Fulbaso.UI.Controllers
                 int count;
                 var model = GetPlacesList(0, q, j, s, l, ind, lig, out count);
 
-                ViewBag.Places = count;
-
                 if (model.Count() == 1)
                 {
                     return RedirectToAction("ItemView", "Place", new { place = model.First().Page, });
                 }
+
+                ViewBag.Places = count;
+                ViewBag.Tags = _placeService.GetTags();
 
                 return View("Places", model);
             }

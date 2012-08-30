@@ -11,12 +11,10 @@
     </style>
 }
            
-<div id="fb-root"></div>
-
 <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
     <h3 style="margin-bottom: 10px;">¿Buscas una cancha para hoy? ¡Encontrala en @Configuration.AppTitle!</h3>
 
-    <div class="row-fluid">
+    <div class="row">
         <div class="span8">
             <p>Existen @Html.ActionLink(Model.CourtsCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos. @Html.ActionLink(Model.OwnedPlaces.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos siendo administrados.</p>
             <p>Podes encontrar tu cancha haciendo una @Html.ActionLink("búsqueda avanzada", "Advanced", "Search") o buscarla en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*", }, null).</p>
