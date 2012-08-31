@@ -11,7 +11,5 @@ namespace Fulbaso.UI.Models
         public bool HasAdmin { get; set; }
 
         public bool IsFavourite { get; set; }
-
-        public IEnumerable<Tuple<Place, double?>> NearPlaces { get; set; }
     }
 }
