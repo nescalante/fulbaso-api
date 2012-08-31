@@ -4,3 +4,11 @@ obj
 
 # mstest test results
 TestResults
+
+# not a build folder per se, but the NuGet packages repository
+packages
+
+# local environment configuration files
+*.suo
+*.user
+desktop.ini
