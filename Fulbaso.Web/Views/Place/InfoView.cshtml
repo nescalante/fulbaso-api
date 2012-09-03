@@ -17,11 +17,14 @@
 }
 
 <div>
-    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h3>@Model.Description</h3></a>
+    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h4 style="margin-top: 0;">@Model.Description</h4></a>
     <ul style="margin:0;padding:0;" data-id="@Model.Id">
     @foreach (var t in text.Where(c => !string.IsNullOrEmpty(c.Text)))
     {
-        <li class="@t.Class">@t.Text</li>
+        if (!string.IsNullOrEmpty(t.Text))
+        {
+            <li class="@t.Class">@t.Text</li>
+        }
     }
     @if (Model.Services != null && Model.Services.Count() > 0)
     {

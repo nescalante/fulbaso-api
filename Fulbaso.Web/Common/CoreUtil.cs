@@ -56,18 +56,5 @@ namespace Fulbaso.UI
                 (c.EndDate == null || c.EndDate >= time) &&
                 c.Days.Contains(time.DayOfWeek)).OrderBy(c => c.Order).Select(c => c.Price).FirstOrDefault();
         }
-
-        internal static Place ValidatePlace(string id)
-        {
-            var place = ContainerUtil.GetApplicationContainer().Resolve<IPlaceService>().Get(id);
-            var userPlaces = HttpContext.Current.User.GetPlaces();
-
-            if (userPlaces != null && userPlaces.Any(up => up.Id == place.Id))
-            {
-                return place;
-            }
-
-            return null;
-        }
     }
 }

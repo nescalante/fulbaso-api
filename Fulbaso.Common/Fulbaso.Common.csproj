@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
@@ -68,6 +69,7 @@
       <DependentUpon>Error.resx</DependentUpon>
     </Compile>
     <Compile Include="Facebook\FacebookIdentity.cs" />
+    <Compile Include="Security\AdminAuthorize.cs" />
     <Compile Include="Security\PlaceAuthorize.cs" />
     <Compile Include="Security\UserAuthentication.cs" />
     <Compile Include="Facebook\FacebookPrincipal.cs" />

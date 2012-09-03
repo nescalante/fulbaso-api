@@ -12,18 +12,20 @@ namespace Fulbaso.UI.Controllers
     {
         private ICourtConfigurationService _courtConfigurationService;
         private ICourtService _courtService;
+        private IPlaceService _placeService;
 
-        public ConfigurationController(ICourtConfigurationService courtConfigurationService, ICourtService courtService)
+        public ConfigurationController(ICourtConfigurationService courtConfigurationService, ICourtService courtService, IPlaceService placeService)
         {
             _courtConfigurationService = courtConfigurationService;
             _courtService = courtService;
+            _placeService = placeService;
         }
 
         [HttpGet]
         [PlaceAuthorize]
         public ActionResult Index(string place, int court)
         {
-            var placeModel = CoreUtil.ValidatePlace(place);
+            var placeModel = _placeService.Get(place);
             var courtModel = _courtService.Get(court);
 
             if (placeModel != null && courtModel != null)
@@ -43,7 +45,7 @@ namespace Fulbaso.UI.Controllers
         [PlaceAuthorize]
         public ActionResult Add(string place, int court)
         {
-            var placeModel = CoreUtil.ValidatePlace(place);
+            var placeModel = _placeService.Get(place);
             var courtModel = _courtService.Get(court);
 
             if (placeModel != null)
@@ -75,7 +77,7 @@ namespace Fulbaso.UI.Controllers
         [PlaceAuthorize]
         public ActionResult Edit(string place, int court, int config)
         {
-            var placeModel = CoreUtil.ValidatePlace(place);
+            var placeModel = _placeService.Get(place);
             var courtModel = _courtService.Get(court);
             var courtConfigModel = _courtConfigurationService.Get(config);
 

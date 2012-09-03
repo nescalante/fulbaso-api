@@ -204,6 +204,7 @@
     <Content Include="img\information.png" />
     <Content Include="img\map-icon.png" />
     <Content Include="img\map.png" />
+    <Content Include="img\404.jpg" />
     <Content Include="img\pencil.png" />
     <Content Include="css\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="css\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -290,8 +291,8 @@
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Home\Item.cshtml" />
-    <Content Include="Views\Home\List.cshtml" />
+    <Content Include="Views\Shared\Item.cshtml" />
+    <Content Include="Views\Shared\List.cshtml" />
     <Content Include="Views\Place\NearPlaces.cshtml" />
     <Content Include="Views\Place\InfoView.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />

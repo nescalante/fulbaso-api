@@ -44,6 +44,8 @@ namespace Fulbaso.UI
             routes.MapRoute("ConfigurationEditRout", "admin/{place}/config/{court}/editar/{config}", new { controller = "Configuration", action = "Edit", });
             routes.MapRoute("ConfigurationAddRoute", "admin/{place}/config/{court}/agregar", new { controller = "Configuration", action = "Add", });
 
+            // misc
+            routes.MapRoute("MapRoute", "mapa", new { controller = "Places", action = "Map" });
             routes.MapRoute("AdminRoute", "admin/{place}", new { controller = "Home", action = "Admin" });
             routes.MapRoute("Default", "{controller}/{action}", new { controller = "Home", action = "Index" });
         }

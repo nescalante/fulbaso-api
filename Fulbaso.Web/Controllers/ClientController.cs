@@ -11,17 +11,19 @@ namespace Fulbaso.UI.Controllers
     public class ClientController : BaseController
     {
         private IClientService _clientService;
+        private IPlaceService _placeService;
 
-        public ClientController(IClientService clientService)
+        public ClientController(IClientService clientService, IPlaceService placeService)
         {
             _clientService = clientService;
+            _placeService = placeService;
         }
 
         [HttpGet]
         [PlaceAuthorize]
         public ActionResult Index(string place)
         {
-            var placeModel = CoreUtil.ValidatePlace(place);
+            var placeModel = _placeService.Get(place);
 
             if (placeModel != null)
             {

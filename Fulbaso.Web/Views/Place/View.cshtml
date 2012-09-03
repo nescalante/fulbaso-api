@@ -1,5 +1,6 @@
-﻿@using Fulbaso.UI.Models
+﻿@using Fulbaso.Common.Security
 @using Fulbaso.UI
+@using Fulbaso.UI.Models
 
 @model PlaceModel
            
@@ -18,11 +19,15 @@
             {
                 if (Model.IsFavourite)
                 {
-                    <a id="favourite" class="btn btn-mini active" title="Quitar de favoritos"><i class="icon-star"></i></a>
+                    <a id="favourite" class="btn active" title="Quitar de favoritos"><i class="icon-star"></i></a>
                 }
                 else
                 {
-                    <a id="favourite" class="btn btn-mini" title="Agregar a favoritos"><i class="icon-star"></i></a>
+                    <a id="favourite" class="btn" title="Agregar a favoritos"><i class="icon-star"></i></a>
+                }
+                if (UserAuthentication.IsAdmin())
+                {
+                    <a href="@Url.Action("Admin", "Home", new { place = Model.Place.Page })" class="btn" title="Administrar">Administrar</a>
                 }
             }
         </h1>
@@ -47,17 +52,20 @@
     <meta name="KEYWORDS" content="@Html.Raw(keywords)" />
 }
 
-@if (Model.HasAdmin)
-{
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#">Información</a>
-        </li>
-        <li>@Html.ActionLink("Disponibilidad", "Schedule", new { place = Model.Place.Page })</li>
-    </ul>
-}
-
 <div class="container">
+    @if (Model.HasAdmin)
+    {
+        <div class="row">
+            <div class="span12">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#">Información</a>
+                    </li>
+                    <li>@Html.ActionLink("Disponibilidad", "Schedule", new { place = Model.Place.Page })</li>
+                </ul>
+            </div>
+        </div>
+    }
     <div class="row">
         <div class="span8">
             <fieldset>

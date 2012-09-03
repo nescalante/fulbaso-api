@@ -1,8 +1,24 @@
 ﻿@{
-    ViewBag.Title = "404";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>404</h2>
-
-¡Página no encontrada!
+<div class="container">
+    <div class="row">
+        <div class="span8">
+            <h1>¡Palo y afuera!</h1>
+            <p>La página a la que intentaste ingresar no existe, parece que estás intentando llegar a tu cancha por un camino equivocado.</p>
+            <p>¡Pero no hay problema! Nosotros te damos algunas alternativas para que encuentres lo que estás buscando:</p>
+            <ul>
+                <li style="margin-bottom: 5px;">Hacé una búsqueda rápida desde el buscador que se encuentra en el menú.</li>
+                <li style="margin-bottom: 5px;">Ingresá al @Html.ActionLink("buscador avanzado", "Advanced", "Search") y detallá un poco más tu búsqueda.</li>
+                <li style="margin-bottom: 5px;">Navegá el @Html.ActionLink("mapa de canchas", "Map", "Places").</li>
+                <li style="margin-bottom: 5px;">Buscá tu cancha en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*" }, null).</li>
+            </ul>
+        </div>
+        <div class="span4 hidden-phone">
+            <div style="margin-top: 20px;" class="img-shadow">
+                <img src="@Url.Content("~")/img/404.jpg" alt="Página no encontrada" />
+            </div>
+        </div>
+    </div>
+</div>

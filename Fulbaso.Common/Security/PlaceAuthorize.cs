@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using Fulbaso.Contract;
-using System.Web;
 
 namespace Fulbaso.Common.Security
 {
@@ -23,6 +21,8 @@ namespace Fulbaso.Common.Security
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
+            if (UserAuthentication.IsAdmin()) return true;
+
             var place = httpContext.Request.RequestContext.RouteData.Values["place"];
 
             if (place != null && httpContext.User.Identity.IsAuthenticated && base.AuthorizeCore(httpContext))

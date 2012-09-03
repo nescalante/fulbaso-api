@@ -27,7 +27,7 @@ namespace Fulbaso.UI.Controllers
         [PlaceAuthorize]
         public ActionResult Edit(string place)
         {
-            var placeModel = CoreUtil.ValidatePlace(place);
+            var placeModel = _placeService.Get(place);
 
             if (placeModel != null)
             {
@@ -89,6 +89,12 @@ namespace Fulbaso.UI.Controllers
         public ActionResult GetNearestFromLocation(decimal lat, decimal lng)
         {
             return Json(_placeService.GetNearest(lat, lng, 0, 30), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetNearestList(decimal lat, decimal lng)
+        {
+            return View("List", _placeService.GetNearest(lat, lng, 10).Select(i => i.Item1));
         }
 
         [HttpGet]

@@ -258,7 +258,12 @@ namespace Fulbaso.EntityFramework.Logic
                 if (distance != 0) near = near.Where(p => p.Distance < distance);
                 if (count != 0) near = near.Take(count);
 
-                return near.ToList().Select(p => new Tuple<Place, double?>(p.Place, p.Distance)).ToList();
+                var list = near.ToList();
+
+                var services = EntityUtil.Context.PlaceServices.WhereContains(p => p.PlaceId, list.Select(i => i.Place.Id)).ToList();
+                list.ForEach(i => i.Place.Services = services.Where(s => i.Place.Id == s.PlaceId).Select(s => (Service)s.Service));
+
+                return list.ToList().Select(p => new Tuple<Place, double?>(p.Place, p.Distance)).ToList();
             }
 
             return new List<Tuple<Place, double?>>();

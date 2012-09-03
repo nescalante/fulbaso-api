@@ -95,5 +95,14 @@ var f = f || {
                 }
             }
         }
+    },
+    places: {
+        load: function (id, reference) {
+            $.get(reference, function (html) {
+                $("#" + id).parent().fadeIn();
+                var container = $("#" + id);
+                $(html).hide().appendTo(container).fadeIn();
+            });
+        }
     }
 };

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
 using Fulbaso.Contract;
@@ -75,6 +77,13 @@ namespace Fulbaso.Common.Security
 
                 return UserAuthentication.User.Token;
             }
+        }
+
+        public static bool IsAdmin()
+        {
+            var admins = ConfigurationManager.AppSettings["Admins"].Replace(',', ';').Split(';');
+
+            return UserAuthentication.User != null && admins.Contains(UserAuthentication.UserId.ToString());
         }
     }
 }

@@ -24,11 +24,6 @@
     </div>
 }
 
-<ul class="nav nav-tabs">
-    <li>@Html.ActionLink("Información", "ItemView", new { place = Model.Page })</li>
-    <li class="active"><a href="#">Disponibilidad</a></li>
-</ul>
-
 @section StyleSheets
 {
     <style>
@@ -53,73 +48,84 @@
     </td>
 }
 
-@using (Html.BeginForm("Schedule", "Place", FormMethod.Get, new { @class = "form-horizontal" }))
-{
-    @Html.TextBox("current", day.ToShortDateString(), new { style = "width:120px;", })
-    <button type="submit" class="btn">Buscar</button>
-    <div class="pull-right">
-        <a href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(-1).ToShortDateString() })" class="btn"><i class="icon-arrow-left"></i></a>
-        <a href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(1).ToShortDateString() })" class="btn"><i class="icon-arrow-right"></i></a>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <ul class="nav nav-tabs">
+                <li>@Html.ActionLink("Información", "ItemView", new { place = Model.Page })</li>
+                <li class="active"><a href="#">Disponibilidad</a></li>
+            </ul>
+
+            @using (Html.BeginForm("Schedule", "Place", FormMethod.Get, new { @class = "form-horizontal" }))
+            {
+                @Html.TextBox("current", day.ToShortDateString(), new { style = "width:120px;", })
+                <button type="submit" class="btn">Buscar</button>
+                <div class="pull-right">
+                    <a href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(-1).ToShortDateString() })" class="btn"><i class="icon-arrow-left"></i></a>
+                    <a href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(1).ToShortDateString() })" class="btn"><i class="icon-arrow-right"></i></a>
+                </div>
+            }
+
+            <table class="table-bordered table-condensed">
+	            <thead>
+		            <tr>
+                        <th style="width: 1px;"></th>
+                        @foreach (var c in Model.CourtsInfo)
+                        {
+                            <th>@c.Players jugadores<br />
+                            @c.FloorType<br />
+                            @(c.IsIndoor ? Html.Raw("Techada<br />") : new HtmlString(""))</th>
+                        }
+		            </tr>
+	            </thead>
+                <tbody>
+                @foreach (var h in range)
+                {
+                    <tr>
+                        <td>@h : 00</td>
+                        @foreach (var c in Model.CourtsInfo)
+                        {
+                            var time = new DateTime(day.Year, day.Month, day.Day, h, 0, 0);
+
+                            var book = c.Books.FirstOrDefault(b => b.StartTime == time);
+                            if (book != null)
+                            {
+                                @DisplayBook(book);
+                            }
+                            else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
+                            {
+                                var price = CoreUtil.GetPrice(c.Configuration, time);
+                    
+                                <td class="editable"><span class="muted">@(price == 0 ? "" : ("$ " + price.ToString("F2")))</span></td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td>@h : 30</td>
+                        @foreach (var c in Model.CourtsInfo)
+                        {
+                            var time = new DateTime(day.Year, day.Month, day.Day, h, 30, 0);
+
+                            var book = c.Books.FirstOrDefault(b => b.StartTime == time);
+                            if (book != null)
+                            {
+                                @DisplayBook(book);
+                            }
+                            else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
+                            {
+                                var price = CoreUtil.GetPrice(c.Configuration, time);
+                    
+                                <td class="editable"><span class="muted">@(price == 0 ? "" : "\"")</span></td>
+                            }
+                        }
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
     </div>
-}
+</div>
 
-<table class="table-bordered table-condensed">
-	<thead>
-		<tr>
-            <th style="width: 1px;"></th>
-            @foreach (var c in Model.CourtsInfo)
-            {
-                <th>@c.Players jugadores<br />
-                @c.FloorType<br />
-                @(c.IsIndoor ? Html.Raw("Techada<br />") : new HtmlString(""))</th>
-            }
-		</tr>
-	</thead>
-    <tbody>
-    @foreach (var h in range)
-    {
-        <tr>
-            <td>@h : 00</td>
-            @foreach (var c in Model.CourtsInfo)
-            {
-                var time = new DateTime(day.Year, day.Month, day.Day, h, 0, 0);
-
-                var book = c.Books.FirstOrDefault(b => b.StartTime == time);
-                if (book != null)
-                {
-                    @DisplayBook(book);
-                }
-                else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
-                {
-                    var price = CoreUtil.GetPrice(c.Configuration, time);
-                    
-                    <td class="editable"><span class="muted">@(price == 0 ? "" : ("$ " + price.ToString("F2")))</span></td>
-                }
-            }
-        </tr>
-        <tr>
-            <td>@h : 30</td>
-            @foreach (var c in Model.CourtsInfo)
-            {
-                var time = new DateTime(day.Year, day.Month, day.Day, h, 30, 0);
-
-                var book = c.Books.FirstOrDefault(b => b.StartTime == time);
-                if (book != null)
-                {
-                    @DisplayBook(book);
-                }
-                else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
-                {
-                    var price = CoreUtil.GetPrice(c.Configuration, time);
-                    
-                    <td class="editable"><span class="muted">@(price == 0 ? "" : "\"")</span></td>
-                }
-            }
-        </tr>
-    }
-    </tbody>
-</table>
-        
 <script>
     $(function () {
         $("#favourite").click(function () {
