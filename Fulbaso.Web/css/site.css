@@ -9,30 +9,31 @@
 .ui-remark { background-color: #eef4f5; border: 1px solid #ccc; }
 .noDisplay  { display: none; visibility: hidden; }
 .fb-comments, .fb-comments iframe[style] { width: 100% !important; }
-.place-info { margin-bottom: 20px; text-decoration: none !important; border: solid 1px #fff; padding: 10px; display: block; background-color: #e5e5ff; }
+.place-info { margin-bottom: 20px; text-decoration: none !important; border: solid 1px #e5e5ff; padding: 10px; display: block; background-color: #e5e5ff; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 1px 1px 3px 1px #ccc; -webkit-box-shadow: 1px 1px 3px 1px #ccc; box-shadow: 1px 1px 3px 1px #ccc; }
+.place-info h3 { margin-top: 0; }
 .place-info:hover { animation: placeanimation 0.5s; -moz-animation: placeanimation 0.5s; -webkit-animation: placeanimation 0.5s; -o-animation: placeanimation 0.5s; background-color: white; border-color: #999; }
 
 @keyframes placeanimation
 {
-	from { background: #e5e5ff; border-color: white; }
+	from { background: #e5e5ff; border-color: #e5e5ff; }
 	to { background: white; border-color: #999; }
 }
 
 @-moz-keyframes placeanimation /* Firefox */
 {
-	from { background: #e5e5ff; border-color: white; }
+	from { background: #e5e5ff; border-color: #e5e5ff; }
 	to { background: white; border-color: #999; }
 }
 
 @-webkit-keyframes placeanimation /* Safari and Chrome */
 {
-	from { background: #e5e5ff; border-color: white; }
+	from { background: #e5e5ff; border-color: #e5e5ff; }
 	to { background: white; border-color: #999; }
 }
 
 @-o-keyframes placeanimation /* Opera */
 {
-	from { background: #e5e5ff; border-color: white; }
+	from { background: #e5e5ff; border-color: #e5e5ff; }
 	to { background: white; border-color: #999; }
 }
 
@@ -41,4 +42,5 @@
     .frontnav { display:none; }
 	.navbar-fixed-top { margin-left: -20px; margin-right: -20px; }
 	#searchtext { width: 160px; }
+	.navbar .container { padding-left: 6px !important; padding-right: 6px !important; }
 }

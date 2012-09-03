@@ -9,6 +9,20 @@ namespace Fulbaso.EntityFramework.Logic
 {
     public class TerritoryService : ITerritoryService
     {
+        public void Add(Territory territory)
+        {
+            var entity = new TerritoryEntity
+            {
+                Description = territory.Description,
+                IsActive = true,
+            };
+
+            EntityUtil.Context.Territories.AddObject(entity);
+            EntityUtil.Context.SaveChanges();
+
+            territory.Id = entity.Id;
+        }
+
         public Territory Get(int territoryId)
         {
             return TerritoryService.Get(r => r.Id == territoryId).SingleOrDefault();

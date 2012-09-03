@@ -11,13 +11,11 @@
     </style>
 }
            
-<div class="container-fluid" style="padding-left: 0; padding-right: 0;">
-    <h3 style="margin-bottom: 10px;">¿Buscas una cancha para hoy? ¡Encontrala en @Configuration.AppTitle!</h3>
+<div class="container" style="padding-left: 0; padding-right: 0;">
+    <h3 style="margin-bottom: 10px;">¿Dónde querés jugar?</h3>
 
     <div class="row">
         <div class="span8">
-            <p>Existen @Html.ActionLink(Model.CourtsCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos. @Html.ActionLink(Model.OwnedPlaces.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos siendo administrados.</p>
-            <p>Podes encontrar tu cancha haciendo una @Html.ActionLink("búsqueda avanzada", "Advanced", "Search") o buscarla en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*", }, null).</p>
             <p>Para realizar una búsqueda rápida ingresá a continuación el nombre de algún <b>barrio</b>, <b>ciudad</b>, <b>calle</b>, o bien el nombre de alguna <b>cancha</b> que ya conozcas:</p>
             <div style="margin-bottom: 20px;">
                 @if (Request.QueryString.Count == 0)
@@ -29,7 +27,9 @@
                     }
                 }
             </div>
+            <p>También podes probar haciendo una @Html.ActionLink("búsqueda avanzada", "Advanced", "Search") o buscar tu cancha en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*", }, null).</p>
             <div class="hidden-phone">
+                <p>Existen @Html.ActionLink(Model.CourtsCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos. @Html.ActionLink(Model.OwnedPlaces.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos siendo administrados.</p>
                 <h4 style="margin-bottom: 10px;">Canchas mas usadas:</h4>
                 @Html.Partial("List", Model.TopUsedPlaces)
                 <div class="clearAll"></div>

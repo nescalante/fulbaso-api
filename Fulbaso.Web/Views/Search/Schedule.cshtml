@@ -92,60 +92,66 @@
     }
 }
 
-@{
-    <div style="padding: 0.2em 0px;">
-        <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> canchas encontradas @query</p>
-    </div>
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            @{
+                <div style="padding: 0.2em 0px;">
+                    <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> canchas encontradas @query</p>
+                </div>
     
-    int currentPage = 1;
-    if (Request.QueryString["p"] != null && !int.TryParse(Request.QueryString["p"], out currentPage))
-    {
-        currentPage = 1;
-    }
-    
-    var pages = (int)Math.Ceiling((decimal)ViewBag.Places / Configuration.RowsPerRequest);
-    
-    // get pages
-    var init = (currentPage - (pagesCount / 2)) <= 1 ? 1 : currentPage - (pagesCount / 2);
-    init = init + (pagesCount - 1) > pages ? pages - (pagesCount - 1) : init;
-    init = init < 1 ? 1 : init;
-    
-    @DisplayPages(pages, init, pagesCount, currentPage, Request.QueryString["q"])
-    
-    if (Model != null)
-    {
-        <table id="courts" class="table table-condensed">
-                @foreach (var m in Model.GroupBy(i => new { desc = i.Place.Description, page = i.Place.Page }))
+                int currentPage = 1;
+                if (Request.QueryString["p"] != null && !int.TryParse(Request.QueryString["p"], out currentPage))
                 {
-                    <tr>
-                        <td colspan="3"><strong>@m.Key.desc</strong></td>
-                    </tr>
-                    foreach (var k in m)
-                    {
-                        var price = CoreUtil.GetPrice(k.Configuration, new DateTime(time.Year, time.Month, time.Day, hour, 0, 0));
+                    currentPage = 1;
+                }
+    
+                var pages = (int)Math.Ceiling((decimal)ViewBag.Places / Configuration.RowsPerRequest);
+    
+                // get pages
+                var init = (currentPage - (pagesCount / 2)) <= 1 ? 1 : currentPage - (pagesCount / 2);
+                init = init + (pagesCount - 1) > pages ? pages - (pagesCount - 1) : init;
+                init = init < 1 ? 1 : init;
+    
+                @DisplayPages(pages, init, pagesCount, currentPage, Request.QueryString["q"])
+    
+                if (Model != null)
+                {
+                    <table id="courts" class="table table-condensed">
+                        @foreach (var m in Model.GroupBy(i => new { desc = i.Place.Description, page = i.Place.Page }))
+                        {
+                            <tr>
+                                <td colspan="3"><strong>@m.Key.desc</strong></td>
+                            </tr>
+                            foreach (var k in m)
+                            {
+                                var price = CoreUtil.GetPrice(k.Configuration, new DateTime(time.Year, time.Month, time.Day, hour, 0, 0));
                         
-                        <tr>
-                            <td>@Html.ActionLink(k.FloorType + ", " + (k.IsIndoor ? "techada, " : "") + (k.IsLighted ? "con luz, " : "") + k.Players + " jugadores", "ItemView", "Place", new { place = m.Key.page }, null)</td>
-                            <td>@(price != 0 ? ("$ " + price.ToString("F2") + " / h") : "")</td>
-                            <td style="width: 1px;">
-                                <div style="opacity: 1;">
-                                    @Html.ActionImage("ItemView", "Place", new { place = m.Key.page }, null, "Ver detalle", Url.Content("~/img/information.png"), null)
-                                    @Html.ActionImage("Schedule", "Place", new { place = m.Key.page }, null, "Consultar disponibilidad", Url.Content("~/img/calendar.png"), null)
-                                </div>
-                            </td>
-                        </tr>
+                                <tr>
+                                    <td>@Html.ActionLink(k.FloorType + ", " + (k.IsIndoor ? "techada, " : "") + (k.IsLighted ? "con luz, " : "") + k.Players + " jugadores", "ItemView", "Place", new { place = m.Key.page }, null)</td>
+                                    <td>@(price != 0 ? ("$ " + price.ToString("F2") + " / h") : "")</td>
+                                    <td style="width: 1px;">
+                                        <div style="opacity: 1;">
+                                            @Html.ActionImage("ItemView", "Place", new { place = m.Key.page }, null, "Ver detalle", Url.Content("~/img/information.png"), null)
+                                            @Html.ActionImage("Schedule", "Place", new { place = m.Key.page }, null, "Consultar disponibilidad", Url.Content("~/img/calendar.png"), null)
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+        
+                    <div class="clearAll"></div>
+        
+                    if (Configuration.RowsPerRequest == Model.Count())
+                    {
+                        @DisplayPages(pages, init, pagesCount, currentPage, Request.QueryString["q"])
                     }
                 }
-        </table>
-        
-        <div class="clearAll"></div>
-        
-        if (Configuration.RowsPerRequest == Model.Count())
-        {
-            @DisplayPages(pages, init, pagesCount, currentPage, Request.QueryString["q"])
-        }
-    }
-}
+            }
+        </div>
+    </div>
+</div>
 
 @section StyleSheets
 {

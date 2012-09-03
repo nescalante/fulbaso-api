@@ -75,7 +75,7 @@ namespace Fulbaso.UI.Controllers
         [HttpGet]
         public ActionResult GetNearest(string place)
         {
-            return Json(_placeService.GetNearest(place, 20), JsonRequestBehavior.AllowGet);
+            return Json(_placeService.GetNearest(place, 0, 30), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -88,7 +88,7 @@ namespace Fulbaso.UI.Controllers
         [HttpGet]
         public ActionResult GetNearestFromLocation(decimal lat, decimal lng)
         {
-            return Json(_placeService.GetNearest(lat, lng, 30), JsonRequestBehavior.AllowGet);
+            return Json(_placeService.GetNearest(lat, lng, 0, 30), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

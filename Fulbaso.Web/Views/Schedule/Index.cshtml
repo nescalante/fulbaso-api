@@ -48,71 +48,76 @@
     </td>
 }
 
-@Html.Partial("Menu", Model.Page)
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            @Html.Partial("Menu", Model.Page)
 
-<div style="margin: 10px;"></div>
+            <div style="margin: 10px;"></div>
 
-@using (Html.BeginForm("Index", "Schedule", FormMethod.Get, new { @class = "form-horizontal" }))
-{
-    @Html.TextBox("current", day.ToShortDateString())
-    <button type="submit" class="btn">Buscar</button>
-}
-
-<table id="books" class="table-bordered" data-year="@day.Year" data-month="@day.Month" data-day="@day.Day">
-	<thead>
-		<tr>
-            <th style="width: 1px;"></th>
-            @foreach (var c in Model.CourtsInfo)
+            @using (Html.BeginForm("Index", "Schedule", FormMethod.Get, new { @class = "form-horizontal" }))
             {
-                <th>@c.Description</th>
+                @Html.TextBox("current", day.ToShortDateString())
+                <button type="submit" class="btn">Buscar</button>
             }
-		</tr>
-	</thead>
-    <tbody>
-    @foreach (var h in range)
-    {
-        <tr data-hour="@h" data-minute="0">
-            <td>@h : 00</td>
-            @foreach (var c in Model.CourtsInfo)
-            {
-                var time = new DateTime(day.Year, day.Month, day.Day, h, 0, 0);
 
-                var book = c.Books.FirstOrDefault(b => b.StartTime == time);
-                if (book != null)
+            <table id="books" class="table-bordered" data-year="@day.Year" data-month="@day.Month" data-day="@day.Day">
+	            <thead>
+		            <tr>
+                        <th style="width: 1px;"></th>
+                        @foreach (var c in Model.CourtsInfo)
+                        {
+                            <th>@c.Description</th>
+                        }
+		            </tr>
+	            </thead>
+                <tbody>
+                @foreach (var h in range)
                 {
-                    @DisplayBook(book);
-                }
-                else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
-                {
-                    var price = CoreUtil.GetPrice(c.Configuration, time);
+                    <tr data-hour="@h" data-minute="0">
+                        <td>@h : 00</td>
+                        @foreach (var c in Model.CourtsInfo)
+                        {
+                            var time = new DateTime(day.Year, day.Month, day.Day, h, 0, 0);
+
+                            var book = c.Books.FirstOrDefault(b => b.StartTime == time);
+                            if (book != null)
+                            {
+                                @DisplayBook(book);
+                            }
+                            else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
+                            {
+                                var price = CoreUtil.GetPrice(c.Configuration, time);
                     
-                    <td data-name="@c.Description" data-courtid="@c.Id" data-price="@price.ToString("F2")" class="editable"><span class="muted">@(price == 0 ? "" : ("$ " + price.ToString("F2")))</span></td>
-                }
-            }
-        </tr>
-        <tr data-hour="@h" data-minute="30">
-            <td>@h : 30</td>
-            @foreach (var c in Model.CourtsInfo)
-            {
-                var time = new DateTime(day.Year, day.Month, day.Day, h, 30, 0);
+                                <td data-name="@c.Description" data-courtid="@c.Id" data-price="@price.ToString("F2")" class="editable"><span class="muted">@(price == 0 ? "" : ("$ " + price.ToString("F2")))</span></td>
+                            }
+                        }
+                    </tr>
+                    <tr data-hour="@h" data-minute="30">
+                        <td>@h : 30</td>
+                        @foreach (var c in Model.CourtsInfo)
+                        {
+                            var time = new DateTime(day.Year, day.Month, day.Day, h, 30, 0);
 
-                var book = c.Books.FirstOrDefault(b => b.StartTime == time);
-                if (book != null)
-                {
-                    @DisplayBook(book);
-                }
-                else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
-                {
-                    var price = CoreUtil.GetPrice(c.Configuration, time);
+                            var book = c.Books.FirstOrDefault(b => b.StartTime == time);
+                            if (book != null)
+                            {
+                                @DisplayBook(book);
+                            }
+                            else if (!c.Books.Any(b => b.StartTime <= time && b.EndTime > time))
+                            {
+                                var price = CoreUtil.GetPrice(c.Configuration, time);
                     
-                    <td data-name="@c.Description" data-courtid="@c.Id" data-price="@price.ToString("F2")" class="editable"><span class="muted">@(price == 0 ? "" : "\"")</span></td>
+                                <td data-name="@c.Description" data-courtid="@c.Id" data-price="@price.ToString("F2")" class="editable"><span class="muted">@(price == 0 ? "" : "\"")</span></td>
+                            }
+                        }
+                    </tr>
                 }
-            }
-        </tr>
-    }
-    </tbody>
-</table>
-
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @using (Html.BeginForm("DeleteBook", "Schedule"))
 {
     @Html.Hidden("deleteId")

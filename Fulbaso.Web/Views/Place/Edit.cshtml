@@ -19,117 +19,122 @@
     </div>
 }
 
-@Html.Partial("Menu", Model.Page)
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            @Html.Partial("Menu", Model.Page)
 
-@using (Html.BeginForm("Edit", "Place", FormMethod.Post, new { @class = "form-horizontal" }))
-{
-    <fieldset>
-        <legend>General</legend>
-        @Html.Hidden("PlaceId", Model.Id)
-        <div class="control-group" style="padding-top: 16px;">
-            <label class="control-label" for="Description">Nombre</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Description, new { @class = "input-xxlarge", maxlength = "200", })
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Page">Nombre de la página</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Page, new { @class = "input-xxlarge", maxlength = "50", })
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Info">Descripción</label>
-            <div class="controls">
-                @Html.TextAreaFor(m => m.Info, new { @class = "input-xxlarge", })
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Phone">Teléfono</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Phone, new { @class = "input-large", maxlength = "200", })
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="optionsCheckboxList">Servicios</label>
-            <div class="controls">
-                @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
-                {
-                    <label class="checkbox">
-                        @if (Model != null && Model.Services.Contains(s))
-                        {
-                            <input type="checkbox" id="@s" name="@s" checked="checked" />
-                        }
-                        else
-                        {
-                            <input type="checkbox" id="@s" name="@s" />
-                        }
-                        @s.GetDescription()
-                    </label>
-                }
-            </div>
-        </div>
-        <legend>Ubicación</legend>
-        <div class="control-group" style="padding-top: 16px;">
-            <label class="control-label" for="Address">Dirección</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Address, new { @class = "input-xxlarge", maxlength = "200", })
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Location.Id">Localidad</label>
-            <div class="controls">
-                <select name="Location.Id" id="Location">
-                    @foreach (var l in (ViewBag.Locations as List<IGrouping<int, Location>>))
-                    {
-                        <optgroup label="@l.First().Region.Description">
-                            @foreach (var g in l)
+            @using (Html.BeginForm("Edit", "Place", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                <fieldset>
+                    <legend>General</legend>
+                    @Html.Hidden("PlaceId", Model.Id)
+                    <div class="control-group" style="padding-top: 16px;">
+                        <label class="control-label" for="Description">Nombre</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.Description, new { @class = "input-xxlarge", maxlength = "200", })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Page">Nombre de la página</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.Page, new { @class = "input-xxlarge", maxlength = "50", })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Info">Descripción</label>
+                        <div class="controls">
+                            @Html.TextAreaFor(m => m.Info, new { @class = "input-xxlarge", })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Phone">Teléfono</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "input-large", maxlength = "200", })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="optionsCheckboxList">Servicios</label>
+                        <div class="controls">
+                            @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
                             {
-                                if (g.Id == Model.Location.Id)
-                                {
-                                    <option value="@g.Id" selected="selected">@g.Description</option>
-                                }
-                                else
-                                {
-                                    <option value="@g.Id">@g.Description</option>
-                                }
+                                <label class="checkbox">
+                                    @if (Model != null && Model.Services.Contains(s))
+                                    {
+                                        <input type="checkbox" id="@s" name="@s" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="@s" name="@s" />
+                                    }
+                                    @s.GetDescription()
+                                </label>
                             }
-                        </optgroup>
-                    }
-                </select>
-            </div>
+                        </div>
+                    </div>
+                    <legend>Ubicación</legend>
+                    <div class="control-group" style="padding-top: 16px;">
+                        <label class="control-label" for="Address">Dirección</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.Address, new { @class = "input-xxlarge", maxlength = "200", })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Location.Id">Localidad</label>
+                        <div class="controls">
+                            <select name="Location.Id" id="Location">
+                                @foreach (var l in (ViewBag.Locations as List<IGrouping<int, Location>>))
+                                {
+                                    <optgroup label="@l.First().Region.Description">
+                                        @foreach (var g in l)
+                                        {
+                                            if (g.Id == Model.Location.Id)
+                                            {
+                                                <option value="@g.Id" selected="selected">@g.Description</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@g.Id">@g.Description</option>
+                                            }
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="HowToArrive">¿Cómo llegar?</label>
+                        <div class="controls">
+                            @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xxlarge", })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="HowToArrive">Localización (dirección)</label>
+                        <div class="controls">
+                            <div class="input-append">
+                                @Html.TextBoxFor(m => m.MapLocation, new { @class = "input-xxlarge", size = "16", maxlength = "200", })<a id="testlocation" class="btn">Localizar</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="HowToArrive">Coordenadas</label>
+                        <div class="controls">
+                            <div style="margin-bottom: 10px;">
+                                @Html.TextBoxFor(m => m.MapUa, new { maxlength = "50", })<span class="help-inline">Latitud</span>
+                                @Html.TextBoxFor(m => m.MapVa, new { maxlength = "50", })<span class="help-inline">Longitud</span>
+                            </div>
+                            <div id="map_canvas" style="height: 300px; width: 600px; display: none; "></div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="submit">Aceptar</button>
+                        @Html.ActionLink("Cancelar", "Admin", "Home", new { place = Model.Page, }, new { @class = "btn", })
+                    </div>
+                </fieldset>
+            }
         </div>
-        <div class="control-group">
-            <label class="control-label" for="HowToArrive">¿Cómo llegar?</label>
-            <div class="controls">
-                @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xxlarge", })
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="HowToArrive">Localización (dirección)</label>
-            <div class="controls">
-                <div class="input-append">
-                    @Html.TextBoxFor(m => m.MapLocation, new { @class = "input-xxlarge", size = "16", maxlength = "200", })<a id="testlocation" class="btn">Localizar</a>
-                </div>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="HowToArrive">Coordenadas</label>
-            <div class="controls">
-                <div style="margin-bottom: 10px;">
-                    @Html.TextBoxFor(m => m.MapUa, new { maxlength = "50", })<span class="help-inline">Latitud</span>
-                    @Html.TextBoxFor(m => m.MapVa, new { maxlength = "50", })<span class="help-inline">Longitud</span>
-                </div>
-                <div id="map_canvas" style="height: 300px; width: 600px; display: none; "></div>
-            </div>
-        </div>
-        <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Aceptar</button>
-            @Html.ActionLink("Cancelar", "Admin", "Home", new { place = Model.Page, }, new { @class = "btn", })
-        </div>
-    </fieldset>
-}
-
+    </div>
+</div>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <script>
     var geocoder;

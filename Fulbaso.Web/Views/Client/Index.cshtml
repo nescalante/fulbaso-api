@@ -19,57 +19,63 @@
     </div>
 }
 
-@Html.Partial("Menu", (string)ViewBag.PlacePage)
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            @Html.Partial("Menu", (string)ViewBag.PlacePage)
 
-<div id="grid-contain">
-    @if (Model != null && Model.Count() > 0)
-    {
-        <table id="clients" class="table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Teléfono</th>
-                    <th>Reservas</th>
-                    <th>Última reserva</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var c in Model)
+            <div id="grid-contain">
+                @if (Model != null && Model.Count() > 0)
                 {
-                    string rowstyle = "";
-                    if (!c.IsActive)
-                    {
-                        rowstyle = "opacity: 0.5;";
-                    }
-                    <tr style="@rowstyle">
-                        <td>
-                            @c.Description
-                        </td>
-                        <td>
-                            @c.Phone
-                        </td>
-                        <td>
-                            @c.Books
-                        </td>
-                        <td>
-                            @(c.LastBook != null ? c.LastBook.Value.ToShortDateString() : "")
-                        </td>
-                        <td style="width: 1px;">
-                            @if (c.IsActive || c.Books == 0)
+                    <table id="clients" class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Reservas</th>
+                                <th>Última reserva</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in Model)
                             {
-                                <div style="opacity: 1;">
-                                    <a data-toggle="modal" href="#dialog-confirm" name="delete" data-id="@c.Id" data-books="@c.Books">
-                                        <img title="Borrar" src="@Url.Content("~")img/delete.png" alt="Borrar" />
-                                    </a>
-                                </div>
+                                string rowstyle = "";
+                                if (!c.IsActive)
+                                {
+                                    rowstyle = "opacity: 0.5;";
+                                }
+                                <tr style="@rowstyle">
+                                    <td>
+                                        @c.Description
+                                    </td>
+                                    <td>
+                                        @c.Phone
+                                    </td>
+                                    <td>
+                                        @c.Books
+                                    </td>
+                                    <td>
+                                        @(c.LastBook != null ? c.LastBook.Value.ToShortDateString() : "")
+                                    </td>
+                                    <td style="width: 1px;">
+                                        @if (c.IsActive || c.Books == 0)
+                                        {
+                                            <div style="opacity: 1;">
+                                                <a data-toggle="modal" href="#dialog-confirm" name="delete" data-id="@c.Id" data-books="@c.Books">
+                                                    <img title="Borrar" src="@Url.Content("~")img/delete.png" alt="Borrar" />
+                                                </a>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
                             }
-                        </td>
-                    </tr>
+                        </tbody>
+                    </table>
                 }
-            </tbody>
-        </table>
-    }
+            </div>
+        </div> 
+    </div>
 </div>
 <div class="modal" id="dialog-confirm" style="display: none;">
     <div class="modal-header">

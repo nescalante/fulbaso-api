@@ -32,6 +32,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Facebook.Logic", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Authentication.Logic", "Fulbaso.Authentication.BusinessLogic\Fulbaso.Authentication.Logic.csproj", "{674D5B8F-313A-4C61-BD83-EAD2A8587B93}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Importer", "Importer", "{DB4696EE-EDEF-408D-B8C7-B01C16691976}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Importer", "Fulbaso.Importer\Fulbaso.Importer.csproj", "{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +136,16 @@ Global
 		{674D5B8F-313A-4C61-BD83-EAD2A8587B93}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{674D5B8F-313A-4C61-BD83-EAD2A8587B93}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{674D5B8F-313A-4C61-BD83-EAD2A8587B93}.Release|x86.ActiveCfg = Release|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,5 +160,6 @@ Global
 		{E165A33D-72DC-4863-BACF-531243CF3FA4} = {20484DE7-EC64-4616-9576-B6C525C97218}
 		{D39C7B19-28B4-461C-9F91-190442C173B5} = {20484DE7-EC64-4616-9576-B6C525C97218}
 		{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83} = {20484DE7-EC64-4616-9576-B6C525C97218}
+		{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2} = {DB4696EE-EDEF-408D-B8C7-B01C16691976}
 	EndGlobalSection
 EndGlobal

@@ -16,8 +16,14 @@
     </div>
 }
 
-@Html.Partial("Menu", Model.Page)
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            @Html.Partial("Menu", Model.Page)
 
-<div style="margin: 10px;"></div>
+            <div style="margin: 10px;"></div>
 
-@Html.Partial("PlaceInfo", Model)
+            @Html.Partial("PlaceInfo", Model)
+        </div>
+    </div>
+</div>

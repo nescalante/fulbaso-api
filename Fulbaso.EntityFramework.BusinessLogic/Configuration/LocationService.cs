@@ -10,6 +10,21 @@ namespace Fulbaso.EntityFramework.Logic
 {
     public class LocationService : ILocationService
     {
+        public void Add(Location location)
+        {
+            var entity = new LocationEntity
+            {
+                Description = location.Description,
+                RegionId = location.Region.Id,
+                IsActive = true,
+            };
+
+            EntityUtil.Context.Locations.AddObject(entity);
+            EntityUtil.Context.SaveChanges();
+
+            location.Id = entity.Id;
+        }
+
         public Location Get(int locationId)
         {
             return LocationService.Get(r => r.Id == locationId).SingleOrDefault();

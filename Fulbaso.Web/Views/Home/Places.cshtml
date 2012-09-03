@@ -47,17 +47,16 @@
     }
 }
 
-<div style="padding: 0.2em 0px;">
-    <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados @query</p>
-    @if (advanced)
-    {
-        <p>Haga click @Html.ActionLink("aquí", "Advanced", "Search") para realizar una nueva búsqueda.</p>
-    }
-</div>
-
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="span8">
+            <div style="padding: 0.2em 0px;">
+                <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados @query</p>
+                @if (advanced)
+                {
+                    <p>Haga click @Html.ActionLink("aquí", "Advanced", "Search") para realizar una nueva búsqueda.</p>
+                }
+            </div>
             <div id="places">
                 @Html.Partial("List", Model)
             </div>

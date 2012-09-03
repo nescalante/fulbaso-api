@@ -17,60 +17,66 @@
     </div>
 }
 
-@Html.Partial("Menu", Model.Page)
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            @Html.Partial("Menu", Model.Page)
 
-@Html.Partial("PlaceInfo", Model)
-<div style="margin-bottom: 10px;">
-    @Html.ActionLink("Agregar cancha", "Add", new { place = Model.Page }, new { @class = "btn" })
-</div>
-<div id="grid-contain">
-    @if (Model != null && Model.CourtsInfo.Count() > 0)
-    {
-        <table id="courts" class="table">
-            <tbody>
-                @for (int i = 0; i < Model.CourtsInfo.Count(); i++)
+            @Html.Partial("PlaceInfo", Model)
+            <div style="margin-bottom: 10px;">
+                @Html.ActionLink("Agregar cancha", "Add", new { place = Model.Page }, new { @class = "btn" })
+            </div>
+            <div id="grid-contain">
+                @if (Model != null && Model.CourtsInfo.Count() > 0)
                 {
-                    string rowstyle = "";
-                    var c = Model.CourtsInfo.ToList()[i];
-                    if (!c.IsActive)
-                    {
-                        rowstyle = "opacity: 0.5;";
-                    }
-                    <tr style="@rowstyle">
-                        <td style="width: 1px; white-space: nowrap;">
-                            @("# " + (i + 1))
-                        </td>
-                        <td>
-                            @c.Description
-                        </td>
-                        <td>
-                            @c.CourtType
-                        </td>
-                        <td>
-                            @c.FloorType
-                        </td>
-                        <td style="width: 1px;">
-                            <div style="opacity: 1;">
-                                @Html.ActionImage("Index", "Configuration", new { court = c.Id, place = Model.Page }, null, "Configuración", Url.Content("~") + "img/cog.png", null)
-                                @Html.ActionImage("Edit", new { court = c.Id, place = Model.Page }, "Editar", Url.Content("~") + "img/pencil.png")
-                                <a data-toggle="modal" href="#dialog-confirm" name="delete" data-id="@c.Id">
-                                    <img title="Borrar" src="@Url.Content("~")img/delete.png" alt="Borrar" />
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
+                    <table id="courts" class="table">
+                        <tbody>
+                            @for (int i = 0; i < Model.CourtsInfo.Count(); i++)
+                            {
+                                string rowstyle = "";
+                                var c = Model.CourtsInfo.ToList()[i];
+                                if (!c.IsActive)
+                                {
+                                    rowstyle = "opacity: 0.5;";
+                                }
+                                <tr style="@rowstyle">
+                                    <td style="width: 1px; white-space: nowrap;">
+                                        @("# " + (i + 1))
+                                    </td>
+                                    <td>
+                                        @c.Description
+                                    </td>
+                                    <td>
+                                        @c.CourtType
+                                    </td>
+                                    <td>
+                                        @c.FloorType
+                                    </td>
+                                    <td style="width: 1px;">
+                                        <div style="opacity: 1;">
+                                            @Html.ActionImage("Index", "Configuration", new { court = c.Id, place = Model.Page }, null, "Configuración", Url.Content("~") + "img/cog.png", null)
+                                            @Html.ActionImage("Edit", new { court = c.Id, place = Model.Page }, "Editar", Url.Content("~") + "img/pencil.png")
+                                            <a data-toggle="modal" href="#dialog-confirm" name="delete" data-id="@c.Id">
+                                                <img title="Borrar" src="@Url.Content("~")img/delete.png" alt="Borrar" />
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 }
-            </tbody>
-        </table>
-    }
-</div>
-<div style="margin-bottom: 10px;">
-    @Html.ActionLink("Volver", "Admin", "Home", new { place = Model.Page }, new { @class = "btn" })
+            </div>
+            <div style="margin-bottom: 10px;">
+                @Html.ActionLink("Volver", "Admin", "Home", new { place = Model.Page }, new { @class = "btn" })
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal" id="dialog-confirm" style="display: none;">
     <div class="modal-header">
         <a class="close" data-dismiss="modal">×</a>
-        <h3>Configuration.AppTitle</h3>
+        <h3>@Configuration.AppTitle</h3>
     </div>
     <div class="modal-body">
         <p>¿Está seguro que desea eliminar el item seleccionado?</p>

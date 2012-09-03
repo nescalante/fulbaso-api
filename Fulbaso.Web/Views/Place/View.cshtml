@@ -44,6 +44,7 @@
     <meta property="og:image" content="@Url.Content("~/img/sport_soccer.png")" />
     <meta property="og:url" content="@Request.Url.AbsoluteUri" />
     <meta property="og:site_name" content="@Configuration.AppTitle"/>
+    <meta name="KEYWORDS" content="@Html.Raw(keywords)" />
 }
 
 @if (Model.HasAdmin)
@@ -56,118 +57,120 @@
     </ul>
 }
 
-<div class="row-fluid show-grid">
-    <div class="span8">
-        <fieldset>
-            @if (Model.Place.Info != null)
-            {
-                <div class="ui-info info">@Model.Place.Info</div>
-            }
-            @if (Model.Place.Address != null)
-            {
-                <div class="ui-info address">@CoreUtil.GetAddress(Model.Place.Address, Model.Place.Location)</div>
-            }
-            @if (Model.Place.Phone != null)
-            {
-                <div class="ui-info phone">@Model.Place.Phone</div>
-            }
-            @if (Model.Place.HowToArrive != null)
-            {
-                <div class="ui-info howToArrive">@Html.Raw(HttpUtility.HtmlEncode(Model.Place.HowToArrive).Replace(Environment.NewLine, "<br>"))</div>
-            }
-            @if (Model.Place.Services != null && Model.Place.Services.Count() > 0)
-            {
-                <div class="ui-info tags">
-                    @foreach (var s in Model.Place.Services)
-                    {
-                        <span class="label label-info">@s.GetDescription()</span>
-                    }
-                </div>
-            }
-        </fieldset>
-        @foreach (var c in Model.Place.CourtsInfo.GroupBy(c => c.CourtType.Description).ToList())
-        {
-            var title = c.Key + " - " + c.Count() + " cancha" + (c.Count() > 1 ? "s" : "");
-            var typeList = new List<string>();
-
-            if (c.ToList().GroupBy(i => i.FloorType.Description).Count() == 1)
-            {
-                typeList.Add(c.ToList().First().FloorType.ToString());
-            }
-
-            if (c.ToList().GroupBy(i => i.IsIndoor).Count() == 1 && c.ToList().First().IsIndoor)
-            {
-                typeList.Add("Techada" + (c.Count() > 1 ? "s" : ""));
-            }
-
-            if (c.ToList().GroupBy(i => i.IsLighted).Count() == 1 && c.ToList().First().IsLighted)
-            {
-                typeList.Add("Con luz");
-            }
-
-            var info = c.ToList().GroupBy(g => new { FloorType = g.FloorType.Description, IsLighted = g.IsLighted, IsIndoor = g.IsIndoor, g.Players });
-            bool showCourts = true;
-
-            if (info.Count() == 1 && info.First().First().Players != null)
-            {
-                typeList.Add(info.First().First().Players + " jugadores");
-                showCourts = false;
-            }
-            <h3 style="margin: 10px 0 5px;">
-                @title
-            </h3>
-            if (typeList.Any())
-            {
-                <div class="alert alert-info" style="padding: 4px 0;margin:0;">
-                    <dl style="padding: 4px; margin:0;">
-                    @foreach (var i in typeList)
-                    {
-                        <dd>@i</dd>
-                    }
-                    </dl>
-                </div>            
-            }
-            <dl>
-                @if (showCourts)
+<div class="container">
+    <div class="row">
+        <div class="span8">
+            <fieldset>
+                @if (Model.Place.Info != null)
                 {
-                    foreach (var i in info.OrderByDescending(i => i.Count()))
+                    <div class="ui-info info">@Model.Place.Info</div>
+                }
+                @if (Model.Place.Address != null)
+                {
+                    <div class="ui-info address">@CoreUtil.GetAddress(Model.Place.Address, Model.Place.Location)</div>
+                }
+                @if (Model.Place.Phone != null)
+                {
+                    <div class="ui-info phone">@Model.Place.Phone</div>
+                }
+                @if (Model.Place.HowToArrive != null)
+                {
+                    <div class="ui-info howToArrive">@Html.Raw(HttpUtility.HtmlEncode(Model.Place.HowToArrive).Replace(Environment.NewLine, "<br>"))</div>
+                }
+                @if (Model.Place.Services != null && Model.Place.Services.Count() > 0)
+                {
+                    <div class="ui-info tags">
+                        @foreach (var s in Model.Place.Services)
+                        {
+                            <span class="label label-info">@s.GetDescription()</span>
+                        }
+                    </div>
+                }
+            </fieldset>
+            @foreach (var c in Model.Place.CourtsInfo.GroupBy(c => c.CourtType.Description).ToList())
+            {
+                var title = c.Key + " - " + c.Count() + " cancha" + (c.Count() > 1 ? "s" : "");
+                var typeList = new List<string>();
+
+                if (c.ToList().GroupBy(i => i.FloorType.Description).Count() == 1)
+                {
+                    typeList.Add(c.ToList().First().FloorType.ToString());
+                }
+
+                if (c.ToList().GroupBy(i => i.IsIndoor).Count() == 1 && c.ToList().First().IsIndoor)
+                {
+                    typeList.Add("Techada" + (c.Count() > 1 ? "s" : ""));
+                }
+
+                if (c.ToList().GroupBy(i => i.IsLighted).Count() == 1 && c.ToList().First().IsLighted)
+                {
+                    typeList.Add("Con luz");
+                }
+
+                var info = c.ToList().GroupBy(g => new { FloorType = g.FloorType.Description, IsLighted = g.IsLighted, IsIndoor = g.IsIndoor, g.Players });
+                bool showCourts = true;
+
+                if (info.Count() == 1 && info.First().First().Players != null)
+                {
+                    typeList.Add(info.First().First().Players + " jugadores");
+                    showCourts = false;
+                }
+                <h3 style="margin: 10px 0 5px;">
+                    @title
+                </h3>
+                if (typeList.Any())
+                {
+                    <div class="alert alert-info" style="padding: 4px 0;margin:0;">
+                        <dl style="padding: 4px; margin:0;">
+                        @foreach (var i in typeList)
+                        {
+                            <dd>@i</dd>
+                        }
+                        </dl>
+                    </div>            
+                }
+                <dl>
+                    @if (showCourts)
                     {
-                        var list = new List<string>();
-                        var courtsInfo = i.Count() + " cancha" + (i.Count() > 1 ? "s" : "");
+                        foreach (var i in info.OrderByDescending(i => i.Count()))
+                        {
+                            var list = new List<string>();
+                            var courtsInfo = i.Count() + " cancha" + (i.Count() > 1 ? "s" : "");
 
-                        if (!typeList.Contains(i.Key.FloorType.ToString()))
-                        {
-                            list.Add(i.Key.FloorType.ToString());
-                        }
-                        if (!typeList.Contains("Con luz") && i.Key.IsLighted)
-                        {
-                            list.Add("Con luz");
-                        }
-                        if (!typeList.Contains("Techada") && !typeList.Contains("Techadas") && i.Key.IsIndoor)
-                        {
-                            list.Add("Techada" + (i.Count() > 1 ? "s" : ""));
-                        }
-                        if (i.Key.Players != null)
-                        {
-                            list.Add(i.Key.Players + " jugadores");
-                        }
+                            if (!typeList.Contains(i.Key.FloorType.ToString()))
+                            {
+                                list.Add(i.Key.FloorType.ToString());
+                            }
+                            if (!typeList.Contains("Con luz") && i.Key.IsLighted)
+                            {
+                                list.Add("Con luz");
+                            }
+                            if (!typeList.Contains("Techada") && !typeList.Contains("Techadas") && i.Key.IsIndoor)
+                            {
+                                list.Add("Techada" + (i.Count() > 1 ? "s" : ""));
+                            }
+                            if (i.Key.Players != null)
+                            {
+                                list.Add(i.Key.Players + " jugadores");
+                            }
 
-                        <dt>@courtsInfo</dt>
-                        foreach (var l in list)
-                        {
-                            <dd>@l</dd>
+                            <dt>@courtsInfo</dt>
+                            foreach (var l in list)
+                            {
+                                <dd>@l</dd>
+                            }
                         }
                     }
-                }
-            </dl>
-        }
-    </div>
-    <div class="span4">
-        <div id="map_canvas" style="min-height: 350px;"></div>
-    </div>
-    <div class="span8" style="margin:0px;">
-        <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
-        <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
+                </dl>
+            }
+        </div>
+        <div class="span4">
+            <div id="map_canvas" style="min-height: 350px;"></div>
+        </div>
+        <div class="span8">
+            <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
+            <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
+        </div>
     </div>
 </div>
 <script>
@@ -218,9 +221,4 @@ else
             });
         });
     </script>
-}
-
-@section Metadata
-{
-    <meta name="KEYWORDS" content="@Html.Raw(keywords)" />
 }

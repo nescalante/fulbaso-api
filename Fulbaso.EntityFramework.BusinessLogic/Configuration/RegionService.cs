@@ -10,6 +10,21 @@ namespace Fulbaso.EntityFramework.Logic
 {
     public class RegionService : IRegionService
     {
+        public void Add(Region region)
+        {
+            var entity = new RegionEntity
+            {
+                Description = region.Description,
+                TerritoryId = region.Territory.Id,
+                IsActive = true,
+            };
+
+            EntityUtil.Context.Regions.AddObject(entity);
+            EntityUtil.Context.SaveChanges();
+
+            region.Id = entity.Id;
+        }
+
         public Region Get(int regionId)
         {
             return RegionService.Get(r => r.Id == regionId).SingleOrDefault();
