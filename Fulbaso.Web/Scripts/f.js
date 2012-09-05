@@ -2,7 +2,7 @@
 
 var f = f || {
     map: {
-        initialize: function (id, lat, lng, infoservice) {
+        initialize: function (id, lat, lng) {
             if (!map) {
                 var latlng = new google.maps.LatLng(lat, lng);
                 var options = { zoom: 15, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP }
@@ -11,7 +11,6 @@ var f = f || {
             }
 
             map.id = id;
-            map.infoservice = infoservice;
 
             return map;
         },
@@ -25,6 +24,31 @@ var f = f || {
 
             map.lastWindow = infowindow;
         },
+        getWindow: function (place, marker) {
+            var html = "<div class=\"infoview\"><a href=\"" + place.Url + "\"><h4>" + place.Description + "</h4></a>";
+            html += "<ul>";
+            html += "<li class=\"ui-info address\">" + place.Address + "</li>";
+            if (place.Phone && place.Phone != "") {
+                html += "<li class=\"ui-info phone\">" + place.Phone + "</li>";
+            }
+            html += "<li class=\"ui-info courts\">" + place.Courts + (place.Courts == 1 ? " cancha" : " canchas") + "</li>";
+            html += "</ul></div>";
+
+            var infowindow = new google.maps.InfoWindow({
+                content: html
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                f.map.openWindow(infowindow, marker);
+            });
+
+            google.maps.event.addListener(map, 'click', function () {
+                infowindow.close();
+                map.lastWindow = undefined;
+            });
+
+            return infowindow;
+        },
         mark: function (title, lat, lng, icon, place) {
             var marker;
 
@@ -35,31 +59,15 @@ var f = f || {
                 marker = new google.maps.Marker({ map: map, title: title, position: new google.maps.LatLng(lat, lng) });
             }
 
-            if (map.infoservice && place) {
+            if (place) {
                 var container = $("#" + map.id).parent();
+                var infowindow = f.map.getWindow(place, marker);
 
-                $.get(map.infoservice, place, function (html) {
-                    var infowindow = new google.maps.InfoWindow({
-                        content: html
-                    });
-
-                    google.maps.event.addListener(marker, 'click', function () {
-                        f.map.openWindow(infowindow, marker);
-                    });
-
-                    google.maps.event.addListener(map, 'click', function () {
-                        infowindow.close();
-                        map.lastWindow = undefined;
-                    });
-
-                    if (place) {
-                        container.find(".mapitem[data-id=" + place.Id + "]").hover(function () {
-                            f.map.setCenter($(this).data("ua"), $(this).data("va"));
-                            f.map.openWindow(infowindow, marker);
-                            return false;
-                        }, function () { infowindow.close(); })
-                    }
-                });
+                container.find(".mapitem[data-id=" + place.Id + "]").hover(function () {
+                    f.map.setCenter($(this).data("ua"), $(this).data("va"));
+                    f.map.openWindow(infowindow, marker);
+                    return false;
+                }, function () { infowindow.close(); });
             }
         },
         markFrom: function (service, icon, reference) {
@@ -81,13 +89,13 @@ var f = f || {
         }
     },
     location: {
-        initialize: function (id, infoservice, successfunction) {
+        initialize: function (id, successfunction) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(success);
             }
 
             function success(position) {
-                f.map.initialize(id, position.coords.latitude, position.coords.longitude, infoservice);
+                f.map.initialize(id, position.coords.latitude, position.coords.longitude);
                 $("#" + id).fadeIn();
 
                 if (successfunction) {

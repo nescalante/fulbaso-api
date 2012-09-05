@@ -4,7 +4,7 @@
 @model Place
            
 @{
-    var address = CoreUtil.GetAddress(Model.Address, Model.Location);
+    var address = Model.FullAddress;
     var text = new[] { 
         new { Class = "ui-info address", Text = address, },
         new { Class = "ui-info phone", Text = Model.Phone, },

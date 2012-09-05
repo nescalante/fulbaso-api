@@ -41,5 +41,15 @@ namespace Fulbaso.Contract
         public int Courts { get; set; }
 
         public IEnumerable<Court> CourtsInfo { get; set; }
+
+        public string FullAddress
+        {
+            get
+            {
+                return this.Address + ((this.Location != null && this.Location.ToString() != string.Empty) ? (", " + this.Location + (this.Location.Region.ToString() == this.Location.ToString() ? "" : (", " + this.Location.Region))) : string.Empty);
+            }
+        }
+
+        public string Url { get; set; }
     }
 }

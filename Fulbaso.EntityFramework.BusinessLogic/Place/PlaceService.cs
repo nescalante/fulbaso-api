@@ -132,9 +132,9 @@ namespace Fulbaso.EntityFramework.Logic
             return list;
         }
 
-        public IEnumerable<Place> GetList(string value, int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int init, int rows, out int count)
+        public IEnumerable<Place> GetList(string value, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, int init, int rows, out int count)
         {
-            var places = CreateQuery(players, floorTypes, locations, indoor, lighted);
+            var places = CreateQuery(players, floorTypes, locations, tags, indoor, lighted);
 
             if (!string.IsNullOrEmpty(value))
             {
@@ -165,19 +165,25 @@ namespace Fulbaso.EntityFramework.Logic
             return list;
         }
 
-        private static IQueryable<PlaceEntity> CreateQuery(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted)
+        private static IQueryable<PlaceEntity> CreateQuery(int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted)
         {
             // fix blank entries
             locations = locations.Where(l => !string.IsNullOrEmpty(l)).ToArray();
 
             var query = from c in EntityUtil.Context.Courts
-                        where players.Contains(c.Players ?? 0) &&
-                        floorTypes.Contains(c.FloorType.Id)
+                        where (!players.Any() || players.Contains(c.Players ?? 0)) &&
+                        (!floorTypes.Any() || floorTypes.Contains(c.FloorType.Id))
                         select c;
             if (indoor) query = query.Where(c => c.IsIndoor);
             if (lighted) query = query.Where(c => c.IsLighted);
 
             var places = query.GroupBy(c => c.Place.Id).Select(p => p.FirstOrDefault().Place);
+            if (tags.Any())
+            {
+                var ints = tags.Select(t => Convert.ToInt32(t));
+                places = places.Where(p => ints.All(t => p.Services.Any(s => s.Service == t)));
+            }
+
             places = from p in places
                      where (locations.Count() == 0 || locations.Contains(p.Location.Description) ||
                      locations.Contains(p.Location.Region.Description) ||

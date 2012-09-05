@@ -6,6 +6,7 @@ using System.Web;
 using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
+using System.Web.Mvc;
 
 namespace Fulbaso.Web
 {
@@ -16,9 +17,9 @@ namespace Fulbaso.Web
             return ContainerUtil.GetApplicationContainer().Resolve<IFloorTypeService>().Get().Where(f => list.Contains(f.Id)).Select(f => f.ToString()).GetJoin();
         }
 
-        public static string GetAddress(string address, Location location)
+        public static string GetTags(this IEnumerable<byte> list)
         {
-            return address + ((location != null && location.ToString() != string.Empty) ? (", " + location + (location.Region.ToString() == location.ToString() ? "" : (", " + location.Region))) : string.Empty);
+            return list.Select(i => ((Service)i).GetDescription()).GetJoin();
         }
 
         public static List<Place> GetPlaces(this IPrincipal user)
@@ -34,6 +35,27 @@ namespace Fulbaso.Web
             }
             else
                 return null;
+        }
+
+        public static IEnumerable<Tuple<Place, double?>> WithUrl(this IEnumerable<Tuple<Place, double?>> list)
+        {
+            foreach (var i in list) i.Item1.Url = GetPlaceUrl(i.Item1.Page);
+
+            return list;
+        }
+
+        public static IEnumerable<Place> WithUrl(this IEnumerable<Place> list)
+        {
+            foreach (var i in list) i.Url = GetPlaceUrl(i.Page);
+
+            return list;
+        }
+
+        private static string GetPlaceUrl(string page)
+        {
+            var helper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+
+            return helper.Action("ItemView", "Place", new { place = page });
         }
 
         public static int[] GetRange(IEnumerable<Court> courts, DateTime time)

@@ -33,16 +33,16 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult List(int init, string q, string j, string s, string l, bool? ind, bool? lig)
+        public ActionResult List(int init, string q, string j, string s, string l, string t, bool? ind, bool? lig)
         {
             int count;
-            return View("List", GetPlacesList(init, q, j, s, l, ind, lig, out count));
+            return View("List", GetPlacesList(init, q, j, s, l, t, ind, lig, out count));
         }
 
         [HttpGet]
-        public ActionResult Index(string q, string p, string j, string s, string l, bool? ind, bool? lig)
+        public ActionResult Index(string q, string p, string j, string s, string l, string t, bool? ind, bool? lig)
         {
-            if (j == null && s == null && l == null && ind == null && lig == null && string.IsNullOrEmpty(q))
+            if (j == null && s == null && l == null && ind == null && lig == null && t == null && string.IsNullOrEmpty(q))
             {
                 var index = new IndexModel
                 {
@@ -58,7 +58,7 @@ namespace Fulbaso.Web.Controllers
             else
             {
                 int count;
-                var model = GetPlacesList(0, q, j, s, l, ind, lig, out count);
+                var model = GetPlacesList(0, q, j, s, l, t, ind, lig, out count);
 
                 if (model.Count() == 1)
                 {
@@ -129,13 +129,13 @@ namespace Fulbaso.Web.Controllers
             return Json(lista, JsonRequestBehavior.AllowGet);
         }
 
-        private IEnumerable<Place> GetPlacesList(int init, string q, string j, string s, string l, bool? ind, bool? lig, out int count)
+        private IEnumerable<Place> GetPlacesList(int init, string q, string j, string s, string l, string t, bool? ind, bool? lig, out int count)
         {
             var query = q == "*" ? string.Empty : q;
 
-            if (j != null || s != null || l != null || ind != null || lig != null)
+            if (j != null || s != null || l != null || ind != null || lig != null || t != null)
             {
-                return _placeService.GetList(query, InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, init, Configuration.RowsPerRequest, out count);
+                return _placeService.GetList(query, InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), InterfaceUtil.GetBytes(t), ind ?? false, lig ?? false, init, Configuration.RowsPerRequest, out count);
             }
             else
             {

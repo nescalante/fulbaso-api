@@ -10,14 +10,15 @@
     var players = (Request.QueryString["j"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s));
     var locations = (Request.QueryString["l"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s));
     var floors = (Request.QueryString["s"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s)).Select(i => Convert.ToInt32(i));
+    var tags = (Request.QueryString["t"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s)).Select(i => Convert.ToByte(i));
     var ind = Convert.ToBoolean(Request.QueryString["ind"] ?? "False");
     var lig = Convert.ToBoolean(Request.QueryString["lig"] ?? "False");
     var advanced = false;
     
-    if (players.Count() > 0 || locations.Count() > 0 || floors.Count() > 0 || Request.QueryString["ind"] != null || Request.QueryString["lig"] != null)
+    if (players.Count() > 0 || locations.Count() > 0 || floors.Count() > 0 || tags.Count() > 0 || Request.QueryString["ind"] != null || Request.QueryString["lig"] != null)
     {
         advanced = true;
-        query = string.Empty;
+        
         if (players.Count() > 0)
         {
             query += "para " + InterfaceUtil.GetJoin(players) + " jugadores, ";
@@ -31,6 +32,11 @@
         if (floors.Count() > 0)
         {
             query += "con " + CoreUtil.GetFloors(floors) + ", ";
+        }
+
+        if (tags.Count() > 0)
+        {
+            query += "con " + CoreUtil.GetTags(tags) + ", ";
         }
 
         if (ind)
@@ -89,7 +95,7 @@
                     .hide()
                     .appendTo("#places")
                     .fadeIn();
-                $.get("@Html.Raw(Url.Action("List", "Home", new { q = Request.QueryString["q"], j = Request.QueryString["j"], l = Request.QueryString["l"], s = Request.QueryString["s"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], }))&init=" + init, function (data) { 
+                $.get("@Html.Raw(Url.Action("List", "Home", new { q = Request.QueryString["q"], j = Request.QueryString["j"], l = Request.QueryString["l"], s = Request.QueryString["s"], t = Request.QueryString["t"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], }))&init=" + init, function (data) { 
                     html = data;
                     $("#loadmore").show();
 

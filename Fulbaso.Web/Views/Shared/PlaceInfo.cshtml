@@ -8,7 +8,7 @@
         @if (Model.Address != null)
         {
             <dt>Dirección</dt>
-            <dd>@CoreUtil.GetAddress(Model.Address, Model.Location)</dd>
+            <dd>@Model.FullAddress</dd>
         }
         @if (Model.Phone != null)
         {

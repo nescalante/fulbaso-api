@@ -60,7 +60,7 @@
 <script>
     $(function () {
         if ($(".hidden-phone").is(":visible")) {
-            f.location.initialize("map_canvas", "@Url.Action("InfoView", "Place")", function (position) {
+            f.location.initialize("map_canvas", function (position) {
                 $("#mapheader").fadeIn();
                 f.map.mark("¡Estás acá! (en un radio de " + position.coords.accuracy + " metros)", position.coords.latitude, position.coords.longitude, "@Url.Content("~")img/user.png");
                 f.map.markFrom("@Url.Action("GetNearestFromLocation", "Place")?lat=" + position.coords.latitude + "&lng=" + position.coords.longitude, "@Url.Content("~")img/sport_soccer.png");

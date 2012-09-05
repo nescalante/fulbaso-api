@@ -8,7 +8,7 @@
 @model Place
 
 @{
-    var address = CoreUtil.GetAddress(Model.Address, Model.Location);
+    var address = Model.FullAddress;
     var text = new[] { 
         new { Class = "ui-info address", Text = address, },
         new { Class = "ui-info phone", Text = Model.Phone, },
@@ -16,9 +16,9 @@
     };
 }
 
-<div>
-    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h4 style="margin-top: 0;">@Model.Description</h4></a>
-    <ul style="margin:0;padding:0;" data-id="@Model.Id">
+<div class="infoview">
+    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h4>@Model.Description</h4></a>
+    <ul data-id="@Model.Id">
     @foreach (var t in text.Where(c => !string.IsNullOrEmpty(c.Text)))
     {
         if (!string.IsNullOrEmpty(t.Text))

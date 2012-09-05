@@ -30,7 +30,7 @@ namespace Fulbaso.Contract
 
         IEnumerable<Tuple<string, int>> GetTags();
 
-        IEnumerable<Place> GetList(string value, int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int init, int rows, out int count);
+        IEnumerable<Place> GetList(string value, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, int init, int rows, out int count);
 
         IEnumerable<Place> GetList(string value);
 

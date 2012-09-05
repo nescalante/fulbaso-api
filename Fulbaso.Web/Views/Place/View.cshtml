@@ -75,7 +75,7 @@
                 }
                 @if (Model.Place.Address != null)
                 {
-                    <div class="ui-info address">@CoreUtil.GetAddress(Model.Place.Address, Model.Place.Location)</div>
+                    <div class="ui-info address">@Model.Place.FullAddress</div>
                 }
                 @if (Model.Place.Phone != null)
                 {
@@ -200,10 +200,10 @@
 {
     <script>
         $(function () {
-            f.map.initialize("map_canvas", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')", "@Url.Action("InfoView", "Place")");
+            f.map.initialize("map_canvas", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')");
             f.map.mark("@Html.Raw(Model.Place.Description)", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')");
             f.map.markFrom("@Url.Action("GetNearest", "Place", new { place = @Model.Place.Page })", "@Url.Content("~")img/sport_soccer.png", "@Url.Action("GetNearestLayout", "Place", new { place = Model.Place.Page, description = Model.Place.Description, })");
-            f.location.initialize("map_canvas", "@Url.Action("InfoView", "Place")", function (position) {
+            f.location.initialize("map_canvas", function (position) {
                 f.map.mark("¡Estás acá! (en un radio de " + position.coords.accuracy + " metros)", position.coords.latitude, position.coords.longitude, "@Url.Content("~")img/user.png");
             });
         });

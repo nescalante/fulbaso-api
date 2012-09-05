@@ -5,6 +5,7 @@ using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 using Fulbaso.Web.Models;
+using System.Collections.Generic;
 
 namespace Fulbaso.Web.Controllers
 {
@@ -75,26 +76,26 @@ namespace Fulbaso.Web.Controllers
         [HttpGet]
         public ActionResult GetNearest(string place)
         {
-            return Json(_placeService.GetNearest(place, 0, 30), JsonRequestBehavior.AllowGet);
+            return Json(_placeService.GetNearest(place, 0, 30).WithUrl(), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult GetNearestLayout(string place, string description)
         {
             ViewBag.Description = description;
-            return View("NearPlaces", _placeService.GetNearest(place, 5));
+            return View("NearPlaces", _placeService.GetNearest(place, 5).WithUrl());
         }
 
         [HttpGet]
         public ActionResult GetNearestFromLocation(decimal lat, decimal lng, double distance = 30)
         {
-            return Json(_placeService.GetNearest(lat, lng, 0, distance), JsonRequestBehavior.AllowGet);
+            return Json(_placeService.GetNearest(lat, lng, 0, distance).WithUrl(), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult GetNearestList(decimal lat, decimal lng)
         {
-            return View("List", _placeService.GetNearest(lat, lng, 10).Select(i => i.Item1));
+            return View("List", _placeService.GetNearest(lat, lng, 10).Select(i => i.Item1).WithUrl());
         }
 
         [HttpGet]

@@ -68,5 +68,11 @@ namespace Fulbaso.Web
             int x;
             return (list ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i) && int.TryParse(i, out x)).Select(i => Convert.ToInt32(i)).ToArray();
         }
+
+        internal static byte[] GetBytes(string list)
+        {
+            int x;
+            return (list ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i) && int.TryParse(i, out x)).Select(i => Convert.ToByte(i)).ToArray();
+        }
     }
 }

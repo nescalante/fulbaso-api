@@ -41,8 +41,14 @@
 <body data-spy="scroll" data-target=".subnav" data-offset="140" data-twttr-rendered="true" style="padding: 140px 10px 40px;">
     <div id="fb-root"></div>
     <div class="navbar navbar-fixed-top">
-        <div class="frontnav" style="height: 90px; width: 100%; background: white; padding-left: 150px;">
-            <img src="@Url.Content("~/img/frontnav.png")" style="height:90px" title="@Configuration.AppTitle"/>
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="frontnav" style="height: 90px; width: 100%; background: white; padding-left: 30px;">
+                        <img src="@Url.Content("~/img/frontnav.png")" style="height:90px" title="@Configuration.AppTitle"/>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="navbar-inner">
             <div class="container">
@@ -51,7 +57,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                @Html.ActionLink(Configuration.AppTitle, "Index", "Home", null, new { @class = "brand" })
+                @Html.ActionLink("¡" + Configuration.AppTitle + "!", "Index", "Home", null, new { @class = "brand" })
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] != "*" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
