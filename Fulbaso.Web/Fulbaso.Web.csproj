@@ -58,6 +58,22 @@
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR">
+      <HintPath>..\packages\SignalR.Server.0.5.3\lib\net40\SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.AspNet">
+      <HintPath>..\packages\SignalR.Hosting.AspNet.0.5.3\lib\net40\SignalR.Hosting.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.Common">
+      <HintPath>..\packages\SignalR.Hosting.Common.0.5.3\lib\net40\SignalR.Hosting.Common.dll</HintPath>
+    </Reference>
     <Reference Include="SquishIt.Framework">
       <HintPath>..\packages\SquishIt.0.8.7.1\lib\SquishIt.Framework.dll</HintPath>
     </Reference>
@@ -90,12 +106,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Configuration.cs" />
+    <Compile Include="Consoles\WebConsole.cs" />
     <Compile Include="Common\CoreUtil.cs" />
     <Compile Include="Common\Html\HtmlExtensions.cs" />
     <Compile Include="Common\Html\ImageExtensions.cs" />
     <Compile Include="Common\InterfaceUtil.cs" />
     <Compile Include="Common\Resources.cs" />
     <Compile Include="Common\Routes.cs" />
+    <Compile Include="Consoles\ConsoleUtil.cs" />
+    <Compile Include="Consoles\SignalConnection.cs" />
+    <Compile Include="Controllers\ConsoleController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
@@ -108,6 +128,7 @@
     </Compile>
     <Compile Include="Infrastructure\ControllerInstaller.cs" />
     <Compile Include="Infrastructure\AuthenticationInstaller.cs" />
+    <Compile Include="Infrastructure\ImporterInstaller.cs" />
     <Compile Include="Infrastructure\ServiceInstaller.cs" />
     <Compile Include="Models\IndexModel.cs" />
     <Compile Include="Models\LayoutModels.cs" />
@@ -258,6 +279,8 @@
     <Content Include="Scripts\jquery-ui-1.8.22.js" />
     <Content Include="Scripts\jquery-ui-1.8.22.min.js" />
     <Content Include="Scripts\jquery-ui-datepicker-es.js" />
+    <Content Include="Scripts\jquery.signalR-0.5.3.js" />
+    <Content Include="Scripts\jquery.signalR-0.5.3.min.js" />
     <Content Include="Scripts\jquery.ui.extensions.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -295,6 +318,9 @@
     <Content Include="Views\Shared\List.cshtml" />
     <Content Include="Views\Place\NearPlaces.cshtml" />
     <Content Include="Views\Place\InfoView.cshtml" />
+    <Content Include="Views\Place\Map.cshtml" />
+    <Content Include="Views\Home\Console.cshtml" />
+    <Content Include="Views\Console\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
@@ -335,6 +361,10 @@
     <ProjectReference Include="..\Fulbaso.Helpers\Fulbaso.Helpers.csproj">
       <Project>{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}</Project>
       <Name>Fulbaso.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fulbaso.Importer\Fulbaso.Importer.csproj">
+      <Project>{072ACEF0-EA58-4FBA-AF5D-B4209EF157A2}</Project>
+      <Name>Fulbaso.Importer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

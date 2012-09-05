@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using Fulbaso.Common;
 using Fulbaso.Helpers;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Web
 {
     public static class InterfaceUtil
     {

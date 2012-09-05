@@ -105,7 +105,9 @@ namespace Fulbaso.EntityFramework.Logic
                 c.exp.Contains(value));
             count = query.Count();
 
-            query = query.OrderBy(q => q.exp.ToUpper().IndexOf(value.ToUpper())).Skip(init).Take(rows);
+            query = query.OrderBy(q => q.exp.ToUpper().IndexOf(value.ToUpper())).Skip(init);
+
+            if (rows > 0) query = query.Take(rows);
 
             return GetFromView(query);
         }
@@ -130,12 +132,20 @@ namespace Fulbaso.EntityFramework.Logic
             return list;
         }
 
-        public IEnumerable<Place> GetList(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int init, int rows, out int count)
+        public IEnumerable<Place> GetList(string value, int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, int init, int rows, out int count)
         {
             var places = CreateQuery(players, floorTypes, locations, indoor, lighted);
-            count = places.Count();
 
-            places = places.OrderBy(q => q.Name).Skip(init).Take(rows);
+            if (!string.IsNullOrEmpty(value))
+            {
+                var query = EntityUtil.Context.PlaceViews.Where(c => c.exp.Contains(value)).Select(p => p.ID);
+                places = places.WhereContains(p => p.Id, query);
+            }
+
+            count = places.Count();
+            places = places.OrderBy(q => q.Name).Skip(init);
+
+            if (rows > 0) places = places.Take(rows);
 
             var list = (from i in places
                         select new Place

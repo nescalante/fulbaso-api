@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using Fulbaso.Common;
 using Fulbaso.Contract;
 
-namespace Fulbaso.UI.Controllers
+namespace Fulbaso.Web.Controllers
 {
     public class SearchController : BaseController
     {

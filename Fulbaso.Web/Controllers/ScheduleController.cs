@@ -4,7 +4,7 @@ using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 
-namespace Fulbaso.UI.Controllers
+namespace Fulbaso.Web.Controllers
 {
     [Authorize]
     public class ScheduleController : BaseController

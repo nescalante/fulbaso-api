@@ -6,7 +6,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web.UI;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Web
 {
     /// <summary>
     /// ResourceHtmlHelpers - Extends Html class with internationalization support methods.
@@ -26,7 +26,7 @@ namespace Fulbaso.UI
     /// </example>
     public static class ResourceHtmlHelpers
     {
-        static string NamespaceRoot { get { return "Fulbaso.UI"; } }
+        static string NamespaceRoot { get { return "Fulbaso.Web"; } }
 
         /// <summary>
         /// Returns the value of the request string resource from the local resource file. 

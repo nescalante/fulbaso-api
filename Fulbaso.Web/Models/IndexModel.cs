@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Fulbaso.Contract;
 
-namespace Fulbaso.UI.Models
+namespace Fulbaso.Web.Models
 {
     public class IndexModel
     {

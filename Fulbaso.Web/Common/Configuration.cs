@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Web
 {
     public class Configuration
     {

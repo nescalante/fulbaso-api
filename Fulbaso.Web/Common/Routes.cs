@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Web
 {
     internal static class Routes
     {
@@ -45,7 +45,8 @@ namespace Fulbaso.UI
             routes.MapRoute("ConfigurationAddRoute", "admin/{place}/config/{court}/agregar", new { controller = "Configuration", action = "Add", });
 
             // misc
-            routes.MapRoute("MapRoute", "mapa", new { controller = "Places", action = "Map" });
+            routes.MapRoute("MapRoute", "mapa", new { controller = "Place", action = "Map" });
+            routes.MapRoute("ConsoleRoute", "consola", new { controller = "Console", action = "Index" });
             routes.MapRoute("AdminRoute", "admin/{place}", new { controller = "Home", action = "Admin" });
             routes.MapRoute("Default", "{controller}/{action}", new { controller = "Home", action = "Index" });
         }

@@ -4,7 +4,7 @@ using Fulbaso.Common;
 using Fulbaso.Contract;
 using Fulbaso.Common.Security;
 
-namespace Fulbaso.UI.Controllers
+namespace Fulbaso.Web.Controllers
 {
     [Authorize]
     public class CourtController : BaseController

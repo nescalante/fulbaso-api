@@ -1,26 +1,25 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Fulbaso.Common.Security;
-using Fulbaso.Facebook.Logic;
+using Fulbaso.Importer;
 
 namespace Fulbaso.Web
 {
-    public class AuthenticationInstaller : IWindsorInstaller
+    public class ImporterInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-             AllTypes
-              .FromAssemblyContaining<FacebookService>()
-              .Where(t => t.Name.StartsWith("Facebook"))
+             Classes.FromAssemblyContaining<IImporter>()
+              .BasedOn<IImporter>()
+              .WithServiceFirstInterface()
               .LifestylePerThread()
             );
 
             container.Register(
-             Classes
-              .FromAssemblyContaining<UserAuthentication>()
-              .Where(t => t.Name.EndsWith("Authentication"))
+             Classes.FromThisAssembly()
+              .BasedOn<IConsoleOutput>()
+              .WithServiceFirstInterface()
               .LifestylePerThread()
             );
         }

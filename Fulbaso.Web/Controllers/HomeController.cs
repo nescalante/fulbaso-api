@@ -4,11 +4,11 @@ using System.Web.Mvc;
 using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Common;
 using Fulbaso.Contract;
-using Fulbaso.UI.Models;
+using Fulbaso.Web.Models;
 using System;
 using Fulbaso.Common.Security;
 
-namespace Fulbaso.UI.Controllers
+namespace Fulbaso.Web.Controllers
 {
     public class HomeController : BaseController
     {
@@ -79,9 +79,25 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Error404()
+        public ActionResult Error404(string aspxerrorpath)
         {
-            return View("404");
+            if (!string.IsNullOrEmpty(aspxerrorpath))
+            {
+                var page = _placeService.ValidatePage(aspxerrorpath.Split('/').Last());
+
+                if (!string.IsNullOrEmpty(page))
+                {
+                    return RedirectToAction("ItemView", "Place", new { place = page });
+                }
+                else
+                {
+                    return RedirectToAction("Error404");
+                }
+            }
+            else
+            {
+                return View("404");
+            }
         }
         
         [HttpGet]
@@ -115,13 +131,14 @@ namespace Fulbaso.UI.Controllers
 
         private IEnumerable<Place> GetPlacesList(int init, string q, string j, string s, string l, bool? ind, bool? lig, out int count)
         {
+            var query = q == "*" ? string.Empty : q;
+
             if (j != null || s != null || l != null || ind != null || lig != null)
             {
-                return _placeService.GetList(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, init, Configuration.RowsPerRequest, out count);
+                return _placeService.GetList(query, InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, init, Configuration.RowsPerRequest, out count);
             }
             else
             {
-                var query = q == "*" ? string.Empty : q;
                 return _placeService.GetList(query, init, Configuration.RowsPerRequest, out count);
             }
         }

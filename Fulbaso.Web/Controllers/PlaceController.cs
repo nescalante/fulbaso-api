@@ -4,9 +4,9 @@ using System.Web.Mvc;
 using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
-using Fulbaso.UI.Models;
+using Fulbaso.Web.Models;
 
-namespace Fulbaso.UI.Controllers
+namespace Fulbaso.Web.Controllers
 {
     public class PlaceController : BaseController
     {
@@ -86,9 +86,9 @@ namespace Fulbaso.UI.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetNearestFromLocation(decimal lat, decimal lng)
+        public ActionResult GetNearestFromLocation(decimal lat, decimal lng, double distance = 30)
         {
-            return Json(_placeService.GetNearest(lat, lng, 0, 30), JsonRequestBehavior.AllowGet);
+            return Json(_placeService.GetNearest(lat, lng, 0, distance), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -101,6 +101,12 @@ namespace Fulbaso.UI.Controllers
         public ActionResult InfoView(Place placeModel)
         {
             return View(placeModel);
+        }
+
+        [HttpGet]
+        public ActionResult Map()
+        {
+            return View();
         }
 
         [HttpGet]

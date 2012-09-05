@@ -1,5 +1,5 @@
 ﻿@using Fulbaso.Contract
-@using Fulbaso.UI
+@using Fulbaso.Web
 
 @model IEnumerable<Client>
 
@@ -72,6 +72,12 @@
                             }
                         </tbody>
                     </table>
+                }
+                else
+                {
+                    <div class="alert alert-error">
+                        Aún no hay clientes cargados.
+                    </div>
                 }
             </div>
         </div> 

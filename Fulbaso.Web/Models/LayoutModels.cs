@@ -1,4 +1,4 @@
-﻿namespace Fulbaso.UI.Models
+﻿namespace Fulbaso.Web.Models
 {
     public class ChangePasswordModel
     {

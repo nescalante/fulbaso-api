@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Fulbaso.Contract;
 
-namespace Fulbaso.UI.Models
+namespace Fulbaso.Web.Models
 {
     public class PlaceModel
     {

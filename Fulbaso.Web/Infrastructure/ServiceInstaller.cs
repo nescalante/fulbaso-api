@@ -7,7 +7,7 @@ using Castle.Windsor;
 using Fulbaso.Authentication.Logic;
 using Fulbaso.EntityFramework.Logic;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Web
 {
     public class ServiceInstaller : IWindsorInstaller
     {

@@ -1,11 +1,14 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
 using Fulbaso.Common;
+using Fulbaso.Web.Console;
 using log4net;
+using SignalR;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Web
 {
     public class MvcApplication : HttpApplication, IContainerAccessor
     {
@@ -25,6 +28,7 @@ namespace Fulbaso.UI
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapConnection<SignalConnection>("echo", "echo/{*operation}");
             routes.Map();
         }
 
@@ -40,13 +44,20 @@ namespace Fulbaso.UI
             InitializeDependencies();
         }
 
+        protected void Application_Error()
+        {
+            Exception exception = this.Server.GetLastError();
+            //_log.Error(exception.Message, exception);
+        }
+
         private void InitializeDependencies()
         {
             _container = new WindsorContainer();
             _container.Install(
                 new ServiceInstaller(),
                 new AuthenticationInstaller(),
-                new ControllerInstaller()
+                new ControllerInstaller(),
+                new ImporterInstaller()
             );
 
             WindsorControllerFactory controllerFactory = new WindsorControllerFactory(_container.Kernel);

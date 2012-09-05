@@ -7,7 +7,7 @@ using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Web
 {
     public static class CoreUtil
     {

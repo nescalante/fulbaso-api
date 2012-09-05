@@ -1,5 +1,5 @@
-﻿@using Fulbaso.UI
-@using Fulbaso.UI.Models
+﻿@using Fulbaso.Web
+@using Fulbaso.Web.Models
 
 @model IndexModel
 
@@ -22,7 +22,7 @@
                 {
                     using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
                     {
-                        <input id="searchtext" name="searchtext" class="input-large" type="text" autocomplete="off" value="@ViewBag.Query" />
+                        <input id="searchtext" name="searchtext" class="input-xlarge" type="text" autocomplete="off" value="@ViewBag.Query" />
                         <button class="btn" type="submit">Buscar</button>
                     }
                 }
@@ -46,12 +46,12 @@
             </div>
         </div>
         <div class="span4 hidden-phone">
-            <div id="mapheader" style="display:none; margin-bottom: 10px;">Navegá el mapa y buscá la cancha que te quede más cómoda. Hace click @Html.ActionLink("acá", "Map", "Places") para agrandar el mapa.</div>
+            <div id="mapheader" style="display:none; margin-bottom: 10px;">Navegá el mapa y buscá la cancha que te quede más cómoda. Hace click @Html.ActionLink("acá", "Map", "Place") para agrandar el mapa.</div>
             <div id="map_canvas" style="min-height: 350px; display:none; margin-bottom: 20px;"></div>
             <div class="fb-like-box" data-href="http://www.facebook.com/platform" data-height="400" data-show-faces="true" data-stream="false" data-header="true"></div>
         </div>
         <div class="span4 visible-phone">
-            <p>Navegá el mapa de canchas haciendo click @Html.ActionLink("acá", "Map", "Places").</p>
+            <p>Navegá el mapa de canchas haciendo click @Html.ActionLink("acá", "Map", "Place").</p>
         </div>
     </div>
 </div>

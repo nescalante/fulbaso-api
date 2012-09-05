@@ -8,7 +8,7 @@ using System.Web.Routing;
 using System.Collections.Generic;
 using Fasterflect;
 
-namespace Fulbaso.UI
+namespace Fulbaso.Web
 {
     public static class HtmlExtensions
     {
