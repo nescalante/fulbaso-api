@@ -39,13 +39,16 @@
             f.map.markFrom("@Url.Action("GetNearestFromLocation", "Place")?distance=0&lat=" + position.coords.latitude + "&lng=" + position.coords.longitude, "@Url.Content("~")img/sport_soccer.png");
         });
 
-        $(window).bind('resize', function() {
+        function resize() {
             if ( $(window).width() < 980 ) {
                 $("#map_canvas").height(($(window).height()-50)+"px")
             }
             else {
                 $("#map_canvas").height(($(window).height()-280)+"px")
             }
-        });
+        }
+
+        $(window).bind('resize', resize);
+        resize();
     });
 </script>
