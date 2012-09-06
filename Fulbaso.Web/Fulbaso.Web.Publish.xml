@@ -20,7 +20,7 @@
     <file relUrl="bin/Fulbaso.Helpers.dll" publishTime="08/31/2012 19:31:01" />
     <file relUrl="Views/Web.config" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Content/themes/base/jquery.ui.selectable.css" publishTime="08/31/2012 11:43:54" />
-    <file relUrl="bin/Fulbaso.Importer.dll" publishTime="09/04/2012 16:54:31" />
+    <file relUrl="bin/Fulbaso.Importer.dll" publishTime="09/05/2012 16:07:39" />
     <file relUrl="Content/themes/base/minified/images/ui-icons_222222_256x240.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="css/base/jquery.ui.tabs.css" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Scripts/jquery.validate.js" publishTime="08/31/2012 11:43:54" />
@@ -31,18 +31,18 @@
     <file relUrl="Content/bootstrap.css" publishTime="09/02/2012 21:33:08" />
     <file relUrl="css/base/images/ui-bg_flat_75_ffffff_40x100.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="bin/System.Web.Razor.dll" publishTime="08/31/2012 11:43:55" />
-    <file relUrl="Views/Place/InfoView.cshtml" publishTime="09/04/2012 16:07:10" />
+    <file relUrl="Views/Place/InfoView.cshtml" publishTime="09/05/2012 15:17:57" />
     <file relUrl="css/base/images/ui-icons_888888_256x240.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="img/telephone.png" publishTime="08/31/2012 11:43:55" />
-    <file relUrl="Views/Home/Index.cshtml" publishTime="09/04/2012 16:07:11" />
+    <file relUrl="Views/Home/Index.cshtml" publishTime="09/05/2012 14:46:40" />
     <file relUrl="Content/themes/base/minified/images/ui-icons_2e83ff_256x240.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Views/Court/Edit.cshtml" publishTime="09/04/2012 16:07:10" />
     <file relUrl="css/base/images/ui-bg_glass_65_ffffff_1x400.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Scripts/modernizr-1.7.min.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="css/base/images/ui-bg_glass_75_dadada_1x400.png" publishTime="08/31/2012 11:43:55" />
-    <file relUrl="bin/en/Fulbaso.Web.resources.dll" publishTime="09/04/2012 17:01:08" />
-    <file relUrl="Views/Shared/Error.cshtml" publishTime="09/04/2012 11:56:05" />
-    <file relUrl="bin/Fulbaso.Common.pdb" publishTime="09/04/2012 11:31:50" />
+    <file relUrl="bin/en/Fulbaso.Web.resources.dll" publishTime="09/05/2012 17:09:18" />
+    <file relUrl="Views/Shared/Error.cshtml" publishTime="09/04/2012 17:33:54" />
+    <file relUrl="bin/Fulbaso.Common.pdb" publishTime="09/05/2012 16:07:41" />
     <file relUrl="Content/themes/base/minified/jquery.ui.progressbar.min.css" publishTime="08/31/2012 11:43:54" />
     <file relUrl="css/base/images/ui-bg_glass_75_e6e6e6_1x400.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="css/base/jquery.ui.slider.css" publishTime="08/31/2012 11:43:55" />
@@ -67,26 +67,26 @@
     <file relUrl="Content/themes/base/images/ui-icons_2e83ff_256x240.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Content/themes/base/minified/jquery.ui.tabs.min.css" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Scripts/bootstrap.js" publishTime="09/02/2012 21:33:08" />
-    <file relUrl="bin/Fulbaso.Authentication.Logic.pdb" publishTime="09/04/2012 11:31:53" />
+    <file relUrl="bin/Fulbaso.Authentication.Logic.pdb" publishTime="09/05/2012 17:09:13" />
     <file relUrl="css/base/jquery.ui.button.css" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Scripts/MicrosoftMvcAjax.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="bin/System.Web.WebPages.Deployment.dll" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Content/themes/base/jquery.ui.all.css" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Views/Schedule/Index.cshtml" publishTime="09/04/2012 16:07:11" />
     <file relUrl="css/base/images/ui-icons_2e83ff_256x240.png" publishTime="08/31/2012 11:43:55" />
-    <file relUrl="Views/Shared/Item.cshtml" publishTime="09/04/2012 16:07:10" />
+    <file relUrl="Views/Shared/Item.cshtml" publishTime="09/05/2012 14:07:48" />
     <file relUrl="img/cancel.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="img/phone-icon.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="css/base/jquery.ui.theme.css" publishTime="08/31/2012 11:43:55" />
     <file relUrl="img/phone.png" publishTime="08/31/2012 11:43:55" />
-    <file relUrl="Scripts/f.js" publishTime="09/03/2012 15:03:28" />
-    <file relUrl="bin/Fulbaso.EntityFramework.Logic.pdb" publishTime="09/04/2012 11:31:52" />
+    <file relUrl="Scripts/f.js" publishTime="09/05/2012 14:52:18" />
+    <file relUrl="bin/Fulbaso.EntityFramework.Logic.pdb" publishTime="09/05/2012 17:09:12" />
     <file relUrl="Scripts/jquery-1.7.2.min.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Global.asax" publishTime="09/04/2012 16:07:10" />
     <file relUrl="bin/SquishIt.Framework.dll" publishTime="08/31/2012 11:59:48" />
     <file relUrl="css/base/images/ui-icons_454545_256x240.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="bin/SignalR.xml" publishTime="09/04/2012 15:50:28" />
-    <file relUrl="bin/Fulbaso.Contract.dll" publishTime="09/03/2012 19:17:08" />
+    <file relUrl="bin/Fulbaso.Contract.dll" publishTime="09/05/2012 16:07:37" />
     <file relUrl="Scripts/jquery.ui.extensions.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="bin/Castle.Windsor.xml" publishTime="08/31/2012 11:59:40" />
     <file relUrl="bin/log4net.dll" publishTime="08/31/2012 11:59:50" />
@@ -102,9 +102,9 @@
     <file relUrl="bin/Fulbaso.Helpers.pdb" publishTime="08/31/2012 19:31:01" />
     <file relUrl="Content/themes/base/jquery.ui.dialog.css" publishTime="08/31/2012 11:43:54" />
     <file relUrl="bin/Newtonsoft.Json.xml" publishTime="08/31/2012 17:23:52" />
-    <file relUrl="Views/Shared/PlaceInfo.cshtml" publishTime="09/04/2012 16:07:01" />
+    <file relUrl="Views/Shared/PlaceInfo.cshtml" publishTime="09/05/2012 14:07:57" />
     <file relUrl="css/base/images/ui-bg_glass_55_fbf9ee_1x400.png" publishTime="08/31/2012 11:43:55" />
-    <file relUrl="bin/Fulbaso.Web.dll" publishTime="09/04/2012 17:01:08" />
+    <file relUrl="bin/Fulbaso.Web.dll" publishTime="09/05/2012 17:09:17" />
     <file relUrl="Content/themes/base/minified/images/ui-bg_glass_55_fbf9ee_1x400.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Content/themes/base/images/ui-icons_222222_256x240.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Content/themes/base/minified/images/ui-icons_cd0a0a_256x240.png" publishTime="08/31/2012 11:43:54" />
@@ -114,7 +114,7 @@
     <file relUrl="Scripts/jquery-1.7.2-vsdoc.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="css/base/jquery.ui.core.css" publishTime="08/31/2012 11:43:55" />
     <file relUrl="bin/SignalR.dll" publishTime="09/04/2012 15:50:28" />
-    <file relUrl="bin/Fulbaso.Common.dll" publishTime="09/04/2012 11:31:50" />
+    <file relUrl="bin/Fulbaso.Common.dll" publishTime="09/05/2012 16:07:41" />
     <file relUrl="css/base/jquery.ui.resizable.css" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Content/themes/base/minified/images/ui-bg_glass_75_e6e6e6_1x400.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="bin/Jurassic.dll" publishTime="08/31/2012 11:59:47" />
@@ -130,11 +130,11 @@
     <file relUrl="img/user.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Content/themes/base/images/ui-bg_glass_75_e6e6e6_1x400.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Content/themes/base/minified/jquery.ui.dialog.min.css" publishTime="08/31/2012 11:43:54" />
-    <file relUrl="css/site.css" publishTime="09/03/2012 16:53:26" />
-    <file relUrl="Views/Home/Places.cshtml" publishTime="09/04/2012 16:07:10" />
+    <file relUrl="css/site.css" publishTime="09/05/2012 15:29:10" />
+    <file relUrl="Views/Home/Places.cshtml" publishTime="09/05/2012 16:31:08" />
     <file relUrl="Content/images/glyphicons-halflings-white.png" publishTime="09/02/2012 21:33:08" />
     <file relUrl="Content/themes/base/jquery.ui.theme.css" publishTime="08/31/2012 11:43:54" />
-    <file relUrl="bin/Fulbaso.Facebook.Logic.pdb" publishTime="09/03/2012 19:17:10" />
+    <file relUrl="bin/Fulbaso.Facebook.Logic.pdb" publishTime="09/05/2012 16:07:39" />
     <file relUrl="Scripts/jquery.unobtrusive-ajax.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Content/themes/base/minified/images/ui-bg_glass_75_dadada_1x400.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Content/themes/base/minified/images/ui-bg_flat_75_ffffff_40x100.png" publishTime="08/31/2012 11:43:54" />
@@ -158,18 +158,18 @@
     <file relUrl="Views/Configuration/Index.cshtml" publishTime="09/04/2012 16:07:10" />
     <file relUrl="Scripts/jquery.validate.unobtrusive.min.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="img/frontnav.png" publishTime="08/31/2012 11:43:55" />
-    <file relUrl="Views/Shared/_Layout.cshtml" publishTime="09/04/2012 16:24:03" />
+    <file relUrl="Views/Shared/_Layout.cshtml" publishTime="09/05/2012 17:20:02" />
     <file relUrl="Content/themes/base/minified/images/ui-bg_glass_95_fef1ec_1x400.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Views/Client/Index.cshtml" publishTime="09/04/2012 16:07:11" />
     <file relUrl="img/soccer-4-icon.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Content/themes/base/images/ui-icons_cd0a0a_256x240.png" publishTime="08/31/2012 11:43:54" />
-    <file relUrl="Views/Place/View.cshtml" publishTime="09/04/2012 16:07:11" />
-    <file relUrl="bin/Fulbaso.Contract.pdb" publishTime="09/03/2012 19:17:08" />
+    <file relUrl="Views/Place/View.cshtml" publishTime="09/05/2012 14:55:42" />
+    <file relUrl="bin/Fulbaso.Contract.pdb" publishTime="09/05/2012 16:07:37" />
     <file relUrl="bin/Fulbaso.EntityFramework.pdb" publishTime="08/31/2012 11:59:35" />
     <file relUrl="Views/Search/Schedule.cshtml" publishTime="09/04/2012 16:07:10" />
     <file relUrl="Content/themes/base/jquery.ui.accordion.css" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Scripts/MicrosoftMvcValidation.js" publishTime="08/31/2012 11:43:54" />
-    <file relUrl="bin/Fulbaso.EntityFramework.Logic.dll" publishTime="09/04/2012 11:31:52" />
+    <file relUrl="bin/Fulbaso.EntityFramework.Logic.dll" publishTime="09/05/2012 17:09:12" />
     <file relUrl="Content/themes/base/images/ui-bg_flat_0_aaaaaa_40x100.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="bin/Castle.Core.xml" publishTime="08/31/2012 11:59:40" />
     <file relUrl="Content/themes/base/minified/jquery.ui.theme.min.css" publishTime="08/31/2012 11:43:54" />
@@ -178,7 +178,7 @@
     <file relUrl="css/base/jquery.ui.all.css" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Content/themes/base/minified/images/ui-icons_454545_256x240.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Content/themes/base/minified/jquery.ui.resizable.min.css" publishTime="08/31/2012 11:43:54" />
-    <file relUrl="Views/Place/Map.cshtml" publishTime="09/04/2012 12:17:36" />
+    <file relUrl="Views/Place/Map.cshtml" publishTime="09/05/2012 17:22:17" />
     <file relUrl="Content/themes/base/minified/jquery.ui.core.min.css" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Views/Court/Index.cshtml" publishTime="09/04/2012 16:07:10" />
     <file relUrl="bin/Yahoo.Yui.Compressor.dll" publishTime="08/31/2012 11:59:48" />
@@ -186,7 +186,7 @@
     <file relUrl="Content/themes/base/jquery.ui.slider.css" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Content/themes/base/images/ui-icons_454545_256x240.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="Scripts/jquery.signalR-0.5.3.min.js" publishTime="09/04/2012 15:50:37" />
-    <file relUrl="bin/Fulbaso.Web.pdb" publishTime="09/04/2012 17:01:08" />
+    <file relUrl="bin/Fulbaso.Web.pdb" publishTime="09/05/2012 17:09:17" />
     <file relUrl="Scripts/jquery.validate.unobtrusive.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="bin/AjaxMin.dll" publishTime="08/31/2012 11:59:46" />
     <file relUrl="bin/System.Web.WebPages.Razor.dll" publishTime="08/31/2012 11:43:55" />
@@ -194,7 +194,7 @@
     <file relUrl="Scripts/MicrosoftAjax.debug.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="css/base/jquery.ui.base.css" publishTime="08/31/2012 11:43:55" />
     <file relUrl="bin/Facebook.xml" publishTime="08/31/2012 11:59:37" />
-    <file relUrl="bin/Fulbaso.Authentication.Logic.dll" publishTime="09/04/2012 11:31:53" />
+    <file relUrl="bin/Fulbaso.Authentication.Logic.dll" publishTime="09/05/2012 17:09:13" />
     <file relUrl="bin/SignalR.Hosting.AspNet.dll" publishTime="09/04/2012 15:50:28" />
     <file relUrl="img/bullet_go.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="bin/SignalR.Hosting.Common.xml" publishTime="09/04/2012 15:50:28" />
@@ -215,7 +215,7 @@
     <file relUrl="Views/Search/Advanced.cshtml" publishTime="09/04/2012 16:07:11" />
     <file relUrl="bin/System.Web.Helpers.dll" publishTime="08/31/2012 11:43:55" />
     <file relUrl="Content/bootstrap-responsive.css" publishTime="09/02/2012 21:33:08" />
-    <file relUrl="bin/Fulbaso.Facebook.Logic.dll" publishTime="09/03/2012 19:17:10" />
+    <file relUrl="bin/Fulbaso.Facebook.Logic.dll" publishTime="09/05/2012 16:07:39" />
     <file relUrl="bin/Fasterflect.dll" publishTime="08/31/2012 11:59:46" />
     <file relUrl="css/base/images/ui-bg_flat_0_aaaaaa_40x100.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="img/404.jpg" publishTime="09/03/2012 12:00:54" />
@@ -225,7 +225,7 @@
     <file relUrl="bin/Newtonsoft.Json.dll" publishTime="08/31/2012 17:23:52" />
     <file relUrl="Content/themes/base/minified/images/ui-bg_flat_0_aaaaaa_40x100.png" publishTime="08/31/2012 11:43:54" />
     <file relUrl="css/base/images/ui-icons_222222_256x240.png" publishTime="08/31/2012 11:43:55" />
-    <file relUrl="bin/Fulbaso.Importer.pdb" publishTime="09/04/2012 16:54:31" />
+    <file relUrl="bin/Fulbaso.Importer.pdb" publishTime="09/05/2012 16:07:39" />
     <file relUrl="Scripts/jquery.validate.min.js" publishTime="08/31/2012 11:43:54" />
     <file relUrl="css/base/images/ui-icons_cd0a0a_256x240.png" publishTime="08/31/2012 11:43:55" />
     <file relUrl="img/map-icon.png" publishTime="08/31/2012 11:43:55" />
