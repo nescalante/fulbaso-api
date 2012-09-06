@@ -37,6 +37,7 @@ namespace Fulbaso.Web.Controllers
             var floors = InterfaceUtil.GetInts(collection, "floor");
             var locations = collection.AllKeys.Where(k => k.StartsWith("location"))
                 .Select(k => collection[k]).Concat(new[] { collection["searchlocation"] }).ToArray();
+            var tags = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null).Select(s => (byte)s);
             var indoor = Convert.ToBoolean(collection["indoor"].Split(',').First());
             var lighted = Convert.ToBoolean(collection["lighted"].Split(',').First());
 
@@ -45,16 +46,16 @@ namespace Fulbaso.Web.Controllers
 
             if (hourparsed)
             {
-                return RedirectToAction("Schedule", "Search", new { d = dateparsed ? date.ToShortDateString() : null, h = hourparsed ? (int?)hour : null, j = string.Join(";", players), s = string.Join(";", floors), l = string.Join(";", locations), ind = indoor, lig = lighted, });
+                return RedirectToAction("Schedule", "Search", new { d = dateparsed ? date.ToShortDateString() : null, h = hourparsed ? (int?)hour : null, j = string.Join(";", players), s = string.Join(";", floors), l = string.Join(";", locations), t = string.Join(";", tags), ind = indoor, lig = lighted, });
             }
             else
             {
-                return RedirectToAction("Index", "Home", new { j = string.Join(";", players), s = string.Join(";", floors), l = string.Join(";", locations), ind = indoor, lig = lighted, });
+                return RedirectToAction("Index", "Home", new { j = string.Join(";", players), s = string.Join(";", floors), l = string.Join(";", locations), t = string.Join(";", tags), ind = indoor, lig = lighted, });
             }
         }
 
         [HttpGet]
-        public ActionResult Schedule(string d, int h, string q, string p, string j, string s, string l, bool? ind, bool? lig)
+        public ActionResult Schedule(string d, int h, string q, string p, string j, string s, string l, string t, bool? ind, bool? lig)
         {
             DateTime date;
             var parsed = DateTime.TryParse(d, out date);
@@ -69,7 +70,7 @@ namespace Fulbaso.Web.Controllers
                 if (!int.TryParse(p, out currentPage))
                     currentPage = 1;
 
-            var model = _courtBookService.GetAvailable(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), ind ?? false, lig ?? false, date, h, currentPage, Configuration.RowsPerRequest, out count);
+            var model = _courtBookService.GetAvailable(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), InterfaceUtil.GetBytes(t), ind ?? false, lig ?? false, date, h, currentPage, Configuration.RowsPerRequest, out count);
             ViewBag.Places = count;
 
             return View(model);

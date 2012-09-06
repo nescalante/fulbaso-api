@@ -360,6 +360,20 @@ namespace Fulbaso.EntityFramework.Logic
                     }).ToList();
         }
 
+        internal static IQueryable<PlaceEntity> GetPlacesOrderedByLocation(decimal lat, decimal lng)
+        {
+            var pi = (decimal)Math.PI;
+
+            return from p in EntityUtil.Context.Places.Where(i => i.MapUa != null && i.MapVa != null && i.MapUa != lat && i.MapVa != lng)
+                   let la1 = (decimal)p.MapUa
+                   let lo1 = (decimal)p.MapVa
+                   let la2 = (decimal)lat
+                   let lo2 = (decimal)lng
+                   let dist = (SqlFunctions.Acos(SqlFunctions.Sin(la1 * pi / 180M) * SqlFunctions.Sin(la2 * pi / 180M) + SqlFunctions.Cos(la1 * pi / 180M) * SqlFunctions.Cos(la2 * pi / 180M) * SqlFunctions.Cos((lo1 - lo2) * pi / 180M)) / Math.PI * 180) * 60.0 * 1.1515 * 1.609344
+                   orderby dist
+                   select p;
+        }
+
         public bool PlaceHasAdmin(int placeId)
         {
             return EntityUtil.Context.Places.Where(p => p.Id == placeId && p.Admins.Any()).Any();

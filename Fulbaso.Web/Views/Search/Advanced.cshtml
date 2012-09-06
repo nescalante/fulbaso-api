@@ -81,13 +81,20 @@
                     <div class="control-group">
                         <label class="control-label" for="moreoptions">Otros</label>
                         <div class="controls">
+                            @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
+                            {
+                                <label class="checkbox">
+                                    <input type="checkbox" id="@s" name="@s" />
+                                    @s.GetDescription()
+                                </label>
+                            }
                             <label class="checkbox">
                                 @Html.CheckBox("indoor")
-                                Sólo techadas
+                                Techadas
                             </label>
                             <label class="checkbox">
                                 @Html.CheckBox("lighted")
-                                Sólo iluminadas
+                                Iluminadas
                             </label>
                         </div>
                     </div>

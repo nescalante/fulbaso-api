@@ -11,7 +11,7 @@ namespace Fulbaso.Contract
 
         CourtBook Get(int courtBookId);
 
-        IEnumerable<Court> GetAvailable(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, DateTime date, int hour, int page, int rows, out int count);
+        IEnumerable<Court> GetAvailable(int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, DateTime date, int hour, int page, int rows, out int count);
 
         IEnumerable<CourtBook> GetByCourt(int courtId, DateTime startTime, DateTime endTime);
 

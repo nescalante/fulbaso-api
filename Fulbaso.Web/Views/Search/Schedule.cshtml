@@ -12,6 +12,7 @@
     var players = (Request.QueryString["j"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s));
     var locations = (Request.QueryString["l"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s));
     var floors = (Request.QueryString["s"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s)).Select(i => Convert.ToInt32(i));
+    var tags = (Request.QueryString["t"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s)).Select(i => Convert.ToByte(i));
     var ind = Convert.ToBoolean(Request.QueryString["ind"] ?? "False");
     var lig = Convert.ToBoolean(Request.QueryString["lig"] ?? "False");
     var hour = Convert.ToInt32(Request.QueryString["h"]);
@@ -31,6 +32,11 @@
         if (floors.Count() > 0)
         {
             query += "con " + CoreUtil.GetFloors(floors) + ", ";
+        }
+
+        if (tags.Count() > 0)
+        {
+            query += "con " + CoreUtil.GetTags(tags) + ", ";
         }
 
         if (ind)

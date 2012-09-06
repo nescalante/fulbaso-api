@@ -95,7 +95,7 @@ namespace Fulbaso.EntityFramework.Logic
             return CourtBookService.Get(r => r.CourtId == courtId && (r.StartTime == null || r.StartTime >= startTime) && (r.EndTime == null || r.EndTime <= endTime));
         }
 
-        public IEnumerable<Court> GetAvailable(int[] players, int[] floorTypes, string[] locations, bool indoor, bool lighted, DateTime date, int hour, int page, int rows, out int count)
+        public IEnumerable<Court> GetAvailable(int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, DateTime date, int hour, int page, int rows, out int count)
         {
             // fix blank entries
             locations = locations.Where(l => !string.IsNullOrEmpty(l)).ToArray();
@@ -106,6 +106,11 @@ namespace Fulbaso.EntityFramework.Logic
                         select c;
             if (indoor) query = query.Where(c => c.IsIndoor);
             if (lighted) query = query.Where(c => c.IsLighted);
+            if (tags.Any())
+            {
+                var ints = tags.Select(t => Convert.ToInt32(t));
+                query = query.Where(c => ints.All(t => c.Place.Services.Any(s => s.Service == t)));
+            }
 
             // filter locations
             query = from c in query

@@ -90,7 +90,7 @@
                     <div class="ui-info tags">
                         @foreach (var s in Model.Place.Services)
                         {
-                            <span class="label label-info">@s.GetDescription()</span>
+                            <a href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
                         }
                     </div>
                 }

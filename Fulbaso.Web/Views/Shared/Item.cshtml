@@ -12,23 +12,21 @@
     };    
 }
             
-<a class="place-info" href="@Url.Action("ItemView", "Place", new { place = Model.Page })">
-    <div>
-        <h3>@Html.Raw(InterfaceUtil.GetRemarked(Model.Description, Request.QueryString["q"], "ui-remark ui-corner-all"))</h3>
-        <ul style="margin:0;padding:0;" data-id="@Model.Id">
-        @foreach (var t in text.Where(c => !string.IsNullOrEmpty(c.Text)))
+<div class="place-info" href="@Url.Action("ItemView", "Place", new { place = Model.Page })">
+    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h3>@Html.Raw(InterfaceUtil.GetRemarked(Model.Description, Request.QueryString["q"], "ui-remark ui-corner-all"))</h3></a>
+    <ul style="margin:0;padding:0;" data-id="@Model.Id">
+    @foreach (var t in text.Where(c => !string.IsNullOrEmpty(c.Text)))
+    {
+        <li class="@t.Class">@Html.Raw(InterfaceUtil.GetRemarked(t.Text, Request.QueryString["q"], "ui-remark ui-corner-all"))</li>
+    }
+    @if (Model.Services != null && Model.Services.Count() > 0)
+    {
+        <li class="ui-info tags">
+        @foreach (var s in Model.Services)
         {
-            <li class="@t.Class">@Html.Raw(InterfaceUtil.GetRemarked(t.Text, Request.QueryString["q"], "ui-remark ui-corner-all"))</li>
+            <a href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
         }
-        @if (Model.Services != null && Model.Services.Count() > 0)
-        {
-            <li class="ui-info tags">
-            @foreach (var s in Model.Services)
-            {
-                <span class="label label-info">@s.GetDescription()</span>
-            }
-            </li>
-        }
-        </ul>
-    </div>
-</a>
+        </li>
+    }
+    </ul>
+</div>
