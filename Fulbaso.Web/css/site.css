@@ -6,6 +6,7 @@
 .phone { background-image: url('../img/telephone.png'); }
 .courts { background-image: url('../img/sport_soccer.png'); }
 .tags { background-image: url('../img/tag_blue.png'); background-position: 0 0.5em !important; }
+.tags a:hover { background-color: #3A87AD; }
 .ui-info { color: #000; margin: 2px 0; padding: 2px 0 2px 25px; background-repeat: no-repeat; min-height: 20px; list-style-type: none; background-position: 0 .2em; }
 .ui-remark { background-color: #eef4f5; border: 1px solid #ccc; }
 .noDisplay  { display: none; visibility: hidden; }

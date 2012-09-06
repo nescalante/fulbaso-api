@@ -76,12 +76,17 @@ var f = f || {
                     $.get(reference, function (html) {
                         var container = $("#" + map.id).parent();
                         $(html).hide().appendTo(container).fadeIn();
+
+                        $.each(data, function () {
+                            f.map.mark(this.Item1.Description, this.Item1.MapUa, this.Item1.MapVa, icon, this.Item1);
+                        });
                     });
                 }
-
-                $.each(data, function () {
-                    f.map.mark(this.Item1.Description, this.Item1.MapUa, this.Item1.MapVa, icon, this.Item1);
-                });
+                else {
+                    $.each(data, function () {
+                        f.map.mark(this.Item1.Description, this.Item1.MapUa, this.Item1.MapVa, icon, this.Item1);
+                    });
+                }
             });
         },
         setCenter: function (lat, lng) {
