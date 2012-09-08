@@ -12,7 +12,7 @@
     };    
 }
             
-<div class="place-info" href="@Url.Action("ItemView", "Place", new { place = Model.Page })">
+<div data-id="@Model.Id" data-ua="@Model.MapUa" data-va="@Model.MapVa" class="mapitem place-info" href="@Url.Action("ItemView", "Place", new { place = Model.Page })">
     <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h3>@Html.Raw(InterfaceUtil.GetRemarked(Model.Description, Request.QueryString["q"], "ui-remark ui-corner-all"))</h3></a>
     <ul style="margin:0;padding:0;" data-id="@Model.Id">
     @foreach (var t in text.Where(c => !string.IsNullOrEmpty(c.Text)))

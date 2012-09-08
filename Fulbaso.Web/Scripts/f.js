@@ -4,13 +4,20 @@ var f = f || {
     map: {
         initialize: function (id, lat, lng) {
             if (!map) {
-                var latlng = new google.maps.LatLng(lat, lng);
-                var options = { zoom: 15, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP }
+                var options = { zoom: 15, mapTypeId: google.maps.MapTypeId.ROADMAP }
                 map = new google.maps.Map(document.getElementById(id), options);
-                map.setCenter(latlng);
+                if (lat && lng) {
+                    map.setCenter(new google.maps.LatLng(lat, lng));
+                }
+                else {
+                    map.setCenter(new google.maps.LatLng(-38, -63));
+                    map.setZoom(4);
+                }
             }
 
             map.id = id;
+            map.hover = new Array();
+            map.close = new Array();
 
             return map;
         },
@@ -18,7 +25,6 @@ var f = f || {
             infowindow.open(map, marker);
 
             if (map.lastWindow && map.lastWindow != infowindow) {
-                console.log("closed");
                 map.lastWindow.close();
             }
 
@@ -63,11 +69,17 @@ var f = f || {
                 var container = $("#" + map.id).parent();
                 var infowindow = f.map.getWindow(place, marker);
 
-                container.find(".mapitem[data-id=" + place.Id + "]").hover(function () {
-                    f.map.setCenter($(this).data("ua"), $(this).data("va"));
+                map.hover[place.Id] = function () {
+                    console.log(this);
+                    f.map.setCenter(place.MapUa, place.MapVa);
                     f.map.openWindow(infowindow, marker);
                     return false;
-                }, function () { infowindow.close(); });
+                };
+                map.close[place.Id] = function () {
+                    infowindow.close();
+                }
+
+                container.find(".mapitem[data-id=" + place.Id + "]").hover(map.hover[place.Id], map.close[place.Id]);
             }
         },
         markFrom: function (service, icon, reference) {
@@ -115,6 +127,7 @@ var f = f || {
                 $("#" + id).parent().fadeIn();
                 var container = $("#" + id);
                 $(html).hide().appendTo(container).fadeIn();
+                $(".mapitem").hover(function () { map.hover[$(this).data("id")]() }, function () { map.close[$(this).data("id")]() });
             });
         }
     }
