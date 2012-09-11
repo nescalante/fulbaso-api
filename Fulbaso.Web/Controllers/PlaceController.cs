@@ -6,6 +6,7 @@ using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 using Fulbaso.Web.Models;
 using System.Collections.Generic;
+using Fulbaso.Helpers;
 
 namespace Fulbaso.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [PlaceAuthorize]
+        //[PlaceAuthorize]
         public ActionResult Edit(string place)
         {
             var placeModel = _placeService.Get(place);
@@ -43,9 +44,13 @@ namespace Fulbaso.Web.Controllers
         [PlaceAuthorize]
         public ActionResult Edit(Place placeModel, FormCollection collection)
         {
-            placeModel.Id = Convert.ToInt32(collection["PlaceId"]);
-            placeModel.Services = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null);
+            if (!string.IsNullOrEmpty(collection["LocationJson"]))
+            {
+                var gr = GeocodeResponse.Get(collection["LocationJson"]);
+                placeModel.Location = gr.GetLocation();
+            }
 
+            placeModel.Services = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null);
             _placeService.Update(placeModel);
 
             return RedirectToAction("Admin", "Home", new { place = placeModel.Page });

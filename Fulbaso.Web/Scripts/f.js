@@ -18,6 +18,7 @@ var f = f || {
             map.id = id;
             map.hover = new Array();
             map.close = new Array();
+            map.geocoder = new google.maps.Geocoder();
 
             return map;
         },
@@ -81,6 +82,8 @@ var f = f || {
 
                 container.find(".mapitem[data-id=" + place.Id + "]").hover(map.hover[place.Id], map.close[place.Id]);
             }
+
+            return marker;
         },
         markFrom: function (service, icon, reference) {
             $.getJSON(service, function (data) {
@@ -128,6 +131,33 @@ var f = f || {
                 var container = $("#" + id);
                 $(html).hide().appendTo(container).fadeIn();
                 $(".mapitem").hover(function () { map.hover[$(this).data("id")]() }, function () { map.close[$(this).data("id")]() });
+            });
+        }
+    },
+    geocode: {
+        find: function (location, description, jsonContainer, onchange) {
+            map.geocoder.geocode({ address: location }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var latlng = results[0].geometry.location;
+                    var lat = latlng.lat();
+                    var lng = latlng.lng();
+
+                    if (map.marker) {
+                        map.marker.setMap(null);
+                    }
+                    if (jsonContainer) {
+                        jsonContainer.val(JSON.stringify(results[0].address_components));
+                    }
+
+                    map.marker = f.map.mark(description, lat, lng);
+                    map.marker.setDraggable(true);
+                    map.setCenter(latlng);
+                    map.setZoom(15);
+
+                    if (onchange) {
+                        google.maps.event.addListener(map.marker, 'position_changed', onchange);
+                    }
+                }
             });
         }
     }

@@ -62,6 +62,7 @@
     <Compile Include="Mvc\WindsorControllerFactory.cs" />
     <Compile Include="Mvc\ContainerUtil.cs" />
     <Compile Include="Places\Distance.cs" />
+    <Compile Include="Places\LocationParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Error.Designer.cs">
       <AutoGen>True</AutoGen>

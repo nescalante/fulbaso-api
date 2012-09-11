@@ -28,7 +28,11 @@
             {
                 <fieldset>
                     <legend>General</legend>
-                    @Html.Hidden("PlaceId", Model.Id)
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.MapUa)
+                    @Html.HiddenFor(m => m.MapVa)
+                    @Html.HiddenFor(m => m.Location.Id)
+                    @Html.Hidden("LocationJson")
                     <div class="control-group" style="padding-top: 16px;">
                         <label class="control-label" for="Description">Nombre</label>
                         <div class="controls">
@@ -73,57 +77,20 @@
                         </div>
                     </div>
                     <legend>Ubicación</legend>
-                    <div class="control-group" style="padding-top: 16px;">
-                        <label class="control-label" for="Address">Dirección</label>
-                        <div class="controls">
-                            @Html.TextBoxFor(m => m.Address, new { @class = "input-xxlarge", maxlength = "200", })
-                        </div>
-                    </div>
                     <div class="control-group">
-                        <label class="control-label" for="Location.Id">Localidad</label>
+                        <label class="control-label" for="MapLocation">Dirección</label>
                         <div class="controls">
-                            <select name="Location.Id" id="Location">
-                                @foreach (var l in (ViewBag.Locations as List<IGrouping<int, Location>>))
-                                {
-                                    <optgroup label="@l.First().Region.Description">
-                                        @foreach (var g in l)
-                                        {
-                                            if (g.Id == Model.Location.Id)
-                                            {
-                                                <option value="@g.Id" selected="selected">@g.Description</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@g.Id">@g.Description</option>
-                                            }
-                                        }
-                                    </optgroup>
-                                }
-                            </select>
+                            <div class="input-append" style="margin-bottom: 10px;">
+                                @Html.TextBoxFor(m => m.Address, new { @class = "input-xxlarge", size = "16", maxlength = "200", })
+                                <a id="testlocation" class="btn">Buscar</a>
+                            </div>
+                            <div id="map_canvas" style="height: 300px; width: 100%;"></div>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="HowToArrive">¿Cómo llegar?</label>
                         <div class="controls">
                             @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xxlarge", })
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="MapLocation">Localización (dirección)</label>
-                        <div class="controls">
-                            <div class="input-append">
-                                @Html.TextBoxFor(m => m.MapLocation, new { @class = "input-xxlarge", size = "16", maxlength = "200", })<a id="testlocation" class="btn">Localizar</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="HowToArrive">Coordenadas</label>
-                        <div class="controls">
-                            <div style="margin-bottom: 10px;">
-                                @Html.TextBoxFor(m => m.MapUa, new { maxlength = "50", })<span class="help-inline">Latitud</span>
-                                @Html.TextBoxFor(m => m.MapVa, new { maxlength = "50", })<span class="help-inline">Longitud</span>
-                            </div>
-                            <div id="map_canvas" style="height: 300px; width: 100%;"></div>
                         </div>
                     </div>
                     <div class="form-actions">
@@ -139,31 +106,32 @@
 <script>
     $(function () {
         f.map.initialize("map_canvas");
-        var created = false;
-        $("#map_canvas").slideDown();
-        $("#testlocation").click(function () {
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ 'address': $("#MapLocation").val() }, function (results, status) {
+        
+        @if (Model.MapUa != null && Model.MapVa != null)
+        {
+            <text>
+                map.marker = f.map.mark($("#Description").val(), "@Model.MapUa.ToString().Replace(",", ".")", "@Model.MapVa.ToString().Replace(",", ".")");
+                map.marker.setDraggable(true);
+                map.setCenter(map.marker.getPosition());
+                map.setZoom(15);
+
+                google.maps.event.addListener(map.marker, 'position_changed', localize);
+            </text>
+        }
+
+        function localize() {
+            $('#MapUa').val(map.marker.getPosition().lat().toString().replace(".", ","));
+            $('#MapVa').val(map.marker.getPosition().lng().toString().replace(".", ","));
+            map.geocoder.geocode({ latLng: map.marker.getPosition() }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    var latlng = results[0].geometry.location;
-                    var lat = latlng.lat();
-                    var lng = latlng.lng();
-                    $("#MapUa").val(lat.toString().replace(".", ","));
-                    $("#MapVa").val(lng.toString().replace(".", ","));
-                    map.setCenter(latlng);
-                    map.marker = new google.maps.Marker({ map: map, position: latlng, draggable: true });
-
-                    if (!created) {
-                        $("#map_canvas").slideDown();
-                        created = true;
-
-                        google.maps.event.addListener(map.marker, 'position_changed', function () {
-                            $('#MapUa').val(map.marker.getPosition().lat());
-                            $('#MapVa').val(map.marker.getPosition().lng());
-                        });
-                    }
+                    $("#Address").val(results[0].formatted_address);
+                    $("#LocationJson").val(JSON.stringify(results[0].address_components));
                 }
             });
+        }
+
+        $("#testlocation").click(function () {
+            f.geocode.find($("#Address").val(), $("#Description").val(), $("#LocationJson"), localize);
         });
     });
 </script>

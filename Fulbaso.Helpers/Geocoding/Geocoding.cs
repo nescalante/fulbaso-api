@@ -39,38 +39,10 @@ namespace Fulbaso.Helpers
             // check status and handle errors
             if (topLevelStatus == "OK")
             {
-                var gr = new GeocodeResponse();
                 var results = ((JArray)o["results"]).First();
+                var components = (JArray)results["address_components"];
 
-                foreach (var i in results["address_components"])
-                {
-                    var type = (string)((JArray)i["types"]).First();
-
-                    switch (type)
-                    {
-                        case "street_number":
-                            gr.StreetNumber = (string)i["long_name"];
-                            break;
-                        case "route":
-                            gr.Route = (string)i["long_name"];
-                            break;
-                        case "neighborhood":
-                            gr.Neighborhood = (string)i["long_name"];
-                            break;
-                        case "locality":
-                            gr.Locality = (string)i["long_name"];
-                            break;
-                        case "administrative_area_level_1":
-                            gr.AdministrativeAreaLevel1 = (string)i["long_name"];
-                            break;
-                        case "administrative_area_level_2":
-                            gr.AdministrativeAreaLevel2 = (string)i["long_name"];
-                            break;
-                        case "country":
-                            gr.Country = (string)i["long_name"];
-                            break;
-                    }
-                }
+                var gr = GeocodeResponse.Get(components);
 
                 var location = (JObject)((JObject)results["geometry"])["location"];
 
