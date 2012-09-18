@@ -46,7 +46,7 @@ namespace Fulbaso.Contract
         {
             get
             {
-                return this.Address + ((this.Location != null && this.Location.ToString() != string.Empty) ? (", " + this.Location + (this.Location.Region.ToString() == this.Location.ToString() ? "" : (", " + this.Location.Region))) : string.Empty);
+                return this.MapLocation == null ? this.Address : (this.Address + ((this.Location != null && this.Location.ToString() != string.Empty) ? (", " + this.Location + (this.Location.Region.ToString() == this.Location.ToString() ? "" : (", " + this.Location.Region))) : string.Empty));
             }
         }
 

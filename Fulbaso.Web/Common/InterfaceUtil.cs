@@ -63,16 +63,16 @@ namespace Fulbaso.Web
                 .Select(k => Convert.ToInt32(k.Split('-').Last())).ToArray();
         }
 
-        internal static int[] GetInts(string list)
+        internal static int[] GetInts(string list, char separator)
         {
             int x;
-            return (list ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i) && int.TryParse(i, out x)).Select(i => Convert.ToInt32(i)).ToArray();
+            return (list ?? "").Split(separator).Where(i => !string.IsNullOrEmpty(i) && int.TryParse(i, out x)).Select(i => Convert.ToInt32(i)).ToArray();
         }
 
-        internal static byte[] GetBytes(string list)
+        internal static byte[] GetBytes(string list, char separator)
         {
             int x;
-            return (list ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i) && int.TryParse(i, out x)).Select(i => Convert.ToByte(i)).ToArray();
+            return (list ?? "").Split(separator).Where(i => !string.IsNullOrEmpty(i) && int.TryParse(i, out x)).Select(i => Convert.ToByte(i)).ToArray();
         }
     }
 }

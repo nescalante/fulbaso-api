@@ -5,60 +5,17 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var query = !string.IsNullOrEmpty(Request.QueryString["q"]) && Request.QueryString["q"] != "*" ? ("para \"" + Request.QueryString["q"] + "\"") : "";
     
-    var players = (Request.QueryString["j"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s));
-    var locations = (Request.QueryString["l"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s));
-    var floors = (Request.QueryString["s"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s)).Select(i => Convert.ToInt32(i));
-    var tags = (Request.QueryString["t"] ?? "").Split(';').Where(s => !string.IsNullOrEmpty(s)).Select(i => Convert.ToByte(i));
-    var ind = Convert.ToBoolean(Request.QueryString["ind"] ?? "False");
-    var lig = Convert.ToBoolean(Request.QueryString["lig"] ?? "False");
-    var advanced = false;
-    
-    if (players.Count() > 0 || locations.Count() > 0 || floors.Count() > 0 || tags.Count() > 0 || Request.QueryString["ind"] != null || Request.QueryString["lig"] != null)
-    {
-        advanced = true;
-        
-        if (players.Count() > 0)
-        {
-            query += "para " + InterfaceUtil.GetJoin(players) + " jugadores, ";
-        }
-
-        if (locations.Count() > 0)
-        {
-            query += "en " + InterfaceUtil.GetJoin(locations) + ", ";
-        }
-
-        if (floors.Count() > 0)
-        {
-            query += "con " + CoreUtil.GetFloors(floors) + ", ";
-        }
-
-        if (tags.Count() > 0)
-        {
-            query += "con " + CoreUtil.GetTags(tags) + ", ";
-        }
-
-        if (ind)
-        {
-            query += "techada, ";
-        }
-
-        if (ind)
-        {
-            query += "con luz, ";
-        }
-
-        query = query.Length > 0 ? (query.Substring(0, query.Length - 2) + ".") : "";
-    }
+    var filter = new PlacesFilter(this.Request.QueryString);
 }
 
 <div class="container">
     <div class="row">
         <div class="span8">
             <div style="padding: 0.2em 0px;">
-                <p><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados @query</p>
-                @if (advanced)
+                <p class="visible-phone"><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados@(filter.ToString() != "" ? " " + filter.ToString() : "").</p>
+                <p class="hidden-phone"><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados.</p>
+                @if (filter.IsAdvanced)
                 {
                     <p>Haga click @Html.ActionLink("aquí", "Advanced", "Search") para realizar una nueva búsqueda.</p>
                 }
@@ -70,56 +27,117 @@
         </div>
         <div class="span4">
             <div class="hidden-phone">
-                <div id="map_canvas" style="min-height: 350px; display:none; margin-bottom: 20px;"></div>
+                <h3>Búsqueda rápida</h3>
+                <h4>Jugadores</h4>
+                <ul class="nav nav-pills">
+                    @foreach (var p in new [] { 5, 6, 7, 8, 9, 10, 11 })
+                    {
+                        if (filter.Players.Contains((byte)p))
+                        {
+                            <li class="active"><a href="@Url.Action("Index", "Home", filter.WithoutPlayerOption(p).Route)">@p</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action("Index", "Home", filter.WithPlayerOption(p).Route)">@p</a></li>
+                        }
+                    }
+                </ul>
+                <h4>Tipo de suelo</h4>
+                <ul class="nav nav-pills">
+
+                    @foreach (var f in (IEnumerable<Fulbaso.Helpers.EntityDataObject>)ViewBag.FloorTypes)
+                    {
+                        if (filter.FloorTypes.Contains(f.Id))
+                        {
+                            <li class="active"><a href="@Url.Action("Index", "Home", filter.WithoutFloorType(f.Id).Route)">@f</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action("Index", "Home", filter.WithFloorType(f.Id).Route)">@f</a></li>
+                        }
+                    }
+                </ul>
+                <h4>Características</h4>
+                <ul class="nav nav-pills">
+                    @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
+                    {
+                        if (filter.Tags.Contains((byte)s))
+                        {
+                            <li class="active"><a href="@Url.Action("Index", "Home", filter.WithoutTag((byte)s).Route)">@s.GetDescription()</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action("Index", "Home", filter.WithTag((byte)s).Route)">@s.GetDescription()</a></li>
+                        }
+                    }
+                    <li @(filter.IsIndoor ? "class=active" : "")><a href="@Url.Action("Index", "Home", filter.WithChangedIndoor().Route)">Iluminada</a></li>
+                    <li @(filter.IsLighted ? "class=active" : "")><a href="@Url.Action("Index", "Home", filter.WithChangedLighted().Route)">Techada</a></li>
+                </ul>
+                @if (filter.Locations.Any())
+                {
+                    <h4>Ubicación</h4>
+                    <ul class="nav nav-pills">
+                        @foreach (var l in filter.Locations)
+                        {
+                            <li class="active"><a href="@Url.Action("Index", "Home", filter.WithoutLocation(l).Route)">@l</a></li>
+                        }
+                    </ul>
+                }
             </div>
         </div>
     </div>
 </div>
-
-
 <script>
     $(function () {
-        var last;
-        var html;
+        var last, html, init;
 
         function loadMore() {
-            var init = $(".place-info").length;
-
-            if (init != last) {
-                if (html != null) {
-                    last = init;
-                }
+            if (init != last && html != null) {
+                last = init;
 
                 $("#loadmore").hide();
                 $(html)
                     .hide()
                     .appendTo("#places")
                     .fadeIn();
-                $.get("@Html.Raw(Url.Action("List", "Home", new { q = Request.QueryString["q"], j = Request.QueryString["j"], l = Request.QueryString["l"], s = Request.QueryString["s"], t = Request.QueryString["t"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], }))&init=" + init, function (data) { 
-                    html = data;
-                    $("#loadmore").show();
-
-                    if ($(".place-info").length == @ViewBag.Places) {
-                        $("#loadmore").hide();
-                    }
-                });
+                html = null;
             }
-            else {
-                $("#loadmore").hide();
-            }
+            
+            loadHtml();
         }
 
         $("#loadmore").click(function () {
             loadMore();
         });
 
+        function loadHtml() {
+            if ($(".place-info").length != @ViewBag.Places)
+            {
+                init = $(".place-info").length;
+
+                console.log();
+
+                $.get("@Html.Raw(Url.Action("List", "Home", filter.Route))&init=" + init, function (data) { 
+                    html = data;
+                    $("#loadmore").show();
+
+                    if ($(".place-info").length == @ViewBag.Places) {
+                        $("#loadmore").hide();
+                    }
+                }).error(function () { $("#loadmore").hide(); });
+            }
+            else
+            {
+                $("#loadmore").hide();
+            }
+        }
+
         $(window).scroll(function () {
             if (document.documentElement.clientHeight + $(document).scrollTop() >= document.body.offsetHeight - 100) {
                 loadMore();
             }
         });
-        
+
         loadMore();
     });
 </script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>

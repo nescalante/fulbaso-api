@@ -72,7 +72,7 @@
             <ul>
             @if (init > 1)
             {
-                <li>@Html.ActionLink("«", "Schedule", new { p = 1, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"]})</li>
+                <li>@Html.ActionLink("«", "Schedule", new { p = 1, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], t = Request.QueryString["t"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"]})</li>
             }
             @foreach (var p in Enumerable.Range(init, pages >= pagesCount ? pagesCount : pages))
             {
@@ -82,12 +82,12 @@
                 }
                 else
                 {
-                    <li>@Html.ActionLink(p.ToString(), "Schedule", new { p = p, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"] })</li>
+                    <li>@Html.ActionLink(p.ToString(), "Schedule", new { p = p, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], t = Request.QueryString["t"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"] })</li>
                 }
             }
             @if ((init + pagesCount) <= pages)
             {
-                <li>@Html.ActionLink("»", "Schedule", new { p = pages, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"] })</li>
+                <li>@Html.ActionLink("»", "Schedule", new { p = pages, q = request, j = Request.QueryString["j"], s = Request.QueryString["s"], l = Request.QueryString["l"], t = Request.QueryString["t"], ind = Request.QueryString["ind"], lig = Request.QueryString["lig"], h = Request.QueryString["h"] })</li>
             }
             </ul>
         </div>

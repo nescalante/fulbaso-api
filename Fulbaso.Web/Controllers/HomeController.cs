@@ -14,12 +14,14 @@ namespace Fulbaso.Web.Controllers
     {
         private IPlaceService _placeService;
         private IReportService _reportService;
+        private IFloorTypeService _floorTypeService;
         private UserAuthentication _authentication;
 
-        public HomeController(IPlaceService placeService, IReportService reportService, UserAuthentication authentication)
+        public HomeController(IPlaceService placeService, IReportService reportService, IFloorTypeService floorTypeService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _reportService = reportService;
+            _floorTypeService = floorTypeService;
             _authentication = authentication;
         }
 
@@ -33,16 +35,20 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult List(int init, string q, string j, string s, string l, string t, bool? ind, bool? lig)
+        public ActionResult List(int init)
         {
             int count;
-            return View("List", GetPlacesList(init, q, j, s, l, t, ind, lig, out count));
+            var filter = new PlacesFilter(this.Request.QueryString);
+
+            return View("List", GetPlacesList(init, filter, out count));
         }
 
         [HttpGet]
-        public ActionResult Index(string q, string p, string j, string s, string l, string t, bool? ind, bool? lig)
+        public ActionResult Index()
         {
-            if (j == null && s == null && l == null && ind == null && lig == null && t == null && string.IsNullOrEmpty(q))
+            var filter = new PlacesFilter(this.Request.QueryString);
+
+            if (!filter.IsAdvanced && !filter.HasQuery)
             {
                 var index = new IndexModel
                 {
@@ -58,15 +64,15 @@ namespace Fulbaso.Web.Controllers
             else
             {
                 int count;
-                var model = GetPlacesList(0, q, j, s, l, t, ind, lig, out count);
+                var model = GetPlacesList(0, filter, out count);
 
-                if (model.Count() == 1)
+                if (model.Count() == 1 && model.First().Description == filter.Query)
                 {
                     return RedirectToAction("ItemView", "Place", new { place = model.First().Page, });
                 }
 
+                ViewBag.FloorTypes = _floorTypeService.Get();
                 ViewBag.Places = count;
-                ViewBag.Tags = _placeService.GetTags();
 
                 return View("Places", model);
             }
@@ -129,17 +135,15 @@ namespace Fulbaso.Web.Controllers
             return Json(lista, JsonRequestBehavior.AllowGet);
         }
 
-        private IEnumerable<Place> GetPlacesList(int init, string q, string j, string s, string l, string t, bool? ind, bool? lig, out int count)
+        private IEnumerable<Place> GetPlacesList(int init, PlacesFilter filter, out int count)
         {
-            var query = q == "*" ? string.Empty : q;
-
-            if (j != null || s != null || l != null || ind != null || lig != null || t != null)
+            if (filter.IsAdvanced)
             {
-                return _placeService.GetList(query, InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), InterfaceUtil.GetBytes(t), ind ?? false, lig ?? false, init, Configuration.RowsPerRequest, out count);
+                return _placeService.GetList(filter.Query, filter.Players, filter.FloorTypes, filter.Locations, filter.Tags, filter.IsIndoor, filter.IsLighted, init, Configuration.RowsPerRequest, out count);
             }
             else
             {
-                return _placeService.GetList(query, init, Configuration.RowsPerRequest, out count);
+                return _placeService.GetList(filter.Query, init, Configuration.RowsPerRequest, out count);
             }
         }
     }

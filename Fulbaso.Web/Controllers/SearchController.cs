@@ -22,7 +22,7 @@ namespace Fulbaso.Web.Controllers
         [HttpGet]
         public ActionResult Advanced()
         {
-            ViewBag.FloorTypes = _floorTypeService.Get(string.Empty);
+            ViewBag.FloorTypes = _floorTypeService.Get();
 
             return View();
         }
@@ -30,38 +30,24 @@ namespace Fulbaso.Web.Controllers
         [HttpPost]
         public ActionResult Advanced(FormCollection collection)
         {
-            DateTime date;
-            int hour;
+            var filter = new PlacesFilter(collection);
 
-            var players = InterfaceUtil.GetInts(collection, "player");
-            var floors = InterfaceUtil.GetInts(collection, "floor");
-            var locations = collection.AllKeys.Where(k => k.StartsWith("location"))
-                .Select(k => collection[k]).Concat(new[] { collection["searchlocation"] }).ToArray();
-            var tags = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null).Select(s => (byte)s);
-            var indoor = Convert.ToBoolean(collection["indoor"].Split(',').First());
-            var lighted = Convert.ToBoolean(collection["lighted"].Split(',').First());
-
-            var dateparsed = DateTime.TryParse(collection["date"], out date);
-            var hourparsed = int.TryParse(collection["hour"], out hour);
-
-            if (hourparsed)
+            if (filter.IsSchedule)
             {
-                return RedirectToAction("Schedule", "Search", new { d = dateparsed ? date.ToShortDateString() : null, h = hourparsed ? (int?)hour : null, j = string.Join(";", players), s = string.Join(";", floors), l = string.Join(";", locations), t = string.Join(";", tags), ind = indoor, lig = lighted, });
+                return RedirectToAction("Schedule", "Search", filter.Route);
             }
             else
             {
-                return RedirectToAction("Index", "Home", new { j = string.Join(";", players), s = string.Join(";", floors), l = string.Join(";", locations), t = string.Join(";", tags), ind = indoor, lig = lighted, });
+                return RedirectToAction("Index", "Home", filter.Route);
             }
         }
 
         [HttpGet]
-        public ActionResult Schedule(string d, int h, string q, string p, string j, string s, string l, string t, bool? ind, bool? lig)
+        public ActionResult Schedule(string p)
         {
-            DateTime date;
-            var parsed = DateTime.TryParse(d, out date);
+            var filter = new PlacesFilter(this.Request.QueryString, true);
 
-            date = parsed ? date : DateTime.Today;
-            ViewBag.Time = date;
+            ViewBag.Time = filter.Date;
 
             int currentPage, count;
             if (p == null)
@@ -70,7 +56,7 @@ namespace Fulbaso.Web.Controllers
                 if (!int.TryParse(p, out currentPage))
                     currentPage = 1;
 
-            var model = _courtBookService.GetAvailable(InterfaceUtil.GetInts(j), InterfaceUtil.GetInts(s), (l ?? "").Split(';').Where(i => !string.IsNullOrEmpty(i)).ToArray(), InterfaceUtil.GetBytes(t), ind ?? false, lig ?? false, date, h, currentPage, Configuration.RowsPerRequest, out count);
+            var model = _courtBookService.GetAvailable(filter.Players, filter.FloorTypes, filter.Locations, filter.Tags, filter.IsIndoor, filter.IsLighted, filter.Date, filter.Hour, currentPage, Configuration.RowsPerRequest, out count);
             ViewBag.Places = count;
 
             return View(model);

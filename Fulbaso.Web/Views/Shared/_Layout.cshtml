@@ -63,7 +63,7 @@
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] != "*" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li class="@(ViewContext.CheckRoute("Advanced", "Search") || ViewContext.CheckRoute("Schedule", "Search")? "active" : "")">@Html.ActionLink("Buscador", "Advanced", "Search")</li>
+                        <li class="@(ViewContext.CheckRoute("Advanced", "Search") || ViewContext.CheckRoute("Schedule", "Search")? "active" : "")">@Html.ActionLink("Buscar", "Advanced", "Search")</li>
                         <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] == "*" ? "active" : "")">@Html.ActionLink("Canchas", "Index", "Home", new { q = "*" }, null)</li>
                         <li class="@(ViewContext.CheckRoute("Map", "Place") ? "active" : "")">@Html.ActionLink("Mapa", "Map", "Place")</li>
                         @if (places != null && places.Count > 1)
