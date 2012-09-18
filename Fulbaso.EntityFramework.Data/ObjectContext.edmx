@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ObjectContextModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="ObjectContextModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="ObjectContextModelStoreContainer">
           <EntitySet Name="Clients" EntityType="ObjectContextModel.Store.Clients" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CourtBooks" EntityType="ObjectContextModel.Store.CourtBooks" store:Type="Tables" Schema="dbo" />
@@ -22,7 +22,7 @@
           <EntitySet Name="Users" EntityType="ObjectContextModel.Store.Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PlaceViews" EntityType="ObjectContextModel.Store.PlaceViews" store:Type="Views" store:Schema="dbo" store:Name="PlaceViews">
             <DefiningQuery>SELECT 
-      [PlaceViews].[ID] AS [ID], 
+      [PlaceViews].[Id] AS [Id], 
       [PlaceViews].[Name] AS [Name], 
       [PlaceViews].[Address] AS [Address], 
       [PlaceViews].[Phone] AS [Phone], 
@@ -30,7 +30,9 @@
       [PlaceViews].[Location] AS [Location], 
       [PlaceViews].[Region] AS [Region], 
       [PlaceViews].[Courts] AS [Courts], 
-      [PlaceViews].[exp] AS [exp]
+      [PlaceViews].[exp] AS [exp], 
+      [PlaceViews].[MapUa] AS [MapUa], 
+      [PlaceViews].[MapVa] AS [MapVa]
       FROM [dbo].[PlaceViews] AS [PlaceViews]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Clients_Places" Association="ObjectContextModel.Store.FK_Clients_Places">
@@ -71,6 +73,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Places_Locations" Association="ObjectContextModel.Store.FK_Places_Locations">
             <End Role="Locations" EntitySet="Locations" />
+            <End Role="Places" EntitySet="Places" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Places_Users" Association="ObjectContextModel.Store.FK_Places_Users">
+            <End Role="Users" EntitySet="Users" />
             <End Role="Places" EntitySet="Places" />
           </AssociationSet>
           <AssociationSet Name="FK_PlaceServices_Places" Association="ObjectContextModel.Store.FK_PlaceServices_Places">
@@ -195,6 +201,7 @@
           <Property Name="MapLocation" Type="varchar" MaxLength="200" />
           <Property Name="MapUa" Type="decimal" Scale="10" />
           <Property Name="MapVa" Type="decimal" Scale="10" />
+          <Property Name="CreatedBy" Type="bigint" />
         </EntityType>
         <EntityType Name="PlaceServices">
           <Key>
@@ -257,12 +264,12 @@
       -->
         <EntityType Name="PlaceViews">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
             <PropertyRef Name="Name" />
             <PropertyRef Name="Location" />
             <PropertyRef Name="Region" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
           <Property Name="Address" Type="varchar" MaxLength="200" />
           <Property Name="Phone" Type="varchar" MaxLength="200" />
@@ -271,6 +278,8 @@
           <Property Name="Region" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="Courts" Type="int" />
           <Property Name="exp" Type="varchar" MaxLength="509" />
+          <Property Name="MapUa" Type="decimal" Scale="10" />
+          <Property Name="MapVa" Type="decimal" Scale="10" />
         </EntityType>
         <Association Name="FK_Clients_Places">
           <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
@@ -392,6 +401,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Places_Users">
+          <End Role="Users" Type="ObjectContextModel.Store.Users" Multiplicity="0..1" />
+          <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Places">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PlaceServices_Places">
           <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
           <End Role="PlaceServices" Type="ObjectContextModel.Store.PlaceServices" Multiplicity="*" />
@@ -464,8 +485,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ObjectContextModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -538,6 +558,10 @@
           <AssociationSet Name="UserPlaces" Association="ObjectContextModel.UserPlaces">
             <End Role="Places" EntitySet="Places" />
             <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Places_Users" Association="ObjectContextModel.FK_Places_Users">
+            <End Role="UserEntity" EntitySet="Users" />
+            <End Role="PlaceEntity" EntitySet="Places" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ClientEntity">
@@ -658,6 +682,8 @@
           <NavigationProperty Name="Services" Relationship="ObjectContextModel.FK_PlaceServices_Places" FromRole="Places" ToRole="PlaceServices" />
           <NavigationProperty Name="Favourites" Relationship="ObjectContextModel.UserFavourites" FromRole="Places" ToRole="Users" />
           <NavigationProperty Name="Admins" Relationship="ObjectContextModel.UserPlaces" FromRole="Places" ToRole="Users" />
+          <Property Type="Int64" Name="CreatedBy" />
+          <NavigationProperty Name="Users" Relationship="ObjectContextModel.FK_Places_Users" FromRole="PlaceEntity" ToRole="UserEntity" />
         </EntityType>
         <EntityType Name="PlaceService">
           <Key>
@@ -705,15 +731,15 @@
           <NavigationProperty Name="Books" Relationship="ObjectContextModel.FK_CourtBooks_Users" FromRole="Users" ToRole="CourtBooks" />
           <NavigationProperty Name="Favourites" Relationship="ObjectContextModel.UserFavourites" FromRole="Users" ToRole="Places" />
           <NavigationProperty Name="Places" Relationship="ObjectContextModel.UserPlaces" FromRole="Users" ToRole="Places" />
+          <NavigationProperty Name="Places_1" Relationship="ObjectContextModel.FK_Places_Users" FromRole="UserEntity" ToRole="PlaceEntity" />
         </EntityType>
         <EntityType Name="PlaceView">
           <Key>
-            <PropertyRef Name="ID" />
             <PropertyRef Name="Name" />
             <PropertyRef Name="Location" />
             <PropertyRef Name="Region" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
           <Property Name="Address" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
           <Property Name="Phone" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
@@ -722,6 +748,9 @@
           <Property Name="Region" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Courts" Type="Int32" />
           <Property Name="exp" Type="String" MaxLength="509" Unicode="false" FixedLength="false" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Decimal" Name="MapUa" Precision="18" Scale="10" />
+          <Property Type="Decimal" Name="MapVa" Precision="18" Scale="10" />
         </EntityType>
         <Association Name="FK_Clients_Places">
           <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="1" />
@@ -875,6 +904,18 @@
           <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="*" />
           <End Role="Users" Type="ObjectContextModel.UserEntity" Multiplicity="*" />
         </Association>
+        <Association Name="FK_Places_Users">
+          <End Type="ObjectContextModel.UserEntity" Role="UserEntity" Multiplicity="0..1" />
+          <End Type="ObjectContextModel.PlaceEntity" Role="PlaceEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlaceEntity">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -940,7 +981,8 @@
             <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Places"><EntityTypeMapping TypeName="ObjectContextModel.PlaceEntity"><MappingFragment StoreEntitySet="Places">
-            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="Name" ColumnName="Name" />
             <ScalarProperty Name="Description" ColumnName="Description" />
             <ScalarProperty Name="Address" ColumnName="Address" />
@@ -983,8 +1025,10 @@
             <ScalarProperty Name="Token" ColumnName="Token" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="PlaceViews"><EntityTypeMapping TypeName="ObjectContextModel.PlaceView"><MappingFragment StoreEntitySet="PlaceViews">
-            <ScalarProperty Name="ID" ColumnName="ID" />
-            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="MapVa" ColumnName="MapVa" />
+                <ScalarProperty Name="MapUa" ColumnName="MapUa" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
             <ScalarProperty Name="Address" ColumnName="Address" />
             <ScalarProperty Name="Phone" ColumnName="Phone" />
             <ScalarProperty Name="Page" ColumnName="Page" />
@@ -1042,7 +1086,7 @@
         <EntityTypeShape EntityType="ObjectContextModel.RegionEntity" Width="1.5" PointX="3" PointY="7.875" Height="2.1725878906249996" IsExpanded="true" />
         <EntityTypeShape EntityType="ObjectContextModel.TerritoryEntity" Width="1.5" PointX="0.75" PointY="8.125" Height="1.787985026041671" IsExpanded="true" />
         <EntityTypeShape EntityType="ObjectContextModel.UserEntity" Width="1.5" PointX="9.75" PointY="14.375" Height="3.5186979166666674" IsExpanded="true" />
-        <EntityTypeShape EntityType="ObjectContextModel.PlaceView" Width="1.5" PointX="0.75" PointY="0.75" Height="2.7494921875000031" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.PlaceView" Width="1.5" PointX="0.75" PointY="0.75" Height="3.1340950520833331" IsExpanded="true" />
         <AssociationConnector Association="ObjectContextModel.FK_Clients_Places" ManuallyRouted="false">
           <ConnectorPoint PointX="9" PointY="6.6824446614583328" />
           <ConnectorPoint PointX="9.75" PointY="6.6824446614583328" />
@@ -1060,10 +1104,10 @@
           <ConnectorPoint PointX="13.125" PointY="9.375" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_CourtBooks_Users" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.25" PointY="16.134348958333334" />
-          <ConnectorPoint PointX="11.697916666666666" PointY="16.134348958333334" />
-          <ConnectorPoint PointX="11.864583333333334" PointY="16.134348958333334" />
-          <ConnectorPoint PointX="12.75" PointY="16.134348958333334" />
+          <ConnectorPoint PointX="11.25" PointY="16.230499674479169" />
+          <ConnectorPoint PointX="11.697916666666666" PointY="16.230499674479169" />
+          <ConnectorPoint PointX="11.864583333333334" PointY="16.230499674479169" />
+          <ConnectorPoint PointX="12.75" PointY="16.230499674479169" />
           <ConnectorPoint PointX="12.75" PointY="13.085999348958332" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_CourtConfigurations_Courts" ManuallyRouted="false">
@@ -1095,10 +1139,12 @@
           <ConnectorPoint PointX="7.5" PointY="8.9612939453125" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_PlaceServices_Places" ManuallyRouted="false">
-          <ConnectorPoint PointX="8.25" PointY="11.364807942708332" />
+          <ConnectorPoint PointX="8.25" PointY="11.749410807291666" />
           <ConnectorPoint PointX="8.25" PointY="12.797841796875" />
           <ConnectorPoint PointX="8.5729191666666669" PointY="12.797841796875" />
           <ConnectorPoint PointX="8.7395858333333347" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.7760454166666673" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.9427120833333351" PointY="12.797841796875" />
           <ConnectorPoint PointX="9.75" PointY="12.797841796875" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_Regions_Territories" ManuallyRouted="false">
@@ -1106,16 +1152,25 @@
           <ConnectorPoint PointX="3" PointY="9.0189925130208355" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.UserFavourites" ManuallyRouted="false">
-          <ConnectorPoint PointX="8.6562525" PointY="11.364807942708332" />
-          <ConnectorPoint PointX="8.6562525" PointY="16.134348958333334" />
-          <ConnectorPoint PointX="9.75" PointY="16.134348958333334" />
+          <ConnectorPoint PointX="8.6562525" PointY="11.749410807291666" />
+          <ConnectorPoint PointX="8.6562525" PointY="16.654710664062506" />
+          <ConnectorPoint PointX="8.7760454166666673" PointY="16.654710664062506" />
+          <ConnectorPoint PointX="8.9427120833333351" PointY="16.654710664062506" />
+          <ConnectorPoint PointX="9.75" PointY="16.654710664062506" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.UserPlaces" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.8437475" PointY="11.364807942708332" />
-          <ConnectorPoint PointX="7.8437475" PointY="15.223421979166673" />
-          <ConnectorPoint PointX="8.5729191666666669" PointY="15.223421979166673" />
-          <ConnectorPoint PointX="8.7395858333333347" PointY="15.223421979166673" />
-          <ConnectorPoint PointX="9.75" PointY="15.223421979166673" />
+          <ConnectorPoint PointX="7.8437475" PointY="11.749410807291666" />
+          <ConnectorPoint PointX="7.8437475" PointY="15.483602832031259" />
+          <ConnectorPoint PointX="8.5729191666666669" PointY="15.483602832031259" />
+          <ConnectorPoint PointX="8.7395858333333347" PointY="15.483602832031259" />
+          <ConnectorPoint PointX="8.7760454166666673" PointY="15.483602832031259" />
+          <ConnectorPoint PointX="8.9427120833333351" PointY="15.483602832031259" />
+          <ConnectorPoint PointX="9.75" PointY="15.483602832031259" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.FK_Places_Users" >
+          <ConnectorPoint PointX="9.75" PointY="17.401607506510416" />
+          <ConnectorPoint PointX="8.8593787500000012" PointY="17.401607506510416" />
+          <ConnectorPoint PointX="8.8593787500000012" PointY="11.749410807291666" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

@@ -15,13 +15,15 @@ namespace Fulbaso.Web.Controllers
         private IPlaceService _placeService;
         private ICourtService _courtService;
         private IFavouriteService _favouriteService;
+        private IFloorTypeService _floorTypeService;
         private ILocationService _locationService;
 
-        public PlaceController(IPlaceService placeService, ICourtService courtService, IFavouriteService favouriteService, ILocationService locationService)
+        public PlaceController(IPlaceService placeService, ICourtService courtService, IFavouriteService favouriteService, IFloorTypeService floorTypeService, ILocationService locationService)
         {
             _placeService = placeService;
             _courtService = courtService;
             _favouriteService = favouriteService;
+            _floorTypeService = floorTypeService;
             _locationService = locationService;
         }
 
@@ -112,7 +114,25 @@ namespace Fulbaso.Web.Controllers
         [HttpGet]
         public ActionResult Map()
         {
+            ViewBag.FloorTypes = _floorTypeService.Get();
+
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult List()
+        {
+            var filter = new PlacesFilter(this.Request.QueryString);
+            int count;
+
+            if (filter.IsAdvanced)
+            {
+                return Json(_placeService.GetList(filter.Query, filter.Players, filter.FloorTypes, filter.Locations, filter.Tags, filter.IsIndoor, filter.IsLighted, 0, 0, out count).WithUrl(), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(_placeService.GetList(filter.Query, 0, 0, out count).WithUrl(), JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpGet]

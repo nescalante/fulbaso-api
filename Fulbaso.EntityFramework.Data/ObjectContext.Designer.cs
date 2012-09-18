@@ -32,6 +32,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Regions_Territories", "Territories", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.TerritoryEntity), "Regions", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.RegionEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "UserFavourites", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity))]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "UserPlaces", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity))]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Places_Users", "UserEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Fulbaso.EntityFramework.UserEntity), "PlaceEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), true)]
 
 #endregion
 
@@ -2596,6 +2597,30 @@ namespace Fulbaso.EntityFramework
         private Nullable<global::System.Decimal> _MapVa;
         partial void OnMapVaChanging(Nullable<global::System.Decimal> value);
         partial void OnMapVaChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int64> CreatedBy
+        {
+            get
+            {
+                return _CreatedBy;
+            }
+            set
+            {
+                OnCreatedByChanging(value);
+                ReportPropertyChanging("CreatedBy");
+                _CreatedBy = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreatedBy");
+                OnCreatedByChanged();
+            }
+        }
+        private Nullable<global::System.Int64> _CreatedBy;
+        partial void OnCreatedByChanging(Nullable<global::System.Int64> value);
+        partial void OnCreatedByChanged();
 
         #endregion
     
@@ -2748,6 +2773,44 @@ namespace Fulbaso.EntityFramework
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Places_Users", "UserEntity")]
+        public UserEntity Users
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<UserEntity> UsersReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -2890,49 +2953,22 @@ namespace Fulbaso.EntityFramework
         /// <summary>
         /// Create a new PlaceView object.
         /// </summary>
-        /// <param name="id">Initial value of the ID property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="location">Initial value of the Location property.</param>
         /// <param name="region">Initial value of the Region property.</param>
-        public static PlaceView CreatePlaceView(global::System.Int32 id, global::System.String name, global::System.String location, global::System.String region)
+        /// <param name="id">Initial value of the Id property.</param>
+        public static PlaceView CreatePlaceView(global::System.String name, global::System.String location, global::System.String region, global::System.Int32 id)
         {
             PlaceView placeView = new PlaceView();
-            placeView.ID = id;
             placeView.Name = name;
             placeView.Location = location;
             placeView.Region = region;
+            placeView.Id = id;
             return placeView;
         }
 
         #endregion
         #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 ID
-        {
-            get
-            {
-                return _ID;
-            }
-            set
-            {
-                if (_ID != value)
-                {
-                    OnIDChanging(value);
-                    ReportPropertyChanging("ID");
-                    _ID = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("ID");
-                    OnIDChanged();
-                }
-            }
-        }
-        private global::System.Int32 _ID;
-        partial void OnIDChanging(global::System.Int32 value);
-        partial void OnIDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3134,6 +3170,81 @@ namespace Fulbaso.EntityFramework
         private global::System.String _exp;
         partial void OnexpChanging(global::System.String value);
         partial void OnexpChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> MapUa
+        {
+            get
+            {
+                return _MapUa;
+            }
+            set
+            {
+                OnMapUaChanging(value);
+                ReportPropertyChanging("MapUa");
+                _MapUa = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MapUa");
+                OnMapUaChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _MapUa;
+        partial void OnMapUaChanging(Nullable<global::System.Decimal> value);
+        partial void OnMapUaChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> MapVa
+        {
+            get
+            {
+                return _MapVa;
+            }
+            set
+            {
+                OnMapVaChanging(value);
+                ReportPropertyChanging("MapVa");
+                _MapVa = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MapVa");
+                OnMapVaChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _MapVa;
+        partial void OnMapVaChanging(Nullable<global::System.Decimal> value);
+        partial void OnMapVaChanged();
 
         #endregion
     
@@ -3806,6 +3917,28 @@ namespace Fulbaso.EntityFramework
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.UserPlaces", "Places", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Places_Users", "PlaceEntity")]
+        public EntityCollection<PlaceEntity> Places_1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PlaceEntity>("ObjectContextModel.FK_Places_Users", "PlaceEntity");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.FK_Places_Users", "PlaceEntity", value);
                 }
             }
         }

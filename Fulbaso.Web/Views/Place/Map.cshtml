@@ -1,5 +1,8 @@
-﻿@{
+﻿@using Fulbaso.Web
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var filter = new PlacesFilter(this.Request.QueryString);
 }
 
 @section Header
@@ -24,9 +27,15 @@
 
 <div class="container">
     <div class="row">
-        <div class="span12">
+        <div class="@(filter.IsAdvanced || filter.HasQuery ? "span8" : "span12")">
             <div id="map_canvas" style="height: 500px; width: 100%;"></div>
         </div>
+        @if (filter.IsAdvanced || filter.HasQuery) 
+        {
+            <div class="hidden-phone span4">
+                @Html.Partial("Search", filter)
+            </div>
+        }
     </div>
 </div>
 
@@ -34,7 +43,7 @@
 <script>
     $(function () {
         f.map.initialize("map_canvas", "-38", "-63");
-        f.map.markFrom("@Html.Raw(Url.Action("GetNearestFromLocation", "Place", new { distance = 0, lat = -38, lng = -63 }))", "@Url.Content("~")img/sport_soccer.png");
+        f.map.markFrom("@Html.Raw(Url.Action("List", "Place", filter.Route))", "@Url.Content("~")img/sport_soccer.png");
         map.setZoom(4);
         f.location.initialize("map_canvas", function (position) {
             f.map.mark("¡Estás acá! (en un radio de " + position.coords.accuracy + " metros)", position.coords.latitude, position.coords.longitude, "@Url.Content("~")img/user.png");

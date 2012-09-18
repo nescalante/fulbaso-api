@@ -27,62 +27,8 @@
         </div>
         <div class="span4">
             <div class="hidden-phone">
-                <h3>Búsqueda rápida</h3>
-                <h4>Jugadores</h4>
-                <ul class="nav nav-pills">
-                    @foreach (var p in new [] { 5, 6, 7, 8, 9, 10, 11 })
-                    {
-                        if (filter.Players.Contains((byte)p))
-                        {
-                            <li class="active"><a href="@Url.Action("Index", "Home", filter.WithoutPlayerOption(p).Route)">@p</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="@Url.Action("Index", "Home", filter.WithPlayerOption(p).Route)">@p</a></li>
-                        }
-                    }
-                </ul>
-                <h4>Tipo de suelo</h4>
-                <ul class="nav nav-pills">
-
-                    @foreach (var f in (IEnumerable<Fulbaso.Helpers.EntityDataObject>)ViewBag.FloorTypes)
-                    {
-                        if (filter.FloorTypes.Contains(f.Id))
-                        {
-                            <li class="active"><a href="@Url.Action("Index", "Home", filter.WithoutFloorType(f.Id).Route)">@f</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="@Url.Action("Index", "Home", filter.WithFloorType(f.Id).Route)">@f</a></li>
-                        }
-                    }
-                </ul>
-                <h4>Características</h4>
-                <ul class="nav nav-pills">
-                    @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
-                    {
-                        if (filter.Tags.Contains((byte)s))
-                        {
-                            <li class="active"><a href="@Url.Action("Index", "Home", filter.WithoutTag((byte)s).Route)">@s.GetDescription()</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="@Url.Action("Index", "Home", filter.WithTag((byte)s).Route)">@s.GetDescription()</a></li>
-                        }
-                    }
-                    <li @(filter.IsIndoor ? "class=active" : "")><a href="@Url.Action("Index", "Home", filter.WithChangedIndoor().Route)">Iluminada</a></li>
-                    <li @(filter.IsLighted ? "class=active" : "")><a href="@Url.Action("Index", "Home", filter.WithChangedLighted().Route)">Techada</a></li>
-                </ul>
-                @if (filter.Locations.Any())
-                {
-                    <h4>Ubicación</h4>
-                    <ul class="nav nav-pills">
-                        @foreach (var l in filter.Locations)
-                        {
-                            <li class="active"><a href="@Url.Action("Index", "Home", filter.WithoutLocation(l).Route)">@l</a></li>
-                        }
-                    </ul>
-                }
+                @Html.Partial("Search", filter)
+                <a class="btn" href="@Url.Action("Map", "Place", filter.Route)">Mostrar en el mapa</a>
             </div>
         </div>
     </div>

@@ -117,13 +117,15 @@ namespace Fulbaso.EntityFramework.Logic
             var list = (from i in query.ToList()
                         select new Place
                         {
-                            Id = i.ID,
+                            Id = i.Id,
                             Description = i.Name,
                             Address = i.Address,
                             Phone = i.Phone,
                             Page = i.Page,
                             Location = new Location { Description = i.Location, Region = Region.Create<Region>(i.Region), },
                             Courts = (int)i.Courts,
+                            MapUa = i.MapUa,
+                            MapVa = i.MapVa,
                         }).ToList();
 
             var services = EntityUtil.Context.PlaceServices.WhereContains(p => p.PlaceId, list.Select(i => i.Id)).ToList();
@@ -138,7 +140,7 @@ namespace Fulbaso.EntityFramework.Logic
 
             if (!string.IsNullOrEmpty(value))
             {
-                var query = EntityUtil.Context.PlaceViews.Where(c => c.exp.Contains(value)).Select(p => p.ID);
+                var query = EntityUtil.Context.PlaceViews.Where(c => c.exp.Contains(value)).Select(p => p.Id);
                 places = places.WhereContains(p => p.Id, query);
             }
 
@@ -157,6 +159,8 @@ namespace Fulbaso.EntityFramework.Logic
                             Page = i.Page,
                             Location = new Location { Description = i.Location.Description, Region = new Region { Description = i.Location.Region.Description }, },
                             Courts = (int)i.Courts.Count(),
+                            MapUa = i.MapUa,
+                            MapVa = i.MapVa,
                         }).ToList();
 
             var services = EntityUtil.Context.PlaceServices.WhereContains(p => p.PlaceId, list.Select(i => i.Id)).ToList();

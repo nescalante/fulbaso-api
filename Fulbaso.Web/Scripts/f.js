@@ -93,13 +93,15 @@ var f = f || {
                         $(html).hide().appendTo(container).fadeIn();
 
                         $.each(data, function () {
-                            f.map.mark(this.Item1.Description, this.Item1.MapUa, this.Item1.MapVa, icon, this.Item1);
+                            var self = this.Item1 ? this.Item1 : this;
+                            f.map.mark(self.Description, self.MapUa, self.MapVa, icon, self);
                         });
                     });
                 }
                 else {
                     $.each(data, function () {
-                        f.map.mark(this.Item1.Description, this.Item1.MapUa, this.Item1.MapVa, icon, this.Item1);
+                        var self = this.Item1 ? this.Item1 : this;
+                        f.map.mark(self.Description, self.MapUa, self.MapVa, icon, self);
                     });
                 }
             });

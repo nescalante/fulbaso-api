@@ -1,0 +1,66 @@
+﻿@using Fulbaso.Contract
+@using Fulbaso.Web
+
+@model PlacesFilter
+
+@{
+    var action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+    var controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
+}
+
+<h3>Búsqueda rápida</h3>
+<h4>Jugadores</h4>
+<ul class="nav nav-pills">
+    @foreach (var p in new [] { 5, 6, 7, 8, 9, 10, 11 })
+    {
+        if (Model.Players.Contains((byte)p))
+        {
+            <li class="active"><a href="@Url.Action(action, controller, Model.WithoutPlayerOption(p).Route)">@p</a></li>
+        }
+        else
+        {
+            <li><a href="@Url.Action(action, controller, Model.WithPlayerOption(p).Route)">@p</a></li>
+        }
+    }
+</ul>
+<h4>Tipo de suelo</h4>
+<ul class="nav nav-pills">
+
+    @foreach (var f in (IEnumerable<Fulbaso.Helpers.EntityDataObject>)ViewBag.FloorTypes)
+    {
+        if (Model.FloorTypes.Contains(f.Id))
+        {
+            <li class="active"><a href="@Url.Action(action, controller, Model.WithoutFloorType(f.Id).Route)">@f</a></li>
+        }
+        else
+        {
+            <li><a href="@Url.Action(action, controller, Model.WithFloorType(f.Id).Route)">@f</a></li>
+        }
+    }
+</ul>
+<h4>Características</h4>
+<ul class="nav nav-pills">
+    @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
+    {
+        if (Model.Tags.Contains((byte)s))
+        {
+            <li class="active"><a href="@Url.Action(action, controller, Model.WithoutTag((byte)s).Route)">@s.GetDescription()</a></li>
+        }
+        else
+        {
+            <li><a href="@Url.Action(action, controller, Model.WithTag((byte)s).Route)">@s.GetDescription()</a></li>
+        }
+    }
+    <li @(Model.IsIndoor ? "class=active" : "")><a href="@Url.Action(action, controller, Model.WithChangedIndoor().Route)">Iluminada</a></li>
+    <li @(Model.IsLighted ? "class=active" : "")><a href="@Url.Action(action, controller, Model.WithChangedLighted().Route)">Techada</a></li>
+</ul>
+@if (Model.Locations.Any())
+{
+    <h4>Ubicación</h4>
+    <ul class="nav nav-pills">
+        @foreach (var l in Model.Locations)
+        {
+            <li class="active"><a href="@Url.Action(action, controller, Model.WithoutLocation(l).Route)">@l</a></li>
+        }
+    </ul>
+}

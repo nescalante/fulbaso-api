@@ -98,22 +98,24 @@
                             </label>
                         </div>
                     </div>
-                    <div class="control-group showschedule">
-                        <div class="controls">
-                            <a id="showscheduleoption" class="btn">Buscar por disponibilidad</a>
-                            <span class="label label-warning">Advertencia</span><span class="help-inline">Si busca por disponibilidad sólo se listaran las canchas que dispongan de esta opción.</span>
+                    <div style="display: none;">
+                        <div class="control-group showschedule">
+                            <div class="controls">
+                                <a id="showscheduleoption" class="btn">Buscar por disponibilidad</a>
+                                <span class="label label-warning">Advertencia</span><span class="help-inline">Si busca por disponibilidad sólo se listaran las canchas que dispongan de esta opción.</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="control-group schedule">
-                        <label class="control-label" for="date">Sólo canchas disponibles el día</label>
-                        <div class="controls">
-                            @Html.TextBox("date", DateTime.Now.ToShortDateString(), new { autocomplete = "off", @class = "span2" })
+                        <div class="control-group schedule">
+                            <label class="control-label" for="date">Sólo canchas disponibles el día</label>
+                            <div class="controls">
+                                @Html.TextBox("date", DateTime.Now.ToShortDateString(), new { autocomplete = "off", @class = "span2" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="control-group schedule">
-                        <label class="control-label" for="hour">A las</label>
-                        <div class="controls">
-                            @Html.DropDownList("hour", new SelectList(Enumerable.Range(0, 24).Select(e => new { Id = e, Text = e + " hs" }).ToList(), "Id", "Text"), "[Seleccione]", new { @class = "span2", })
+                        <div class="control-group schedule">
+                            <label class="control-label" for="hour">A las</label>
+                            <div class="controls">
+                                @Html.DropDownList("hour", new SelectList(Enumerable.Range(0, 24).Select(e => new { Id = e, Text = e + " hs" }).ToList(), "Id", "Text"), "[Seleccione]", new { @class = "span2", })
+                            </div>
                         </div>
                     </div>
                     <div class="form-actions">
