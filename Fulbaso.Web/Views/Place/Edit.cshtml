@@ -84,6 +84,9 @@
                                 @Html.TextBoxFor(m => m.Address, new { @class = "input-xxlarge", size = "16", maxlength = "200", })
                                 <a id="testlocation" class="btn">Buscar</a>
                             </div>
+                            <div class="clearAll suggestion" style="display:none; margin-bottom: 10px;">
+                                <a id="suggestion" style="cursor: pointer;"></a>
+                            </div>
                             <div id="map_canvas" style="height: 300px; width: 100%;"></div>
                         </div>
                     </div>
@@ -119,19 +122,32 @@
             </text>
         }
 
-        function localize() {
+        function localize(result) {
             $('#MapUa').val(map.marker.getPosition().lat().toString().replace(".", ","));
             $('#MapVa').val(map.marker.getPosition().lng().toString().replace(".", ","));
-            map.geocoder.geocode({ latLng: map.marker.getPosition() }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    $("#Address").val(results[0].formatted_address);
-                    $("#LocationJson").val(JSON.stringify(results[0].address_components));
-                }
-            });
+
+            if (result) {
+                $(".suggestion").slideDown();
+                $("#suggestion").html(result.formatted_address);
+            }
+            else {
+                $(".suggestion").slideUp();
+                map.geocoder.geocode({ latLng: map.marker.getPosition() }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        $("#Address").val(results[0].formatted_address);
+                        $("#LocationJson").val(JSON.stringify(results[0].address_components));
+                    }
+                });
+            }
         }
 
         $("#testlocation").click(function () {
             f.geocode.find($("#Address").val(), $("#Description").val(), $("#LocationJson"), localize);
+        });
+
+        $("#suggestion").click(function () {
+            $(".suggestion").slideUp();
+            $("#Address").val($("#suggestion").html());
         });
     });
 </script>

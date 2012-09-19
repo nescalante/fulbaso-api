@@ -77,11 +77,21 @@ namespace Fulbaso.Web
                         routes.Add("s", string.Join(separator.ToString(), this.FloorTypes));
                         routes.Add("l", string.Join(separator.ToString(), this.Locations));
                         routes.Add("t", string.Join(separator.ToString(), this.Tags));
-                        routes.Add("ind", this.IsIndoor);
-                        routes.Add("lig", this.IsLighted);
+                        
+                        if (this.IsIndoor)
+                        {
+                            routes.Add("ind", this.IsIndoor);
+                        }
+                        if (this.IsLighted)
+                        {
+                            routes.Add("lig", this.IsLighted);
+                        }
                     }
 
-                    routes.Add("q", string.IsNullOrEmpty(this.Query) ? "*" : this.Query);
+                    if (this.HasQuery || !routes.Any())
+                    {
+                        routes.Add("q", string.IsNullOrEmpty(this.Query) ? "*" : this.Query);
+                    }
 
                     return routes;
                 }

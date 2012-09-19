@@ -4,7 +4,7 @@
 @{
     if (ViewBag.Title == null)
     {
-        ViewBag.Title = Configuration.AppTitle + (ViewBag.FormTitle == null ? "" : (" - " + ViewBag.FormTitle));
+        ViewBag.Title = ViewBag.FormTitle == null ? Configuration.AppTitle : ViewBag.FormTitle;
     }
     
     if (ViewBag.FormTitle == null)

@@ -13,4 +13,4 @@
         </div>
     </div>
 </div>
-<div style="display:none;">@Model.Exception.Message</div>
+<div style="display:none;">@Model.Exception.Message @(Model.Exception.InnerException != null ? Model.Exception.InnerException.Message : "")</div>

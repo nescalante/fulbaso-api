@@ -159,6 +159,8 @@ var f = f || {
                     if (onchange) {
                         google.maps.event.addListener(map.marker, 'position_changed', onchange);
                     }
+
+                    onchange(results[0]);
                 }
             });
         }
