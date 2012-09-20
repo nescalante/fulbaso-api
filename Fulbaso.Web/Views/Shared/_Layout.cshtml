@@ -4,7 +4,7 @@
 @{
     if (ViewBag.Title == null)
     {
-        ViewBag.Title = ViewBag.FormTitle == null ? Configuration.AppTitle : ViewBag.FormTitle;
+        ViewBag.Title = ViewBag.FormTitle == null ? (Configuration.AppTitle + " - Canchas de fútbol") : ViewBag.FormTitle;
     }
     
     if (ViewBag.FormTitle == null)
@@ -19,7 +19,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="DESCRIPTION" content="@Configuration.AppTitle" />
+    <meta name="DESCRIPTION" content="@(Configuration.AppTitle), Canchas de fútbol" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @RenderSection("Metadata", false)
     <title>@ViewBag.Title</title>
@@ -63,9 +63,9 @@
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] != "*" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li class="@(ViewContext.CheckRoute("Advanced", "Search") || ViewContext.CheckRoute("Schedule", "Search")? "active" : "")">@Html.ActionLink("Buscar", "Advanced", "Search")</li>
-                        <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] == "*" ? "active" : "")">@Html.ActionLink("Canchas", "Index", "Home", new { q = "*" }, null)</li>
-                        <li class="@(ViewContext.CheckRoute("Map", "Place") ? "active" : "")">@Html.ActionLink("Mapa", "Map", "Place")</li>
+                        <li class="@(ViewContext.CheckRoute("Advanced", "Search") || ViewContext.CheckRoute("Schedule", "Search")? "active" : "")">@Html.ActionLink("Buscar", "Advanced", "Search", null, new { title = "Buscar canchas" })</li>
+                        <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] == "*" ? "active" : "")">@Html.ActionLink("Canchas", "Index", "Home", new { q = "*" }, new { title = "Listado de canchas" })</li>
+                        <li class="@(ViewContext.CheckRoute("Map", "Place") ? "active" : "")">@Html.ActionLink("Mapa", "Map", "Place", null, new { title = "Mapa de canchas" })</li>
                         @if (places != null && places.Count > 1)
                         {
                             <li class="dropdown">

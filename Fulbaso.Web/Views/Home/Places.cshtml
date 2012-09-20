@@ -4,9 +4,8 @@
 @model IEnumerable<Place>
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    
     var filter = new PlacesFilter(this.Request.QueryString);
+    ViewBag.Title = string.IsNullOrEmpty(filter.Reference) ? "Búsqueda de canchas" : ("Canchas " + filter.Reference);
 }
 
 <div class="container">

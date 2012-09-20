@@ -323,6 +323,7 @@
     <Content Include="Views\Home\Console.cshtml" />
     <Content Include="Views\Console\Index.cshtml" />
     <Content Include="Views\Shared\Search.cshtml" />
+    <Content Include="Views\Images\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

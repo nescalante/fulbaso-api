@@ -29,16 +29,22 @@
             </div>
             <p>También podes probar haciendo una @Html.ActionLink("búsqueda avanzada", "Advanced", "Search") o buscar tu cancha en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*", }, null).</p>
             <div class="hidden-phone">
-                <p>Existen @Html.ActionLink(Model.CourtsCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos. @Html.ActionLink(Model.OwnedPlaces.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos siendo administrados.</p>
+                <p>
+                    Existen @Html.ActionLink(Model.CourtsCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos. 
+                    @if (Model.OwnedPlaces > 0)
+                    {
+                        @Html.ActionLink(Model.OwnedPlaces.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) 
+                        <text>complejos siendo administrados.</text>
+                    }
+                </p>
                 <div style="display:none;">
                     <h4 style="margin-bottom: 10px;">Canchas mas cercanas:</h4>
                     <div id="nearestplaces"></div>
                     <div class="clearAll"></div>
                 </div>
-                <h4 style="margin-bottom: 10px;">Canchas mas usadas:</h4>
+                @*<h4 style="margin-bottom: 10px;">Canchas mas usadas:</h4>
                 @Html.Partial("List", Model.TopUsedPlaces)
-                <div class="clearAll"></div>
-
+                <div class="clearAll"></div>*@
                 <h4 style="margin-bottom: 10px;">Canchas mas votadas:</h4>
                 @Html.Partial("List", Model.TopVotedPlaces)
                 <div class="clearAll"></div>

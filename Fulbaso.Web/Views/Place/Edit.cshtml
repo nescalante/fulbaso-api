@@ -6,7 +6,6 @@
 
 @{
     ViewBag.FormTitle = Model.Description;
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Header
@@ -81,7 +80,7 @@
                         <label class="control-label" for="MapLocation">Dirección</label>
                         <div class="controls">
                             <div class="input-append" style="margin-bottom: 10px;">
-                                @Html.TextBoxFor(m => m.Address, new { @class = "input-xxlarge", size = "16", maxlength = "200", })
+                                @Html.TextBox("Address", Model.FullAddress, new { @class = "input-xxlarge", size = "16", maxlength = "200", })
                                 <a id="testlocation" class="btn">Buscar</a>
                             </div>
                             <div class="clearAll suggestion" style="display:none; margin-bottom: 10px;">

@@ -24,7 +24,7 @@
         <li class="ui-info tags">
         @foreach (var s in Model.Services)
         {
-            <a href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
+            <a title="Canchas con @s.GetDescription().ToLower()" href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
         }
         </li>
     }

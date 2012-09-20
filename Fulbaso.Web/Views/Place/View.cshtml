@@ -6,7 +6,6 @@
            
 @{
     ViewBag.FormTitle = Model.Place.Description;
-    Layout = "~/Views/Shared/_Layout.cshtml";
     var keywords = Model.Place.Description + ", " + Model.Place.Location + ", " + Model.Place.Location.Region + ", " + string.Join(", ", Model.Place.CourtsInfo.GroupBy(c => c.CourtType.Description).Select(c => c.Key));
 }
 
@@ -90,7 +89,7 @@
                     <div class="ui-info tags">
                         @foreach (var s in Model.Place.Services)
                         {
-                            <a href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
+                            <a title="Canchas con @s.GetDescription().ToLower()" href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
                         }
                     </div>
                 }

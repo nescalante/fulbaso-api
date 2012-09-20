@@ -1,8 +1,8 @@
 ﻿@using Fulbaso.Web
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
     var filter = new PlacesFilter(this.Request.QueryString);
+    ViewBag.Title = string.IsNullOrEmpty(filter.Reference) ? "Mapa de canchas" : ("Mapa de canchas " + filter.Reference);
 }
 
 @section Header

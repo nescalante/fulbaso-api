@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Fulbaso.Contract;
+using System.Collections.Generic;
+using Fulbaso.Common;
 
 namespace Fulbaso.Web
 {
@@ -57,6 +59,52 @@ namespace Fulbaso.Web
             }
         }
 
+        public string Reference
+        {
+            get
+            {
+                var list = new List<string>();
+
+                if (this.Players.Count() > 1 || this.FloorTypes.Count() > 1 || this.Locations.Count() > 1 || this.Tags.Count() > 1)
+                {
+                    return null;
+                }
+
+                if (this.Players.Count() == 1)
+                {
+                    list.Add(string.Format("para {0} jugadores", this.Players.Single()));
+                }
+
+                if (this.FloorTypes.Count() == 1)
+                {
+                    var floorType = ContainerUtil.GetApplicationContainer().Resolve<IFloorTypeService>().Get(this.FloorTypes.Single());
+                    list.Add(string.Format("con {0}", floorType.Description.ToLower()));
+                }
+
+                if (this.Locations.Count() == 1)
+                {
+                    list.Add(string.Format("en {0}", this.Locations.Single()));
+                }
+
+                if (this.Tags.Count() == 1)
+                {
+                    list.Add(string.Format("con {0}", ((Service)this.Tags.Single()).GetDescription().ToLower()));
+                }
+
+                if (this.IsIndoor)
+                {
+                    list.Add("techadas");
+                }
+
+                if (this.IsLighted)
+                {
+                    list.Add("iluminadas");
+                }
+
+                return list.Count() == 1 ? list.Single() : null;
+            }
+        }
+
         public RouteValueDictionary Route
         {
             get
@@ -88,7 +136,7 @@ namespace Fulbaso.Web
                         }
                     }
 
-                    if (this.HasQuery || !routes.Any())
+                    if (!string.IsNullOrEmpty(this.Query) || !routes.Any())
                     {
                         routes.Add("q", string.IsNullOrEmpty(this.Query) ? "*" : this.Query);
                     }

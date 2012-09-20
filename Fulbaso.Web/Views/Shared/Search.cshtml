@@ -15,11 +15,11 @@
     {
         if (Model.Players.Contains((byte)p))
         {
-            <li class="active"><a href="@Url.Action(action, controller, Model.WithoutPlayerOption(p).Route)">@p</a></li>
+            <li class="active"><a title="Canchas para @p jugadores" href="@Url.Action(action, controller, Model.WithoutPlayerOption(p).Route)">@p</a></li>
         }
         else
         {
-            <li><a href="@Url.Action(action, controller, Model.WithPlayerOption(p).Route)">@p</a></li>
+            <li><a title="Canchas para @p jugadores" href="@Url.Action(action, controller, Model.WithPlayerOption(p).Route)">@p</a></li>
         }
     }
 </ul>
@@ -30,11 +30,11 @@
     {
         if (Model.FloorTypes.Contains(f.Id))
         {
-            <li class="active"><a href="@Url.Action(action, controller, Model.WithoutFloorType(f.Id).Route)">@f</a></li>
+            <li class="active"><a title="Canchas con @f.Description.ToLower()" href="@Url.Action(action, controller, Model.WithoutFloorType(f.Id).Route)">@f</a></li>
         }
         else
         {
-            <li><a href="@Url.Action(action, controller, Model.WithFloorType(f.Id).Route)">@f</a></li>
+            <li><a title="Canchas con @f.Description.ToLower()" href="@Url.Action(action, controller, Model.WithFloorType(f.Id).Route)">@f</a></li>
         }
     }
 </ul>
@@ -44,15 +44,15 @@
     {
         if (Model.Tags.Contains((byte)s))
         {
-            <li class="active"><a href="@Url.Action(action, controller, Model.WithoutTag((byte)s).Route)">@s.GetDescription()</a></li>
+            <li class="active"><a title="Canchas con @s.GetDescription().ToLower()" href="@Url.Action(action, controller, Model.WithoutTag((byte)s).Route)">@s.GetDescription()</a></li>
         }
         else
         {
-            <li><a href="@Url.Action(action, controller, Model.WithTag((byte)s).Route)">@s.GetDescription()</a></li>
+            <li><a title="Canchas con @s.GetDescription().ToLower()" href="@Url.Action(action, controller, Model.WithTag((byte)s).Route)">@s.GetDescription()</a></li>
         }
     }
-    <li @(Model.IsIndoor ? "class=active" : "")><a href="@Url.Action(action, controller, Model.WithChangedIndoor().Route)">Iluminada</a></li>
-    <li @(Model.IsLighted ? "class=active" : "")><a href="@Url.Action(action, controller, Model.WithChangedLighted().Route)">Techada</a></li>
+    <li @(Model.IsIndoor ? "class=active" : "")><a title="Canchas techadas" href="@Url.Action(action, controller, Model.WithChangedIndoor().Route)">Techada</a></li>
+    <li @(Model.IsLighted ? "class=active" : "")><a title="Canchas iluminadas" href="@Url.Action(action, controller, Model.WithChangedLighted().Route)">Iluminada</a></li>
 </ul>
 @if (Model.Locations.Any())
 {

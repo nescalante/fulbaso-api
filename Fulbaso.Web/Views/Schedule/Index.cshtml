@@ -7,7 +7,7 @@
 @{
     ViewBag.Title = Configuration.AppTitle + " - " + Model.Description;
     ViewBag.FormTitle = Model.Description;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    
     var day = (DateTime)ViewBag.Time;
     var range = CoreUtil.GetRange(Model.CourtsInfo, day);
 }
