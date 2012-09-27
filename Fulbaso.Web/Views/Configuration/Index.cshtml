@@ -19,87 +19,81 @@
     </div>
 }
 
-<div class="container">
-    <div class="row">
-        <div class="span12">
-            @Html.Partial("Menu", (string)ViewBag.PlacePage)
+@Html.Partial("Menu", (string)ViewBag.PlacePage)
 
-            <div>
-                <p>Desde aquí se podrán configurar los diferentes precios de las canchas del complejo, separadas por día, horario y fecha.</p>
-                <p>Los precios tienen un orden de prioridad, la configuración que se encuentre más arriba tendrá más importancia por sobre el resto. Si desea modificar el orden de prioridad arrastre las configuraciones en el orden deseado.</p>
-                @if (Model.Configuration.Count() == 0)
-                {
-                    <p>Comience agregando un precio y su respectiva configuración @Html.ActionLink("haciendo click aquí", "Add", new { court = Model.Id, place = ViewBag.PlacePage }).</p>
-                }
-            </div>
+<div>
+    <p>Desde aquí se podrán configurar los diferentes precios de las canchas del complejo, separadas por día, horario y fecha.</p>
+    <p>Los precios tienen un orden de prioridad, la configuración que se encuentre más arriba tendrá más importancia por sobre el resto. Si desea modificar el orden de prioridad arrastre las configuraciones en el orden deseado.</p>
+    @if (Model.Configuration.Count() == 0)
+    {
+        <p>Comience agregando un precio y su respectiva configuración @Html.ActionLink("haciendo click aquí", "Add", new { court = Model.Id, place = ViewBag.PlacePage }).</p>
+    }
+</div>
 
-            @if (Model.Configuration.Count() != 0)
-            {
-                <div style="margin-bottom: 10px;">
-                    @Html.ActionLink("Agregar configuración", "Add", new { court = Model.Id, place = ViewBag.PlacePage }, new { @class = "btn" })
-                </div>
-            }
-
-            <div>
-                <ul id="sortable">
-                @foreach (var c in Model.Configuration.OrderBy(cc => cc.Order))
-                {
-	                <li class="well" data-id="@c.Id">
-                        <a name="delete" class="close">&times;</a>
-                        <a name="edit" href="@Url.Action("Edit", new { court = Model.Id, config = c.Id, place = ViewBag.PlacePage })">
-                            <dl>
-                                <dt>Vigencia</dt>
-                                @if (c.StartHour != null || c.EndHour != null)
-                                {
-                                    <dd>
-                                    @if (c.StartHour != null)
-                                    {
-                                        @:Desde las
-                                        <strong>@(c.StartHour + " hs")</strong>
-                                    }
-                                    @if (c.EndHour != null)
-                                    {
-                                        @(c.StartHour == null ? "H" : "h")@:asta las
-                                        <strong>@(c.EndHour + " hs")</strong>
-                                    }
-                                    </dd>
-                                }
-                                @if (c.StartDate != null || c.EndDate != null)
-                                {
-                                    <dd>
-                                    @if (c.StartDate != null)
-                                    {
-                                        @:Desde el
-                                        <strong>@c.StartDate.Value.ToShortDateString()</strong>
-                                    }
-                                    @if (c.EndDate != null)
-                                    {
-                                        @(c.StartDate == null ? "H" : "h")@:asta el
-                                        <strong>@c.EndDate.Value.ToShortDateString()</strong>
-                                    }
-                                    </dd> 
-                                }
-                                @if (c.Days != null)
-                                {
-                                    var days = string.Join(", ", c.Days.Select(d => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[(int)d]).ToLower()));
-                                    var ix = days.LastIndexOf(',');
-                                    days = ix > 0 ? days.Remove(ix, 1).Insert(ix, " y") : days;
-                                    <dd>Los días <strong>@days</strong></dd>
-                                }
-                                <dt>Precio</dt>
-                                <dd>$ @c.Price.ToString("F2") la hora</dd>
-                            </dl>
-                        </a>
-                    </li>
-                }
-                </ul>
-            </div>
-
-            <div style="margin-bottom: 10px;">
-                @Html.ActionLink("Volver", "Index", "Court", new { place = ViewBag.PlacePage }, new { @class = "btn" })
-            </div>
-        </div>
+@if (Model.Configuration.Count() != 0)
+{
+    <div style="margin-bottom: 10px;">
+        @Html.ActionLink("Agregar configuración", "Add", new { court = Model.Id, place = ViewBag.PlacePage }, new { @class = "btn" })
     </div>
+}
+
+<div>
+    <ul id="sortable">
+    @foreach (var c in Model.Configuration.OrderBy(cc => cc.Order))
+    {
+	    <li class="well" data-id="@c.Id">
+            <a name="delete" class="close">&times;</a>
+            <a name="edit" href="@Url.Action("Edit", new { court = Model.Id, config = c.Id, place = ViewBag.PlacePage })">
+                <dl>
+                    <dt>Vigencia</dt>
+                    @if (c.StartHour != null || c.EndHour != null)
+                    {
+                        <dd>
+                        @if (c.StartHour != null)
+                        {
+                            @:Desde las
+                            <strong>@(c.StartHour + " hs")</strong>
+                        }
+                        @if (c.EndHour != null)
+                        {
+                            @(c.StartHour == null ? "H" : "h")@:asta las
+                            <strong>@(c.EndHour + " hs")</strong>
+                        }
+                        </dd>
+                    }
+                    @if (c.StartDate != null || c.EndDate != null)
+                    {
+                        <dd>
+                        @if (c.StartDate != null)
+                        {
+                            @:Desde el
+                            <strong>@c.StartDate.Value.ToShortDateString()</strong>
+                        }
+                        @if (c.EndDate != null)
+                        {
+                            @(c.StartDate == null ? "H" : "h")@:asta el
+                            <strong>@c.EndDate.Value.ToShortDateString()</strong>
+                        }
+                        </dd> 
+                    }
+                    @if (c.Days != null)
+                    {
+                        var days = string.Join(", ", c.Days.Select(d => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[(int)d]).ToLower()));
+                        var ix = days.LastIndexOf(',');
+                        days = ix > 0 ? days.Remove(ix, 1).Insert(ix, " y") : days;
+                        <dd>Los días <strong>@days</strong></dd>
+                    }
+                    <dt>Precio</dt>
+                    <dd>$ @c.Price.ToString("F2") la hora</dd>
+                </dl>
+            </a>
+        </li>
+    }
+    </ul>
+</div>
+
+<div style="margin-bottom: 10px;">
+    @Html.ActionLink("Volver", "Index", "Court", new { place = ViewBag.PlacePage }, new { @class = "btn" })
 </div>
 
 <div class="modal" id="dialog-confirm" style="display:none;">
@@ -116,33 +110,36 @@
   </div>
 </div>
 
-<script>
-    $(function () {
-        $("#sortable").sortable({
-            stop: function () {
-                var index = [];
-                $("#sortable li").each(function () { index.push($(this).data("id")) });
-                $.post('@Url.Action("ChangeOrder", "Configuration")', { ids: index.join(",") });
-            }
+@section Scripts
+{
+    <script>
+        $(function () {
+            $("#sortable").sortable({
+                stop: function () {
+                    var index = [];
+                    $("#sortable li").each(function () { index.push($(this).data("id")) });
+                    $.post('@Url.Action("ChangeOrder", "Configuration")', { ids: index.join(",") });
+                }
+            });
+            $("#sortable").disableSelection();
+            $("#dialog-confirm").modal({
+                show: false
+            });
+            $("a:[name=delete]").click(function () {
+                row = $(this).parent();
+                $("#dialog-confirm").modal("show");
+            });
+            $("#delete-cancel").click(function () {
+                $("#dialog-confirm").modal("hide");
+            });
+            $("#delete-item").click(function () {
+                $.post('@Url.Action("Delete", "Configuration")', { id: row.data("id") });
+                row.remove();
+                $("#dialog-confirm").modal("hide");
+            });
         });
-        $("#sortable").disableSelection();
-        $("#dialog-confirm").modal({
-            show: false
-        });
-        $("a:[name=delete]").click(function () {
-            row = $(this).parent();
-            $("#dialog-confirm").modal("show");
-        });
-        $("#delete-cancel").click(function () {
-            $("#dialog-confirm").modal("hide");
-        });
-        $("#delete-item").click(function () {
-            $.post('@Url.Action("Delete", "Configuration")', { id: row.data("id") });
-            row.remove();
-            $("#dialog-confirm").modal("hide");
-        });
-    });
-</script>
+    </script>
+}
 
 @section StyleSheets
 {

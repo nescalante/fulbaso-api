@@ -15,14 +15,10 @@
     </div>
 }
 
-<div class="container">
-    <div class="row">
-        <div class="span12">
-            @Html.Partial("Menu", Model.Page)
+@Html.Partial("Menu", Model.Page)
 
-            <div style="margin: 10px;"></div>
+<div style="margin: 10px;"></div>
 
-            @Html.Partial("PlaceInfo", Model)
-        </div>
-    </div>
-</div>
+@Html.Partial("PlaceInfo", Model)
+
+@*todo dashboard*@

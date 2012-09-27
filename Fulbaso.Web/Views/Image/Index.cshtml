@@ -1,0 +1,66 @@
+﻿<input id="url" type="text" placeholder="Pegá tu hipervínculo acá" /><button class="btn">Agregar</button>
+<input type="file" id="files" name="files[]" multiple />
+<ul id="filelist" class="thumbnails">
+</ul>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            var url, prev;
+            var filenumber = 1;
+
+            $("#url").keyup(function () {
+                prev = $(this).val();
+                if (prev != url && $.trim(prev) != "") {
+                    url = prev;
+                    $.getJSON("@Url.Action("ParseUrl", "Image")", { url: url }, function (data) {
+                        console.log(data.status);
+
+                        if (data.status == "ok") {
+                            
+                        }
+                    });
+                }
+            });
+
+            function assignOnChange() {
+                $("#sourcelist").append("<input type=\"file\" id=\"file-" + filenumber + "\" name=\"file-" + filenumber + "\"/>");
+
+                $("#file-" + filenumber).change(function () {
+                    var item = "<li class=\"well\"><img src=\"http://placehold.it/300&text=" + $("#file-" + filenumber).val() + "\">";
+                    item += "<h3>" + $("#file-" + filenumber).val() + "</h3><p></p></li>";
+
+                    $("#filelist").append(item);
+                    $("#file-" + filenumber).hide();
+
+                    filenumber++;
+                    assignOnChange();
+                });
+            }
+
+            assignOnChange();
+        });
+    </script>
+    <script>
+        var x;
+
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+
+            // files is a FileList of File objects. List some properties.
+            var output = [];
+            for (var i = 0, f; f = files[i]; i++) {
+                var name = f.name;
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    output.push("<li><img id=\"img-" + i + "\" src=\"" + event.target.result + "\"/><strong>" + name + "</strong></li>");
+                    document.getElementById('filelist').innerHTML = '<ul>' + output.join('') + '</ul>';
+                };
+                reader.readAsDataURL(f);
+            }
+        }
+
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    </script>
+}

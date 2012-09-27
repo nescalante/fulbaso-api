@@ -5,84 +5,84 @@
 
 @{
     var filter = new PlacesFilter(this.Request.QueryString);
-    ViewBag.Title = string.IsNullOrEmpty(filter.Reference) ? "Búsqueda de canchas" : ("Canchas " + filter.Reference);
+    ViewBag.Title = string.IsNullOrEmpty(filter.Reference) ? "Listado de canchas" : ("Canchas " + filter.Reference);
 }
 
-<div class="container">
-    <div class="row">
-        <div class="span8">
-            <div style="padding: 0.2em 0px;">
-                <p class="visible-phone"><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados@(filter.ToString() != "" ? " " + filter.ToString() : "").</p>
-                <p class="hidden-phone"><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados.</p>
-                @if (filter.IsAdvanced)
-                {
-                    <p>Haga click @Html.ActionLink("aquí", "Advanced", "Search") para realizar una nueva búsqueda.</p>
-                }
-            </div>
-            <div id="places">
-                @Html.Partial("List", Model)
-            </div>
-            <a id="loadmore" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
+<div class="row">
+    <div class="span8">
+        <div style="padding: 0.2em 0px;">
+            <p class="visible-phone"><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados@(filter.ToString() != "" ? " " + filter.ToString() : "").</p>
+            <p class="hidden-phone"><span class="@(ViewBag.Places > 0 ? "badge badge-success" : "badge badge-error")">@ViewBag.Places</span> complejos encontrados.</p>
+            @if (filter.IsAdvanced)
+            {
+                <p>Haga click @Html.ActionLink("aquí", "Advanced", "Search") para realizar una nueva búsqueda.</p>
+            }
         </div>
-        <div class="span4">
-            <div class="hidden-phone">
-                @Html.Partial("Search", filter)
-                <a class="btn" href="@Url.Action("Map", "Place", filter.Route)">Mostrar en el mapa</a>
-            </div>
+        <div id="places">
+            @Html.Partial("List", Model)
+        </div>
+        <a id="loadmore" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
+    </div>
+    <div class="span4">
+        <div class="hidden-phone">
+            @Html.Partial("Search", filter)
+            <a class="btn" href="@Url.Action("Map", "Place", filter.Route)">Mostrar en el mapa</a>
         </div>
     </div>
 </div>
-<script>
-    $(function () {
-        var last, html, init;
 
-        function loadMore() {
-            if (init != last && html != null) {
-                last = init;
+@section Scripts
+{
+    <script>
+        $(function () {
+            var last, html, init;
 
-                $("#loadmore").hide();
-                $(html)
-                    .hide()
-                    .appendTo("#places")
-                    .fadeIn();
-                html = null;
-            }
+            function loadMore() {
+                if (init != last && html != null) {
+                    last = init;
+
+                    $("#loadmore").hide();
+                    $(html)
+                        .hide()
+                        .appendTo("#places")
+                        .fadeIn();
+                    html = null;
+                }
             
-            loadHtml();
-        }
+                loadHtml();
+            }
 
-        $("#loadmore").click(function () {
+            $("#loadmore").click(function () {
+                loadMore();
+            });
+
+            function loadHtml() {
+                if ($(".place-info").length != @ViewBag.Places)
+                {
+                    init = $(".place-info").length;
+
+                    $.get("@Html.Raw(Url.Action("List", "Home", filter.Route))&init=" + init, function (data) { 
+                        html = data;
+                        $("#loadmore").show();
+
+                        if ($(".place-info").length == @ViewBag.Places) {
+                            $("#loadmore").hide();
+                        }
+                    }).error(function () { $("#loadmore").hide(); });
+                }
+                else
+                {
+                    $("#loadmore").hide();
+                }
+            }
+
+            $(window).scroll(function () {
+                if (document.documentElement.clientHeight + $(document).scrollTop() >= document.body.offsetHeight - 100) {
+                    loadMore();
+                }
+            });
+
             loadMore();
         });
-
-        function loadHtml() {
-            if ($(".place-info").length != @ViewBag.Places)
-            {
-                init = $(".place-info").length;
-
-                console.log();
-
-                $.get("@Html.Raw(Url.Action("List", "Home", filter.Route))&init=" + init, function (data) { 
-                    html = data;
-                    $("#loadmore").show();
-
-                    if ($(".place-info").length == @ViewBag.Places) {
-                        $("#loadmore").hide();
-                    }
-                }).error(function () { $("#loadmore").hide(); });
-            }
-            else
-            {
-                $("#loadmore").hide();
-            }
-        }
-
-        $(window).scroll(function () {
-            if (document.documentElement.clientHeight + $(document).scrollTop() >= document.body.offsetHeight - 100) {
-                loadMore();
-            }
-        });
-
-        loadMore();
-    });
-</script>
+    </script>
+}

@@ -25,42 +25,43 @@
     </style>
 }
 
-<div class="container">
-    <div class="row">
-        <div class="@(filter.IsAdvanced || filter.HasQuery ? "span8" : "span12")">
-            <div id="map_canvas" style="height: 500px; width: 100%;"></div>
-        </div>
-        @if (filter.IsAdvanced || filter.HasQuery) 
-        {
-            <div class="hidden-phone span4">
-                @Html.Partial("Search", filter)
-            </div>
-        }
+<div class="row">
+    <div class="@(filter.IsAdvanced || filter.HasQuery ? "span8" : "span12")">
+        <div id="map_canvas" style="height: 500px; width: 100%;"></div>
     </div>
+    @if (filter.IsAdvanced || filter.HasQuery) 
+    {
+        <div class="hidden-phone span4">
+            @Html.Partial("Search", filter)
+        </div>
+    }
 </div>
 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-<script>
-    $(function () {
-        f.map.initialize("map_canvas", "-38", "-63");
-        f.map.markFrom("@Html.Raw(Url.Action("List", "Place", filter.Route))", "@Url.Content("~")img/sport_soccer.png");
-        map.setZoom(4);
-        f.location.initialize("map_canvas", function (position) {
-            f.map.mark("¡Estás acá! (en un radio de " + position.coords.accuracy + " metros)", position.coords.latitude, position.coords.longitude, "@Url.Content("~")img/user.png");
-            map.setZoom(15);
-            map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude))
-        });
+@section Scripts
+{
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script>
+        $(function () {
+            f.map.initialize("map_canvas", "-38", "-63");
+            f.map.markFrom("@Html.Raw(Url.Action("List", "Place", filter.Route))", "@Url.Content("~")img/sport_soccer.png");
+            map.setZoom(4);
+            f.location.initialize("map_canvas", function (position) {
+                f.map.mark("¡Estás acá! (en un radio de " + position.coords.accuracy + " metros)", position.coords.latitude, position.coords.longitude, "@Url.Content("~")img/user.png");
+                map.setZoom(15);
+                map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude))
+            });
         
-        function resize() {
-            if ( $(window).width() < 980 ) {
-                $("#map_canvas").height(($(window).height()-50)+"px")
+            function resize() {
+                if ( $(window).width() < 980 ) {
+                    $("#map_canvas").height(($(window).height()-50)+"px")
+                }
+                else {
+                    $("#map_canvas").height(($(window).height()-290)+"px")
+                }
             }
-            else {
-                $("#map_canvas").height(($(window).height()-290)+"px")
-            }
-        }
 
-        $(window).bind('resize', resize);
-        resize();
-    });
-</script>
+            $(window).bind('resize', resize);
+            resize();
+        });
+    </script>
+}

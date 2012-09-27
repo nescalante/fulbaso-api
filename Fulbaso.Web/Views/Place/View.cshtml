@@ -51,160 +51,160 @@
     <meta name="KEYWORDS" content="@Html.Raw(keywords)" />
 }
 
-<div class="container">
-    @if (Model.HasAdmin)
-    {
-        <div class="row">
-            <div class="span12">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#">Información</a>
-                    </li>
-                    <li>@Html.ActionLink("Disponibilidad", "Schedule", new { place = Model.Place.Page })</li>
-                </ul>
-            </div>
-        </div>
-    }
-    <div class="row">
-        <div class="span8">
-            <fieldset>
-                @if (Model.Place.Info != null)
-                {
-                    <div class="ui-info info">@Model.Place.Info</div>
-                }
-                @if (Model.Place.Address != null)
-                {
-                    <div class="ui-info address">@Model.Place.FullAddress</div>
-                }
-                @if (Model.Place.Phone != null)
-                {
-                    <div class="ui-info phone">@Model.Place.Phone</div>
-                }
-                @if (Model.Place.HowToArrive != null)
-                {
-                    <div class="ui-info howToArrive">@Html.Raw(HttpUtility.HtmlEncode(Model.Place.HowToArrive).Replace(Environment.NewLine, "<br>"))</div>
-                }
-                @if (Model.Place.Services != null && Model.Place.Services.Count() > 0)
-                {
-                    <div class="ui-info tags">
-                        @foreach (var s in Model.Place.Services)
-                        {
-                            <a title="Canchas con @s.GetDescription().ToLower()" href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
-                        }
-                    </div>
-                }
-            </fieldset>
-            @foreach (var c in Model.Place.CourtsInfo.GroupBy(c => c.CourtType.Description).ToList())
+@if (Model.HasAdmin)
+{
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#">Información</a>
+        </li>
+        <li>@Html.ActionLink("Disponibilidad", "Schedule", new { place = Model.Place.Page })</li>
+    </ul>
+}
+<div class="row">
+    <div class="span8">
+        <fieldset>
+            @if (Model.Place.Info != null)
             {
-                var title = c.Key + " - " + c.Count() + " cancha" + (c.Count() > 1 ? "s" : "");
-                var typeList = new List<string>();
-
-                if (c.ToList().GroupBy(i => i.FloorType.Description).Count() == 1)
-                {
-                    typeList.Add(c.ToList().First().FloorType.ToString());
-                }
-
-                if (c.ToList().GroupBy(i => i.IsIndoor).Count() == 1 && c.ToList().First().IsIndoor)
-                {
-                    typeList.Add("Techada" + (c.Count() > 1 ? "s" : ""));
-                }
-
-                if (c.ToList().GroupBy(i => i.IsLighted).Count() == 1 && c.ToList().First().IsLighted)
-                {
-                    typeList.Add("Con luz");
-                }
-
-                var info = c.ToList().GroupBy(g => new { FloorType = g.FloorType.Description, IsLighted = g.IsLighted, IsIndoor = g.IsIndoor, g.Players });
-                bool showCourts = true;
-
-                if (info.Count() == 1 && info.First().First().Players != null)
-                {
-                    typeList.Add(info.First().First().Players + " jugadores");
-                    showCourts = false;
-                }
-                <h3 style="margin: 10px 0 5px;">
-                    @title
-                </h3>
-                if (typeList.Any())
-                {
-                    <div class="alert alert-info" style="padding: 4px 0;margin:0;">
-                        <dl style="padding: 4px; margin:0;">
-                        @foreach (var i in typeList)
-                        {
-                            <dd>@i</dd>
-                        }
-                        </dl>
-                    </div>            
-                }
-                <dl>
-                    @if (showCourts)
+                <div class="ui-info info">@Model.Place.Info</div>
+            }
+            @if (Model.Place.Address != null)
+            {
+                <div class="ui-info address">@Model.Place.FullAddress</div>
+            }
+            @if (Model.Place.Phone != null)
+            {
+                <div class="ui-info phone">@Model.Place.Phone</div>
+            }
+            @if (Model.Place.HowToArrive != null)
+            {
+                <div class="ui-info howToArrive">@Html.Raw(HttpUtility.HtmlEncode(Model.Place.HowToArrive).Replace(Environment.NewLine, "<br>"))</div>
+            }
+            @if (Model.Place.Services != null && Model.Place.Services.Count() > 0)
+            {
+                <div class="ui-info tags">
+                    @foreach (var s in Model.Place.Services)
                     {
-                        foreach (var i in info.OrderByDescending(i => i.Count()))
+                        <a title="Canchas con @s.GetDescription().ToLower()" href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
+                    }
+                </div>
+            }
+        </fieldset>
+        @foreach (var c in Model.Place.CourtsInfo.GroupBy(c => c.CourtType.Description).ToList())
+        {
+            var title = c.Key + " - " + c.Count() + " cancha" + (c.Count() > 1 ? "s" : "");
+            var typeList = new List<string>();
+
+            if (c.ToList().GroupBy(i => i.FloorType.Description).Count() == 1)
+            {
+                typeList.Add(c.ToList().First().FloorType.ToString());
+            }
+
+            if (c.ToList().GroupBy(i => i.IsIndoor).Count() == 1 && c.ToList().First().IsIndoor)
+            {
+                typeList.Add("Techada" + (c.Count() > 1 ? "s" : ""));
+            }
+
+            if (c.ToList().GroupBy(i => i.IsLighted).Count() == 1 && c.ToList().First().IsLighted)
+            {
+                typeList.Add("Con luz");
+            }
+
+            var info = c.ToList().GroupBy(g => new { FloorType = g.FloorType.Description, IsLighted = g.IsLighted, IsIndoor = g.IsIndoor, g.Players });
+            bool showCourts = true;
+
+            if (info.Count() == 1 && info.First().First().Players != null)
+            {
+                typeList.Add(info.First().First().Players + " jugadores");
+                showCourts = false;
+            }
+            <h3 style="margin: 10px 0 5px;">
+                @title
+            </h3>
+            if (typeList.Any())
+            {
+                <div class="alert alert-info" style="padding: 4px 0;margin:0;">
+                    <dl style="padding: 4px; margin:0;">
+                    @foreach (var i in typeList)
+                    {
+                        <dd>@i</dd>
+                    }
+                    </dl>
+                </div>            
+            }
+            <dl>
+                @if (showCourts)
+                {
+                    foreach (var i in info.OrderByDescending(i => i.Count()))
+                    {
+                        var list = new List<string>();
+                        var courtsInfo = i.Count() + " cancha" + (i.Count() > 1 ? "s" : "");
+
+                        if (!typeList.Contains(i.Key.FloorType.ToString()))
                         {
-                            var list = new List<string>();
-                            var courtsInfo = i.Count() + " cancha" + (i.Count() > 1 ? "s" : "");
+                            list.Add(i.Key.FloorType.ToString());
+                        }
+                        if (!typeList.Contains("Con luz") && i.Key.IsLighted)
+                        {
+                            list.Add("Con luz");
+                        }
+                        if (!typeList.Contains("Techada") && !typeList.Contains("Techadas") && i.Key.IsIndoor)
+                        {
+                            list.Add("Techada" + (i.Count() > 1 ? "s" : ""));
+                        }
+                        if (i.Key.Players != null)
+                        {
+                            list.Add(i.Key.Players + " jugadores");
+                        }
 
-                            if (!typeList.Contains(i.Key.FloorType.ToString()))
-                            {
-                                list.Add(i.Key.FloorType.ToString());
-                            }
-                            if (!typeList.Contains("Con luz") && i.Key.IsLighted)
-                            {
-                                list.Add("Con luz");
-                            }
-                            if (!typeList.Contains("Techada") && !typeList.Contains("Techadas") && i.Key.IsIndoor)
-                            {
-                                list.Add("Techada" + (i.Count() > 1 ? "s" : ""));
-                            }
-                            if (i.Key.Players != null)
-                            {
-                                list.Add(i.Key.Players + " jugadores");
-                            }
-
-                            <dt>@courtsInfo</dt>
-                            foreach (var l in list)
-                            {
-                                <dd>@l</dd>
-                            }
+                        <dt>@courtsInfo</dt>
+                        foreach (var l in list)
+                        {
+                            <dd>@l</dd>
                         }
                     }
-                </dl>
-            }
-        </div>
-        <div class="span4 hidden-phone">
-            <div id="map_canvas" style="min-height: 350px;"></div>
-        </div>
-        <div class="span8">
-            <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
-            <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
-        </div>
+                }
+            </dl>
+        }
+    </div>
+    <div class="span4 hidden-phone">
+        <div id="map_canvas" style="min-height: 350px;"></div>
     </div>
 </div>
-<script>
-    $(function () {
-        $("#favourite").click(function () {
-            if ($(this).hasClass("active")) {
-                $(this).removeClass("active");
-                $.post("@Url.Action("DeleteFavourite", "Place")", { favourite: @Model.Place.Id });
-            }
-            else {
-                $(this).addClass("active");
-                $.post("@Url.Action("AddFavourite", "Place")", { favourite: @Model.Place.Id });
-            }
-        });
-    });
-</script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-@if (Model.Place.MapUa != null && Model.Place.MapVa != null)
+<div class="row">
+    <div class="span8">
+        <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
+        <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
+    </div>
+</div>
+
+@section Scripts
 {
     <script>
         $(function () {
-            f.map.initialize("map_canvas", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')");
-            f.map.mark("@Html.Raw(Model.Place.Description)", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')");
-            f.map.markFrom("@Url.Action("GetNearest", "Place", new { place = @Model.Place.Page })", "@Url.Content("~")img/sport_soccer.png", "@Url.Action("GetNearestLayout", "Place", new { place = Model.Place.Page, description = Model.Place.Description, })");
-            f.location.initialize("map_canvas", function (position) {
-                f.map.mark("¡Estás acá! (en un radio de " + position.coords.accuracy + " metros)", position.coords.latitude, position.coords.longitude, "@Url.Content("~")img/user.png");
+            $("#favourite").click(function () {
+                if ($(this).hasClass("active")) {
+                    $(this).removeClass("active");
+                    $.post("@Url.Action("DeleteFavourite", "Place")", { favourite: @Model.Place.Id });
+                }
+                else {
+                    $(this).addClass("active");
+                    $.post("@Url.Action("AddFavourite", "Place")", { favourite: @Model.Place.Id });
+                }
             });
         });
     </script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    @if (Model.Place.MapUa != null && Model.Place.MapVa != null)
+    {
+        <script>
+            $(function () {
+                f.map.initialize("map_canvas", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')");
+                f.map.mark("@Html.Raw(Model.Place.Description)", "@Model.Place.MapUa.ToString().Replace(',', '.')", "@Model.Place.MapVa.ToString().Replace(',', '.')");
+                f.map.markFrom("@Url.Action("GetNearest", "Place", new { place = @Model.Place.Page })", "@Url.Content("~")img/sport_soccer.png", "@Url.Action("GetNearestLayout", "Place", new { place = Model.Place.Page, description = Model.Place.Description, })");
+                f.location.initialize("map_canvas", function (position) {
+                    f.map.mark("¡Estás acá! (en un radio de " + position.coords.accuracy + " metros)", position.coords.latitude, position.coords.longitude, "@Url.Content("~")img/user.png");
+                });
+            });
+        </script>
+    }
 }

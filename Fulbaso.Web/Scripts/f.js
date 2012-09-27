@@ -71,7 +71,6 @@ var f = f || {
                 var infowindow = f.map.getWindow(place, marker);
 
                 map.hover[place.Id] = function () {
-                    console.log(this);
                     f.map.setCenter(place.MapUa, place.MapVa);
                     f.map.openWindow(infowindow, marker);
                     return false;
@@ -80,7 +79,7 @@ var f = f || {
                     infowindow.close();
                 }
 
-                container.find(".mapitem[data-id=" + place.Id + "]").hover(map.hover[place.Id], map.close[place.Id]);
+                //container.find(".mapitem[data-id=" + place.Id + "]").hover(map.hover[place.Id], map.close[place.Id]);
             }
 
             return marker;
@@ -132,7 +131,7 @@ var f = f || {
                 $("#" + id).parent().fadeIn();
                 var container = $("#" + id);
                 $(html).hide().appendTo(container).fadeIn();
-                $(".mapitem").hover(function () { map.hover[$(this).data("id")]() }, function () { map.close[$(this).data("id")]() });
+                //$(".mapitem").hover(function () { map.hover[$(this).data("id")]() }, function () { map.close[$(this).data("id")]() });
             });
         }
     },

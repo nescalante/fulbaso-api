@@ -1,46 +1,7 @@
 ﻿@using Fulbaso.Web
 
-<script>
-    var loginclicked = false;
-    var logged = false;
-
-    window.fbAsyncInit = function () {
-        FB.init({ appId: '@Configuration.AppId', channelUrl: '//' + window.location.hostname + '/channel', status: true, cookie: true, xfbml: true });
-
-        @if (!Request.IsAuthenticated)
-        {
-            <text>
-                FB.Event.subscribe('auth.statusChange', function (response) {
-                    if (response.authResponse) {
-                        FB.api('/me', function (me) {
-                            if (loginclicked) {
-                                $("#token").val(response.authResponse.accessToken);
-                                $("#loginform").submit();
-                            }
-                            else {
-                                $.post("@Url.Action("Login", "Home")", { token: response.authResponse.accessToken }, function () { 
-                                    logged = true; 
-                                    $("#token").val(response.authResponse.accessToken);
-                                });
-                            }
-                        })
-                    }
-                });
-            </text>
-        }
-    }
-</script>
-
 @if (Request.IsAuthenticated)
 {
-    <script>
-        $(function () {
-            $("#logout").click(function () {
-                FB.logout();
-            });
-        });
-    </script>
-    
     <ul class="nav pull-right">
         <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name
             <b class="caret"></b></a>
@@ -56,19 +17,6 @@
 }
 else
 {
-    <script>
-        $(function () {
-            // respond to clicks on the login and logout links
-            $("#facebooklogin").click(function () {
-                if (logged) {
-                    $("#loginform").submit();
-                }
-                loginclicked = true;
-                FB.login();
-            });
-        });
-    </script>
-    
     using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id="loginform", @class = "nav navbar-form pull-right", }))
     {
         @Html.Hidden("token")
