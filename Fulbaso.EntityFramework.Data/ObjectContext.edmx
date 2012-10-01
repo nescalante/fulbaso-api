@@ -11,8 +11,10 @@
           <EntitySet Name="CourtConfigurations" EntityType="ObjectContextModel.Store.CourtConfigurations" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Courts" EntityType="ObjectContextModel.Store.Courts" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CourtTypes" EntityType="ObjectContextModel.Store.CourtTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Files" EntityType="ObjectContextModel.Store.Files" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FloorTypes" EntityType="ObjectContextModel.Store.FloorTypes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Locations" EntityType="ObjectContextModel.Store.Locations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PlaceFiles" EntityType="ObjectContextModel.Store.PlaceFiles" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Places" EntityType="ObjectContextModel.Store.Places" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PlaceServices" EntityType="ObjectContextModel.Store.PlaceServices" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Regions" EntityType="ObjectContextModel.Store.Regions" store:Type="Tables" Schema="dbo" />
@@ -67,9 +69,21 @@
             <End Role="Places" EntitySet="Places" />
             <End Role="Courts" EntitySet="Courts" />
           </AssociationSet>
+          <AssociationSet Name="FK_Files_Users" Association="ObjectContextModel.Store.FK_Files_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Files" EntitySet="Files" />
+          </AssociationSet>
           <AssociationSet Name="FK_Locations_Regions" Association="ObjectContextModel.Store.FK_Locations_Regions">
             <End Role="Regions" EntitySet="Regions" />
             <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlaceFiles_Files" Association="ObjectContextModel.Store.FK_PlaceFiles_Files">
+            <End Role="Files" EntitySet="Files" />
+            <End Role="PlaceFiles" EntitySet="PlaceFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlaceFiles_Places" Association="ObjectContextModel.Store.FK_PlaceFiles_Places">
+            <End Role="Places" EntitySet="Places" />
+            <End Role="PlaceFiles" EntitySet="PlaceFiles" />
           </AssociationSet>
           <AssociationSet Name="FK_Places_Locations" Association="ObjectContextModel.Store.FK_Places_Locations">
             <End Role="Locations" EntitySet="Locations" />
@@ -166,6 +180,18 @@
           <Property Name="Description" Type="varchar" Nullable="false" MaxLength="100" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Files">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FileName" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="ContentLength" Type="int" Nullable="false" />
+          <Property Name="ContentType" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="InsertDate" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="FloorTypes">
           <Key>
             <PropertyRef Name="Id" />
@@ -182,6 +208,14 @@
           <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="RegionId" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlaceFiles">
+          <Key>
+            <PropertyRef Name="PlaceId" />
+            <PropertyRef Name="FileId" />
+          </Key>
+          <Property Name="PlaceId" Type="int" Nullable="false" />
+          <Property Name="FileId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Places">
           <Key>
@@ -377,6 +411,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Files_Users">
+          <End Role="Users" Type="ObjectContextModel.Store.Users" Multiplicity="1" />
+          <End Role="Files" Type="ObjectContextModel.Store.Files" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Files">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Locations_Regions">
           <End Role="Regions" Type="ObjectContextModel.Store.Regions" Multiplicity="1" />
           <End Role="Locations" Type="ObjectContextModel.Store.Locations" Multiplicity="*" />
@@ -386,6 +432,30 @@
             </Principal>
             <Dependent Role="Locations">
               <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlaceFiles_Files">
+          <End Role="Files" Type="ObjectContextModel.Store.Files" Multiplicity="1" />
+          <End Role="PlaceFiles" Type="ObjectContextModel.Store.PlaceFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Files">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlaceFiles">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlaceFiles_Places">
+          <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
+          <End Role="PlaceFiles" Type="ObjectContextModel.Store.PlaceFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Places">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlaceFiles">
+              <PropertyRef Name="PlaceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -563,6 +633,15 @@
             <End Role="UserEntity" EntitySet="Users" />
             <End Role="PlaceEntity" EntitySet="Places" />
           </AssociationSet>
+          <EntitySet Name="Files" EntityType="ObjectContextModel.FileEntity" />
+          <AssociationSet Name="FK_Files_Users" Association="ObjectContextModel.FK_Files_Users">
+            <End Role="UserEntity" EntitySet="Users" />
+            <End Role="File" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="PlaceFiles" Association="ObjectContextModel.PlaceFiles">
+            <End Role="FileEntity" EntitySet="Files" />
+            <End Role="PlaceEntity" EntitySet="Places" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ClientEntity">
           <Key>
@@ -684,6 +763,7 @@
           <NavigationProperty Name="Admins" Relationship="ObjectContextModel.UserPlaces" FromRole="Places" ToRole="Users" />
           <Property Type="Int64" Name="CreatedBy" />
           <NavigationProperty Name="Users" Relationship="ObjectContextModel.FK_Places_Users" FromRole="PlaceEntity" ToRole="UserEntity" />
+          <NavigationProperty Name="Files" Relationship="ObjectContextModel.PlaceFiles" FromRole="PlaceEntity" ToRole="FileEntity" />
         </EntityType>
         <EntityType Name="PlaceService">
           <Key>
@@ -732,6 +812,7 @@
           <NavigationProperty Name="Favourites" Relationship="ObjectContextModel.UserFavourites" FromRole="Users" ToRole="Places" />
           <NavigationProperty Name="Places" Relationship="ObjectContextModel.UserPlaces" FromRole="Users" ToRole="Places" />
           <NavigationProperty Name="Places_1" Relationship="ObjectContextModel.FK_Places_Users" FromRole="UserEntity" ToRole="PlaceEntity" />
+          <NavigationProperty Name="Files" Relationship="ObjectContextModel.FK_Files_Users" FromRole="UserEntity" ToRole="File" />
         </EntityType>
         <EntityType Name="PlaceView">
           <Key>
@@ -916,6 +997,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FileEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FileName" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="ContentLength" Nullable="false" />
+          <Property Type="String" Name="ContentType" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="InsertDate" Nullable="false" />
+          <Property Type="Int64" Name="UserId" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="ObjectContextModel.FK_Files_Users" FromRole="File" ToRole="UserEntity" />
+          <NavigationProperty Name="Places" Relationship="ObjectContextModel.PlaceFiles" FromRole="FileEntity" ToRole="PlaceEntity" />
+        </EntityType>
+        <Association Name="FK_Files_Users">
+          <End Type="ObjectContextModel.UserEntity" Role="UserEntity" Multiplicity="1" />
+          <End Type="ObjectContextModel.FileEntity" Role="File" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="File">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlaceFiles">
+          <End Type="ObjectContextModel.FileEntity" Role="FileEntity" Multiplicity="*" />
+          <End Type="ObjectContextModel.PlaceEntity" Role="PlaceEntity" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1053,6 +1164,27 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Files">
+            <EntityTypeMapping TypeName="ObjectContextModel.FileEntity">
+              <MappingFragment StoreEntitySet="Files">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="InsertDate" ColumnName="InsertDate" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="ContentLength" ColumnName="ContentLength" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PlaceFiles" TypeName="ObjectContextModel.PlaceFiles" StoreEntitySet="PlaceFiles">
+            <EndProperty Name="PlaceEntity">
+              <ScalarProperty Name="Id" ColumnName="PlaceId" />
+            </EndProperty>
+            <EndProperty Name="FileEntity">
+              <ScalarProperty Name="Id" ColumnName="FileId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1067,7 +1199,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
@@ -1095,8 +1227,6 @@
           <ConnectorPoint PointX="11.25" PointY="6.8637344767628194" />
           <ConnectorPoint PointX="11.625" PointY="7.2387344767628194" />
           <ConnectorPoint PointX="11.625" PointY="11.230499674479166" />
-          <ConnectorPoint PointX="11.697916666666666" PointY="11.230499674479166" />
-          <ConnectorPoint PointX="11.864583333333334" PointY="11.230499674479166" />
           <ConnectorPoint PointX="12" PointY="11.230499674479166" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_CourtBooks_Courts" ManuallyRouted="false">
@@ -1104,11 +1234,12 @@
           <ConnectorPoint PointX="13.125" PointY="9.375" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_CourtBooks_Users" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.25" PointY="16.230499674479169" />
-          <ConnectorPoint PointX="11.697916666666666" PointY="16.230499674479169" />
-          <ConnectorPoint PointX="11.864583333333334" PointY="16.230499674479169" />
-          <ConnectorPoint PointX="12.75" PointY="16.230499674479169" />
-          <ConnectorPoint PointX="12.75" PointY="13.085999348958332" />
+          <ConnectorPoint PointX="11.25" PointY="14.375" />
+          <ConnectorPoint PointX="11.40982443490112" PointY="14.215175565098878" />
+          <ConnectorPoint PointX="11.527675565098878" PointY="14.097324434901122" />
+          <ConnectorPoint PointX="11.6875" PointY="13.9375" />
+          <ConnectorPoint PointX="11.6875" PointY="11.230499674479166" />
+          <ConnectorPoint PointX="12" PointY="11.230499674479166" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_CourtConfigurations_Courts" ManuallyRouted="false">
           <ConnectorPoint PointX="14.25" PointY="5.9708968098958328" />
@@ -1120,15 +1251,17 @@
           <ConnectorPoint PointX="13.5" PointY="4.125" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_Courts_FloorTypes" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.78125" PointY="19.375" />
-          <ConnectorPoint PointX="11.78125" PointY="7.3816943359375" />
-          <ConnectorPoint PointX="12.75" PointY="7.3816943359375" />
+          <ConnectorPoint PointX="11.46875" PointY="19.375" />
+          <ConnectorPoint PointX="11.46875" PointY="7.5236677775065113" />
+          <ConnectorPoint PointX="11.541666666666666" PointY="7.52366777750651" />
+          <ConnectorPoint PointX="11.708333333333334" PointY="7.5236677775065113" />
+          <ConnectorPoint PointX="12.75" PointY="7.5236677775065113" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_Courts_Places" ManuallyRouted="false">
-          <ConnectorPoint PointX="9" PointY="7.0920418294270826" />
-          <ConnectorPoint PointX="11.394974019330929" PointY="7.0920418294270817" />
-          <ConnectorPoint PointX="11.561640685997597" PointY="7.0920418294270826" />
-          <ConnectorPoint PointX="12.75" PointY="7.0920418294270826" />
+          <ConnectorPoint PointX="9" PointY="7.1630285502115889" />
+          <ConnectorPoint PointX="11.465960740115436" PointY="7.163028550211588" />
+          <ConnectorPoint PointX="11.632627406782104" PointY="7.1630285502115889" />
+          <ConnectorPoint PointX="12.75" PointY="7.1630285502115889" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_Locations_Regions" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="8.9612939453125" />
@@ -1139,12 +1272,12 @@
           <ConnectorPoint PointX="7.5" PointY="8.9612939453125" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_PlaceServices_Places" ManuallyRouted="false">
-          <ConnectorPoint PointX="8.25" PointY="11.749410807291666" />
-          <ConnectorPoint PointX="8.25" PointY="12.797841796875" />
-          <ConnectorPoint PointX="8.5729191666666669" PointY="12.797841796875" />
-          <ConnectorPoint PointX="8.7395858333333347" PointY="12.797841796875" />
-          <ConnectorPoint PointX="8.7760454166666673" PointY="12.797841796875" />
-          <ConnectorPoint PointX="8.9427120833333351" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.186523046875" PointY="11.941712239583334" />
+          <ConnectorPoint PointX="8.186523046875" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.4391315885416649" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.6057982552083327" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.7091516276041663" PointY="12.797841796875" />
+          <ConnectorPoint PointX="8.8758182942708341" PointY="12.797841796875" />
           <ConnectorPoint PointX="9.75" PointY="12.797841796875" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_Regions_Territories" ManuallyRouted="false">
@@ -1152,25 +1285,40 @@
           <ConnectorPoint PointX="3" PointY="9.0189925130208355" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.UserFavourites" ManuallyRouted="false">
-          <ConnectorPoint PointX="8.6562525" PointY="11.749410807291666" />
-          <ConnectorPoint PointX="8.6562525" PointY="16.654710664062506" />
-          <ConnectorPoint PointX="8.7760454166666673" PointY="16.654710664062506" />
-          <ConnectorPoint PointX="8.9427120833333351" PointY="16.654710664062506" />
-          <ConnectorPoint PointX="9.75" PointY="16.654710664062506" />
+          <ConnectorPoint PointX="8.5224649218749988" PointY="11.941712239583334" />
+          <ConnectorPoint PointX="8.5224649218749988" PointY="16.331601406249998" />
+          <ConnectorPoint PointX="8.7091516276041663" PointY="16.331601406249998" />
+          <ConnectorPoint PointX="8.8758182942708341" PointY="16.331601406249998" />
+          <ConnectorPoint PointX="9.75" PointY="16.331601406249998" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.UserPlaces" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.8437475" PointY="11.749410807291666" />
-          <ConnectorPoint PointX="7.8437475" PointY="15.483602832031259" />
-          <ConnectorPoint PointX="8.5729191666666669" PointY="15.483602832031259" />
-          <ConnectorPoint PointX="8.7395858333333347" PointY="15.483602832031259" />
-          <ConnectorPoint PointX="8.7760454166666673" PointY="15.483602832031259" />
-          <ConnectorPoint PointX="8.9427120833333351" PointY="15.483602832031259" />
-          <ConnectorPoint PointX="9.75" PointY="15.483602832031259" />
+          <ConnectorPoint PointX="7.8120090234375" PointY="11.941712239583334" />
+          <ConnectorPoint PointX="7.8120090234375" PointY="15.322048203125005" />
+          <ConnectorPoint PointX="8.4391315885416649" PointY="15.322048203125005" />
+          <ConnectorPoint PointX="8.6057982552083327" PointY="15.322048203125005" />
+          <ConnectorPoint PointX="8.7091516276041663" PointY="15.322048203125005" />
+          <ConnectorPoint PointX="8.8758182942708341" PointY="15.322048203125005" />
+          <ConnectorPoint PointX="9.75" PointY="15.322048203125005" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_Places_Users" >
-          <ConnectorPoint PointX="9.75" PointY="17.401607506510416" />
-          <ConnectorPoint PointX="8.8593787500000012" PointY="17.401607506510416" />
-          <ConnectorPoint PointX="8.8593787500000012" PointY="11.749410807291666" />
+          <ConnectorPoint PointX="9.75" PointY="17.336203593749993" />
+          <ConnectorPoint PointX="8.7924849609375" PointY="17.336203593749993" />
+          <ConnectorPoint PointX="8.7924849609375" PointY="11.941712239583334" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ObjectContextModel.FileEntity" Width="1.5" PointX="12" PointY="15" Height="2.5571907552083388" />
+        <AssociationConnector Association="ObjectContextModel.FK_Files_Users" >
+          <ConnectorPoint PointX="11.25" PointY="16.374746093749998" />
+          <ConnectorPoint PointX="11.385416666666666" PointY="16.374746093749998" />
+          <ConnectorPoint PointX="11.552083333333334" PointY="16.374746093749998" />
+          <ConnectorPoint PointX="12" PointY="16.374746093749998" />
+        </AssociationConnector>
+        <AssociationConnector Association="ObjectContextModel.PlaceFiles" >
+          <ConnectorPoint PointX="12.031152846153846" PointY="15" />
+          <ConnectorPoint PointX="11.65625" PointY="14.625097153846154" />
+          <ConnectorPoint PointX="11.65625" PointY="9.3770837259928381" />
+          <ConnectorPoint PointX="11.552083333333334" PointY="9.3770837259928381" />
+          <ConnectorPoint PointX="11.385416666666666" PointY="9.3770837259928381" />
+          <ConnectorPoint PointX="9" PointY="9.3770837259928381" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

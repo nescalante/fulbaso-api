@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Objects.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using Fulbaso.Contract;
-using Fulbaso.EntityFramework;
 using Fulbaso.Helpers;
+using File = Fulbaso.Contract.File;
 
 namespace Fulbaso.EntityFramework.Logic
 {
     public class PlaceService : IPlaceService
     {
         private ICourtBookService _bookService;
+        private IFileService _fileService;
 
-        public PlaceService(ICourtBookService bookService)
+        public PlaceService(ICourtBookService bookService, IFileService fileService)
         {
             _bookService = bookService;
+            _fileService = fileService;
         }
 
         public void Add(Place place)
@@ -75,6 +78,18 @@ namespace Fulbaso.EntityFramework.Logic
             Repository<PlaceEntity>.Delete(new PlaceEntity { Id = place.Id });
         }
 
+        public void AddImage(int placeId, Stream input, File file)
+        {
+            _fileService.AddImage(input, file);
+
+            var placeEntity = EntityUtil.Context.Places.Where(p => p.Id == placeId).ToList().First();
+            var fileEntity = EntityUtil.Context.Files.Where(f => f.Id == file.Id).ToList().First();
+
+            placeEntity.Files.Add(fileEntity);
+
+            EntityUtil.Context.SaveChanges();
+        }
+
         public Place Get(int placeId)
         {
             return PlaceService.Get(r => r.Id == placeId).SingleOrDefault();
@@ -112,7 +127,7 @@ namespace Fulbaso.EntityFramework.Logic
             return GetFromView(query);
         }
 
-        private static List<Place> GetFromView(IQueryable<PlaceView> query)
+        private List<Place> GetFromView(IQueryable<PlaceView> query)
         {
             var list = (from i in query.ToList()
                         select new Place
@@ -130,6 +145,18 @@ namespace Fulbaso.EntityFramework.Logic
 
             var services = EntityUtil.Context.PlaceServices.WhereContains(p => p.PlaceId, list.Select(i => i.Id)).ToList();
             list.ForEach(i => i.Services = services.Where(s => i.Id == s.PlaceId).Select(s => (Service)s.Service));
+
+            var images = EntityUtil.Context.Places.WhereContains(p => p.Id, list.Select(i => i.Id)).Select(p => new { p.Files, p.Id }).ToList();
+            list.ForEach(i => i.Images = images.Where(s => i.Id == s.Id).First().Files.Select(f => new File
+            {
+                Id = f.Id,
+                ContentLength = f.ContentLength,
+                ContentType = f.ContentType,
+                Description = f.Description,
+                FileName = f.FileName,
+                CreatedBy = new User { Id = f.UserId, },
+                InsertDate = f.InsertDate,
+            }));
 
             return list;
         }
@@ -149,24 +176,7 @@ namespace Fulbaso.EntityFramework.Logic
 
             if (rows > 0) places = places.Take(rows);
 
-            var list = (from i in places
-                        select new Place
-                        {
-                            Id = i.Id,
-                            Description = i.Name,
-                            Address = i.Address,
-                            Phone = i.Phone,
-                            Page = i.Page,
-                            Location = new Location { Description = i.Location.Description, Region = new Region { Description = i.Location.Region.Description }, },
-                            Courts = (int)i.Courts.Count(),
-                            MapUa = i.MapUa,
-                            MapVa = i.MapVa,
-                        }).ToList();
-
-            var services = EntityUtil.Context.PlaceServices.WhereContains(p => p.PlaceId, list.Select(i => i.Id)).ToList();
-            list.ForEach(i => i.Services = services.Where(s => i.Id == s.PlaceId).Select(s => (Service)s.Service));
-
-            return list;
+            return PlaceService.Get(places);
         }
 
         private static IQueryable<PlaceEntity> CreateQuery(int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted)
@@ -215,19 +225,26 @@ namespace Fulbaso.EntityFramework.Logic
             return place;
         }
 
-        public string ValidatePage(string page)
+        public string ValidatePage(string page, out int id)
         {
-            var place = EntityUtil.Context.Places.Where(r => r.Page.ToLower() == page.ToLower()).Select(p => p.Page).ToList().FirstOrDefault();
+            var place = EntityUtil.Context.Places.Where(r => r.Page.ToLower() == page.ToLower()).Select(p => new { p.Page, p.Id, }).ToList().FirstOrDefault();
 
             int placeId;
             bool parsed = int.TryParse(page, out placeId);
 
-            if (string.IsNullOrEmpty(place) && parsed)
+            if (string.IsNullOrEmpty(place.Page) && parsed)
             {
-                place = EntityUtil.Context.Places.Where(r => r.Id == placeId).Select(p => p.Page).ToList().FirstOrDefault();
+                place = EntityUtil.Context.Places.Where(r => r.Id == placeId).Select(p => new { p.Page, p.Id }).ToList().FirstOrDefault();
             }
 
-            return place;
+            id = place.Id;
+            return place.Page;
+        }
+
+        public string ValidatePage(string page)
+        {
+            int id;
+            return ValidatePage(page, out id);
         }
 
         public IEnumerable<Tuple<Place, double?>> GetNearest(Place place, int count = 10, double distance = 0)
@@ -338,7 +355,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         internal static IEnumerable<Place> Get(IQueryable<PlaceEntity> query)
         {
-            return (from r in query.Include(i => i.Services).Include(i => i.Location).Include("Location.Region").ToList()
+            return (from r in query.Include(i => i.Services).Include(i => i.Location).Include("Location.Region").Include(i => i.Files).ToList()
                     select new Place
                     {
                         Id = r.Id,
@@ -358,6 +375,16 @@ namespace Fulbaso.EntityFramework.Logic
                         Phone = r.Phone,
                         HowToArrive = r.HowToArrive,
                         Services = r.Services.Select(s => (Service)s.Service),
+                        Images = r.Files.Select(f => new File
+                        {
+                            Id = f.Id,
+                            ContentLength = f.ContentLength,
+                            ContentType = f.ContentType,
+                            Description = f.Description,
+                            FileName = f.FileName,
+                            CreatedBy = new User { Id = f.UserId, },
+                            InsertDate = f.InsertDate,
+                        }),
                         Page = r.Page,
                         IsActive = r.IsActive,
                         Courts = r.Courts.Count(),

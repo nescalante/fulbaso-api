@@ -38,7 +38,7 @@ namespace Fulbaso.Web.Controllers
                 return View("Index", courtModel);
             }
             else
-                return View("Index", "Home");
+                return RedirectToAction("Error404", "Home");
         }
 
         [HttpGet]
@@ -59,7 +59,7 @@ namespace Fulbaso.Web.Controllers
                 return View("Edit");
             }
             else
-                return View("Index", "Home");
+                return RedirectToAction("Error404", "Home");
         }
 
         [HttpPost]
@@ -92,7 +92,7 @@ namespace Fulbaso.Web.Controllers
                 return View("Edit", courtConfigModel);
             }
             else
-                return View("Index", "Home");
+                return RedirectToAction("Error404", "Home");
         }
 
         [HttpPost]

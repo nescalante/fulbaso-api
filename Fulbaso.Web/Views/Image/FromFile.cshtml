@@ -1,0 +1,85 @@
+﻿@using Fulbaso.Contract
+
+@model Place
+
+@section Header
+{
+    <div class="page-header">
+        <h1>
+            @Model.Description
+            @if (Model != null)
+            {
+                <small>Imágenes</small>
+            }
+        </h1>
+    </div>
+}
+
+@Html.Partial("Menu", Model.Page)
+
+@using (Html.BeginForm("AddFromFiles", "Image", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Page)
+    <div class="control-group">
+        <label class="control-label" for="url">Archivos</label>
+        <div class="controls">
+            <input type="file" id="files" name="files[]" multiple />
+        </div>
+    </div>
+    <ul id="filelist" class="thumbnails">
+    </ul>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Aceptar</button>
+        @Html.ActionLink("Cancelar", "Index", "Image", new { place = Model.Page, }, new { @class = "btn", })
+    </div>
+}
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            var filenumber = 0;
+
+            function addItem(src, name, target) {
+                var item = "<li>";
+                item += "<div class=\"thumbnail\"><img id=\"img-" + filenumber + "\" src=\"" + src + "\"/><div class=\"caption\"><h3>" + name + "</h3><textarea placeholder=\"Ingresa una descripción\" id=\"desc-" + filenumber + "\" name=\"desc-" + filenumber + "\" /></div></div>";
+                item += "</li>";
+                target.append(item);
+
+                filenumber++;
+            }
+
+            function handleFileSelect(evt) {
+                var files = evt.target.files; // FileList object
+                $("#filelist").html("");
+
+                filenumber = 0;
+                // files is a FileList of File objects. List some properties.
+                for (var i = 0, f; f = files[i]; i++) {
+                    readFile(f);
+                }
+
+                function readFile(file) {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        // replace to fix text wrap
+                        addItem(event.target.result, file.name.replace(/_/g, '-'), $("#filelist"))
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+        });
+    </script>
+}
+
+@section StyleSheets
+{
+    <style>
+        #filelist img { max-width: 300px; margin-top: 5px; }
+        #filelist h3, #filelist textarea { width: 300px; }
+        #filelist a { margin-top: 10px; }
+    </style>
+}

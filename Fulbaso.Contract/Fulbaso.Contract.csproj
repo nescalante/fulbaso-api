@@ -47,7 +47,9 @@
     <Compile Include="Configuration\FloorType.cs" />
     <Compile Include="Court\CourtConfiguration.cs" />
     <Compile Include="Court\CourtBook.cs" />
+    <Compile Include="Files\File.cs" />
     <Compile Include="Place\Service.cs" />
+    <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\IFloorTypeService.cs" />
     <Compile Include="Services\ICourtTypeService.cs" />

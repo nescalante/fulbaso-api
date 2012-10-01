@@ -10,22 +10,16 @@ namespace Fulbaso.Contract
     {
         public Place Place { get; set; }
 
-        [Display(Name = "Cantidad de jugadores:")]
         public int? Players { get; set; }
 
-        [Display(Name = "Deporte:")]
         public CourtType CourtType { get; set; }
 
-        [Display(Name = "Tipo de suelo:")]
         public FloorType FloorType { get; set; }
 
-        [Display(Name = "Techada:")]
         public bool IsIndoor { get; set; }
 
-        [Display(Name = "Iluminada:")]
         public bool IsLighted { get; set; }
 
-        [Display(Name = "Activa:")]
         public override bool IsActive { get; set; }
 
         public IEnumerable<CourtConfiguration> Configuration { get; set; }

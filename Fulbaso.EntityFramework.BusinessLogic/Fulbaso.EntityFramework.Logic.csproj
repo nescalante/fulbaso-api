@@ -48,6 +48,7 @@
     <Compile Include="Configuration\TerritoryService.cs" />
     <Compile Include="Configuration\LocationService.cs" />
     <Compile Include="Configuration\RegionService.cs" />
+    <Compile Include="File\FileService.cs" />
     <Compile Include="Place\ClientService.cs" />
     <Compile Include="Place\FavouriteService.cs" />
     <Compile Include="Court\ReportService.cs" />

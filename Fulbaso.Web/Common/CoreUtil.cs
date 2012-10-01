@@ -39,6 +39,13 @@ namespace Fulbaso.Web
                 return null;
         }
 
+        public static bool HasPlace(this IPrincipal user, int id)
+        {
+            var places = GetPlaces(user) ?? new List<Place>();
+
+            return places.Select(p => p.Id).Contains(id);
+        }
+
         public static IEnumerable<Tuple<Place, double?>> WithUrl(this IEnumerable<Tuple<Place, double?>> list)
         {
             foreach (var i in list) i.Item1.Url = GetPlaceUrl(i.Item1.Page);

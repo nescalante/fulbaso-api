@@ -47,6 +47,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -58,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Files\FileUtil.cs" />
+    <Compile Include="Images\ImageUtil.cs" />
     <Compile Include="Mvc\BaseController.cs" />
     <Compile Include="Mvc\WindsorControllerFactory.cs" />
     <Compile Include="Mvc\ContainerUtil.cs" />

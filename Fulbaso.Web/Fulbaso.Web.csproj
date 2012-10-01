@@ -325,6 +325,8 @@
     <Content Include="Views\Place\InfoView.cshtml" />
     <Content Include="Views\Place\Map.cshtml" />
     <Content Include="Views\Shared\Search.cshtml" />
+    <Content Include="Views\Image\FromURL.cshtml" />
+    <Content Include="Views\Image\FromFile.cshtml" />
     <Content Include="Views\Image\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
@@ -336,6 +338,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="uploaded\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -418,7 +421,7 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\404.cshtml" />
+    <Content Include="Views\Shared\404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\PlacesInterface.en.resx">

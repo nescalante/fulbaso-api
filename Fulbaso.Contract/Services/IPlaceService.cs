@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Fulbaso.Contract
 {
@@ -8,6 +9,8 @@ namespace Fulbaso.Contract
         void Add(Place place);
 
         void Delete(int placeId);
+
+        void AddImage(int placeId, Stream input, File file);
 
         Place Get(Place place, DateTime day);
 
@@ -23,6 +26,8 @@ namespace Fulbaso.Contract
         /// <param name="page">page name</param>
         /// <returns>page name from database</returns>
         string ValidatePage(string page);
+
+        string ValidatePage(string page, out int id);
 
         IEnumerable<Place> GetByUser(long userId);
 

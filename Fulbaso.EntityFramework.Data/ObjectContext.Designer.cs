@@ -33,6 +33,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "UserFavourites", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity))]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "UserPlaces", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity))]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Places_Users", "UserEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Fulbaso.EntityFramework.UserEntity), "PlaceEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), true)]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Files_Users", "UserEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.UserEntity), "File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.FileEntity), true)]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "PlaceFiles", "FileEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.FileEntity), "PlaceEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity))]
 
 #endregion
 
@@ -291,6 +293,22 @@ namespace Fulbaso.EntityFramework
             }
         }
         private ObjectSet<PlaceView> _PlaceViews;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<FileEntity> Files
+        {
+            get
+            {
+                if ((_Files == null))
+                {
+                    _Files = base.CreateObjectSet<FileEntity>("Files");
+                }
+                return _Files;
+            }
+        }
+        private ObjectSet<FileEntity> _Files;
 
         #endregion
         #region AddTo Methods
@@ -397,6 +415,14 @@ namespace Fulbaso.EntityFramework
         public void AddToPlaceViews(PlaceView placeView)
         {
             base.AddObject("PlaceViews", placeView);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Files EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToFiles(FileEntity fileEntity)
+        {
+            base.AddObject("Files", fileEntity);
         }
 
         #endregion
@@ -1904,6 +1930,280 @@ namespace Fulbaso.EntityFramework
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ObjectContextModel", Name="FileEntity")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class FileEntity : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new FileEntity object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="fileName">Initial value of the FileName property.</param>
+        /// <param name="description">Initial value of the Description property.</param>
+        /// <param name="contentLength">Initial value of the ContentLength property.</param>
+        /// <param name="contentType">Initial value of the ContentType property.</param>
+        /// <param name="insertDate">Initial value of the InsertDate property.</param>
+        /// <param name="userId">Initial value of the UserId property.</param>
+        public static FileEntity CreateFileEntity(global::System.Int32 id, global::System.String fileName, global::System.String description, global::System.Int32 contentLength, global::System.String contentType, global::System.DateTime insertDate, global::System.Int64 userId)
+        {
+            FileEntity fileEntity = new FileEntity();
+            fileEntity.Id = id;
+            fileEntity.FileName = fileName;
+            fileEntity.Description = description;
+            fileEntity.ContentLength = contentLength;
+            fileEntity.ContentType = contentType;
+            fileEntity.InsertDate = insertDate;
+            fileEntity.UserId = userId;
+            return fileEntity;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                OnFileNameChanging(value);
+                ReportPropertyChanging("FileName");
+                _FileName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("FileName");
+                OnFileNameChanged();
+            }
+        }
+        private global::System.String _FileName;
+        partial void OnFileNameChanging(global::System.String value);
+        partial void OnFileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ContentLength
+        {
+            get
+            {
+                return _ContentLength;
+            }
+            set
+            {
+                OnContentLengthChanging(value);
+                ReportPropertyChanging("ContentLength");
+                _ContentLength = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ContentLength");
+                OnContentLengthChanged();
+            }
+        }
+        private global::System.Int32 _ContentLength;
+        partial void OnContentLengthChanging(global::System.Int32 value);
+        partial void OnContentLengthChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ContentType
+        {
+            get
+            {
+                return _ContentType;
+            }
+            set
+            {
+                OnContentTypeChanging(value);
+                ReportPropertyChanging("ContentType");
+                _ContentType = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ContentType");
+                OnContentTypeChanged();
+            }
+        }
+        private global::System.String _ContentType;
+        partial void OnContentTypeChanging(global::System.String value);
+        partial void OnContentTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime InsertDate
+        {
+            get
+            {
+                return _InsertDate;
+            }
+            set
+            {
+                OnInsertDateChanging(value);
+                ReportPropertyChanging("InsertDate");
+                _InsertDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("InsertDate");
+                OnInsertDateChanged();
+            }
+        }
+        private global::System.DateTime _InsertDate;
+        partial void OnInsertDateChanging(global::System.DateTime value);
+        partial void OnInsertDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 UserId
+        {
+            get
+            {
+                return _UserId;
+            }
+            set
+            {
+                OnUserIdChanging(value);
+                ReportPropertyChanging("UserId");
+                _UserId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UserId");
+                OnUserIdChanged();
+            }
+        }
+        private global::System.Int64 _UserId;
+        partial void OnUserIdChanging(global::System.Int64 value);
+        partial void OnUserIdChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Files_Users", "UserEntity")]
+        public UserEntity User
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "UserEntity").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "UserEntity").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<UserEntity> UserReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "UserEntity");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "UserEntity", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "PlaceFiles", "PlaceEntity")]
+        public EntityCollection<PlaceEntity> Places
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PlaceEntity>("ObjectContextModel.PlaceFiles", "PlaceEntity");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.PlaceFiles", "PlaceEntity", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="ObjectContextModel", Name="FloorTypeEntity")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -2808,6 +3108,28 @@ namespace Fulbaso.EntityFramework
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "PlaceFiles", "FileEntity")]
+        public EntityCollection<FileEntity> Files
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FileEntity>("ObjectContextModel.PlaceFiles", "FileEntity");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FileEntity>("ObjectContextModel.PlaceFiles", "FileEntity", value);
                 }
             }
         }
@@ -3939,6 +4261,28 @@ namespace Fulbaso.EntityFramework
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.FK_Places_Users", "PlaceEntity", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Files_Users", "File")]
+        public EntityCollection<FileEntity> Files
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FileEntity>("ObjectContextModel.FK_Files_Users", "File");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FileEntity>("ObjectContextModel.FK_Files_Users", "File", value);
                 }
             }
         }

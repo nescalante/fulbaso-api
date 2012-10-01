@@ -39,6 +39,11 @@ namespace Fulbaso.Web
             routes.MapRoute("BookDeleteRoute", "eliminaragenda", new { controller = "Schedule", action = "DeleteBook", });
             routes.MapRoute("CalendarRoute", "admin/{place}/calendario", new { controller = "Schedule", action = "Index", });
 
+            // images routes
+            routes.MapRoute("ImagesFromURLRoute", "imagenes/{place}/agregardesdeurl", new { controller = "Image", action = "FromURL", });
+            routes.MapRoute("ImagesFromFileRoute", "imagenes/{place}/agregardesdearchivo", new { controller = "Image", action = "FromFile", });
+            routes.MapRoute("ImagesRoute", "imagenes/{place}", new { controller = "Image", action = "Index", });
+
             // configuration routes
             routes.MapRoute("ConfigurationRoute", "admin/{place}/config/{court}", new { controller = "Configuration", action = "Index", });
             routes.MapRoute("ConfigurationEditRout", "admin/{place}/config/{court}/editar/{config}", new { controller = "Configuration", action = "Edit", });

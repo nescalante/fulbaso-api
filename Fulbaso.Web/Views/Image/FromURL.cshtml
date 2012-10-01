@@ -1,0 +1,100 @@
+﻿@using Fulbaso.Contract
+
+@model Place
+
+@section Header
+{
+    <div class="page-header">
+        <h1>
+            @Model.Description
+            @if (Model != null)
+            {
+                <small>Imágenes</small>
+            }
+        </h1>
+    </div>
+}
+
+@Html.Partial("Menu", Model.Page)
+
+@using (Html.BeginForm("AddFromUrl", "Image", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Page)
+    <div id="urlcontainer" class="control-group">
+        <label class="control-label" for="url">URL</label>
+        <div class="controls">
+            <input id="url" type="text" placeholder="Pegá tu URL acá" class="input-xlarge" />
+            <a id="addUrl" style="display: none" class="btn">Agregar</a>
+        </div>
+    </div>
+    <ul id="urllist" class="thumbnails">
+    </ul>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Aceptar</button>
+        @Html.ActionLink("Cancelar", "Index", "Image", new { place = Model.Page, }, new { @class = "btn", })
+    </div>
+}
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            var url, prev;
+            var filenumber = 1;
+
+            $("#url").keyup(function () {
+                prev = $(this).val();
+                if (prev != url && $.trim(prev) != "") {
+                    $("#urlcontainer").removeClass("success");
+                    $("#urlcontainer").removeClass("error");
+
+                    url = prev;
+                    $.getJSON("@Url.Action("ParseUrl", "Image")", { url: url }, function (data) {
+                        if (data.status == "ok") {
+                            $("#addUrl").fadeIn();
+                            $("#urlcontainer").addClass("success");
+                            $("#addUrl").unbind("click");
+                            $("#addUrl").click(function () {
+                                var sp = url.split("/");
+                                addItem(url, sp[sp.length - 1].replace(/_/g, '-'), $("#urllist"), true);
+                                $("#addUrl").hide();
+                                $("#urlcontainer").removeClass("success");    
+                                $("#url").val("");
+                            });
+                        }
+                        else {
+                            $("#urlcontainer").addClass("error");
+                            $("#addUrl").hide();
+                        }
+                    });
+                }
+            });
+
+            function addItem(src, name, target, addHidden) {
+                var item = "<li>";
+                item += "<div class=\"thumbnail\"><img id=\"img-" + filenumber + "\" src=\"" + src + "\"/><div class=\"caption\"><h3>" + name + "</h3><textarea placeholder=\"Ingresa una descripción\" id=\"desc-" + filenumber + "\" name=\"desc-" + filenumber + "\" /><div class=\"clearAll\"></div><a id=\"delete-" + filenumber + "\" class=\"btn btn-danger\">Eliminar</a></div></div>";
+                if (addHidden) {
+                    item += "<input name=\"src-" + filenumber + "\" type=\"hidden\" val=\"" + src + "\"/>";
+                }
+                item += "</li>";
+                target.append(item);
+
+                $("#delete-" + filenumber).click(function() {
+                    $(this).parent().parent().parent().remove();
+                });
+                
+                filenumber++;
+            }
+        });
+    </script>
+}
+
+@section StyleSheets
+{
+    <style>
+        #urllist img { max-width: 300px; margin-top: 5px; }
+        #urllist h3,#urllist textarea { width: 300px; }
+        #urllist a { margin-top: 10px; }
+    </style>
+}

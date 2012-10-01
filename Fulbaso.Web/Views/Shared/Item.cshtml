@@ -9,24 +9,40 @@
         new { Class = "ui-info address", Text = address, },
         new { Class = "ui-info phone", Text = Model.Phone, },
         new { Class = "ui-info courts", Text = Model.Courts.ToString() + " cancha" + (Model.Courts > 1 ? "s" : ""), }, 
-    };    
+    };
 }
-            
+
 <div data-id="@Model.Id" data-ua="@Model.MapUa" data-va="@Model.MapVa" class="mapitem place-info" href="@Url.Action("ItemView", "Place", new { place = Model.Page })">
-    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h3>@Html.Raw(InterfaceUtil.GetRemarked(Model.Description, Request.QueryString["q"], "ui-remark ui-corner-all"))</h3></a>
-    <ul style="margin:0;padding:0;" data-id="@Model.Id">
-    @foreach (var t in text.Where(c => !string.IsNullOrEmpty(c.Text)))
-    {
-        <li class="@t.Class">@Html.Raw(InterfaceUtil.GetRemarked(t.Text, Request.QueryString["q"], "ui-remark ui-corner-all"))</li>
-    }
-    @if (Model.Services != null && Model.Services.Count() > 0)
-    {
-        <li class="ui-info tags">
-        @foreach (var s in Model.Services)
+    <div class="content">
+        <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })"><h3>@Html.Raw(InterfaceUtil.GetRemarked(Model.Description, Request.QueryString["q"], "ui-remark ui-corner-all"))</h3></a>
+        <ul style="margin: 0; padding:0;" data-id="@Model.Id">
+        @foreach (var t in text.Where(c => !string.IsNullOrEmpty(c.Text)))
         {
-            <a title="Canchas con @s.GetDescription().ToLower()" href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
+            <li class="@t.Class">@Html.Raw(InterfaceUtil.GetRemarked(t.Text, Request.QueryString["q"], "ui-remark ui-corner-all"))</li>
         }
-        </li>
+        @if (Model.Services != null && Model.Services.Count() > 0)
+        {
+            <li class="ui-info tags">
+            @foreach (var s in Model.Services)
+            {
+                <a title="Canchas con @s.GetDescription().ToLower()" href="@Url.Action("Index", "Home", new { t = (byte)s })" class="label label-info">@s.GetDescription()</a>
+            }
+            </li>
+        }
+        </ul>
+    </div>
+    @if (Model.Images != null && Model.Images.Any())
+    {
+        <div class="row-fluid hidden-phone" style="margin-bottom: 10px;">
+            @foreach (var f in Model.Images.OrderByDescending(i => i.InsertDate))
+            {
+                <div style="margin-left: 1.5%;" class="span3">
+                    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })" title="@f.Description">
+                        <img style="display:block; " src="@Html.Raw(Url.Content("~/uploaded/" + f.FileName))" title="@f.Description" alt="@f.Description" />
+                    </a>
+                </div>
+            }
+        </div>
     }
-    </ul>
 </div>
+
