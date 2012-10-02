@@ -3,7 +3,7 @@
 
 @model IndexModel
 
-<h3 style="margin-bottom: 10px;">¿Dónde querés jugar?</h3>
+<h2 style="margin-bottom: 10px;">¿Dónde querés jugar?</h2>
 
 <div class="row">
     <div class="span8">
@@ -29,14 +29,14 @@
                 }
             </p>
             <div style="display:none;">
-                <h4 style="margin-bottom: 10px;">Canchas mas cercanas:</h4>
+                <h4 style="margin-bottom: 10px; margin-top: 20px;">Canchas mas cercanas:</h4>
                 <div id="nearestplaces"></div>
                 <div class="clearAll"></div>
             </div>
             @*<h4 style="margin-bottom: 10px;">Canchas mas usadas:</h4>
             @Html.Partial("List", Model.TopUsedPlaces)
             <div class="clearAll"></div>*@
-            <h4 style="margin-bottom: 10px;">Canchas mas votadas:</h4>
+            <h4 style="margin-bottom: 10px; margin-top: 20px;">Canchas mas votadas:</h4>
             @Html.Partial("List", Model.TopVotedPlaces)
             <div class="clearAll"></div>
         </div>
@@ -71,6 +71,7 @@
                     f.map.markFrom("@Url.Action("GetNearestFromLocation", "Place")?lat=" + position.coords.latitude + "&lng=" + position.coords.longitude, "@Url.Content("~")img/sport_soccer.png");
                     f.places.load("nearestplaces", "@Url.Action("GetNearestList", "Place")?lat=" + position.coords.latitude + "&lng=" + position.coords.longitude);
                 });
+
             }
         });
     </script>

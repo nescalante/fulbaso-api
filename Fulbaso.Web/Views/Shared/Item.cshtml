@@ -34,7 +34,7 @@
     @if (Model.Images != null && Model.Images.Any())
     {
         <div class="row-fluid hidden-phone" style="margin-bottom: 10px;">
-            @foreach (var f in Model.Images.OrderByDescending(i => i.InsertDate))
+            @foreach (var f in Model.Images.OrderByDescending(i => i.InsertDate).Take(4))
             {
                 <div style="margin-left: 1.5%;" class="span3">
                     <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })" title="@f.Description">

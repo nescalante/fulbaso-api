@@ -3,24 +3,8 @@
 
 @model Place
 @{
-    ViewBag.FormTitle = Model.Description;
-
-    var keywords = Model.Description + ", " + Model.Location + ", " + Model.Location.Region + ", " + string.Join(", ", Model.CourtsInfo.GroupBy(c => c.CourtType.Description).Select(c => c.Key));
-    var day = (DateTime)ViewBag.Time;
+    var day = ((DateTime?)ViewBag.Time) ?? DateTime.Today;
     var range = CoreUtil.GetRange(Model.CourtsInfo, day);
-}
-
-@section Header
-{
-    <div class="page-header">
-        <h1>
-            @ViewBag.FormTitle
-            @if (Request.IsAuthenticated)
-            {
-                <a id="favourite" class="@((bool)ViewBag.IsFavourite ? "btn btn-mini active" : "btn btn-mini")" title="Agregar a favoritos"><i class="icon-star"></i></a>
-            }
-        </h1>
-    </div>
 }
 
 @helper DisplayBook(CourtBook book)
@@ -30,11 +14,6 @@
         <span class="muted">@(type == "reserved" ? "Reservada" : "Ocupada")</span>
     </td>
 }
-
-<ul class="nav nav-tabs">
-    <li>@Html.ActionLink("Información", "ItemView", new { place = Model.Page })</li>
-    <li class="active"><a href="#">Disponibilidad</a></li>
-</ul>
 
 @using (Html.BeginForm("Schedule", "Place", FormMethod.Get, new { @class = "form-horizontal" }))
 {
@@ -102,54 +81,3 @@
     }
     </tbody>
 </table>
-
-@section StyleSheets
-{
-    <style>
-        td, th { padding: 8px; line-height: 18px; text-align: left; vertical-align: top; border-top: 1px solid #DDD; border-left: 1px solid #DDD; white-space: nowrap; }
-        tbody tr:hover { background-color: #f5f5f5; }
-        td:hover { background-color: #ededed; }
-        table { width: 100%; }
-        .reserved:hover { background-color: #fdfdde; }
-        .selected:hover { background-color: #fdefdf; }
-        .paid:hover { background-color: #dcead8; }
-        .reserved { background-color: #fcfcca; }
-        .selected { background-color: #fddecf; }
-        .paid { background-color: #eaffea; }        
-    </style>
-}
-
-@section Scripts
-{
-    <script>
-        $(function () {
-            $("#favourite").click(function () {
-                if ($(this).hasClass("active")) {
-                    $(this).removeClass("active");
-                    $.ajax({
-                        url: '@Url.Action("DeleteFavourite", "Place")',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: { id: @Model.Id },
-                    });                
-                }
-                else {
-                    $(this).addClass("active");
-                    $.ajax({
-                        url: '@Url.Action("AddFavourite", "Place")',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: { id: @Model.Id },
-                    });     
-                }
-            });
-        });
-    </script>
-    <script src="@Url.Content("~/Scripts/jquery-ui-datepicker-es.js")" type="text/javascript"></script>
-    <script>
-        $.datepicker.setDefaults($.datepicker.regional["es"]);
-        $(function () {
-            $("#current").datepicker();
-        });
-    </script>
-}

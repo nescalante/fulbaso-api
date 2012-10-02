@@ -328,6 +328,7 @@
     <Content Include="Views\Image\FromURL.cshtml" />
     <Content Include="Views\Image\FromFile.cshtml" />
     <Content Include="Views\Image\Index.cshtml" />
+    <Content Include="Views\Place\General.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />

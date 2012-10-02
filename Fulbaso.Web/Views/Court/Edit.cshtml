@@ -12,13 +12,13 @@
 @section Header
 {
     <div class="page-header">
-        <h1>
+        <h2>
             @ViewBag.Place
             @if (Model != null)
             {
                 <small>@(Model == null ? "Agregar" : Model.Description)</small>
             }
-        </h1>
+        </h2>
     </div>
 }
 

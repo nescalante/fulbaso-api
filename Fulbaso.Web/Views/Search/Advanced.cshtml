@@ -9,9 +9,9 @@
 @section Header
 {
     <div class="page-header">
-        <h1>
+        <h2>
             Búsqueda avanzada
-        </h1>
+        </h2>
     </div>
 }
 
@@ -32,25 +32,25 @@
             <label class="control-label" for="players">Cantidad de jugadores</label>
             <div class="controls">
                 <label class="checkbox inline">
-                    @Html.CheckBox("player-5", true) 5
+                    @Html.CheckBox("player-5") 5
                 </label>
                 <label class="checkbox inline">
-                    @Html.CheckBox("player-6", true) 6
+                    @Html.CheckBox("player-6") 6
                 </label>
                 <label class="checkbox inline">
-                    @Html.CheckBox("player-7", true) 7
+                    @Html.CheckBox("player-7") 7
                 </label>
                 <label class="checkbox inline">
-                    @Html.CheckBox("player-8", true) 8
+                    @Html.CheckBox("player-8") 8
                 </label>
                 <label class="checkbox inline">
-                    @Html.CheckBox("player-9", true) 9
+                    @Html.CheckBox("player-9") 9
                 </label>
                 <label class="checkbox inline">
-                    @Html.CheckBox("player-10", true) 10
+                    @Html.CheckBox("player-10") 10
                 </label>
                 <label class="checkbox inline">
-                    @Html.CheckBox("player-11", true) 11
+                    @Html.CheckBox("player-11") 11
                 </label>
             </div>
         </div>
@@ -60,7 +60,7 @@
                 @foreach (var f in (IEnumerable<Fulbaso.Helpers.EntityDataObject>)ViewBag.FloorTypes)
                 {
                     <label class="checkbox">
-                        @Html.CheckBox("floor-" + f.Id, true)
+                        @Html.CheckBox("floor-" + f.Id)
                         @f
                     </label>
                 }

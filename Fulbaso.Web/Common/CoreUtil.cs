@@ -69,7 +69,9 @@ namespace Fulbaso.Web
 
         public static int[] GetRange(IEnumerable<Court> courts, DateTime time)
         {
-            var configs = courts.SelectMany(c => c.Configuration).Where(c => (c.StartDate == null || c.StartDate <= time) && (c.EndDate == null || c.EndDate >= time) && c.Days.Contains(time.DayOfWeek));
+            courts = courts ?? new List<Court>();
+
+            var configs = courts.Where(c => c.Configuration != null).SelectMany(c => c.Configuration).Where(c => (c.StartDate == null || c.StartDate <= time) && (c.EndDate == null || c.EndDate >= time) && c.Days.Contains(time.DayOfWeek));
             var mins = configs.Where(c => c.StartHour != null).Select(c => (byte)c.StartHour);
             var maxs = configs.Where(c => c.EndHour != null).Select(c => (byte)c.EndHour);
 
