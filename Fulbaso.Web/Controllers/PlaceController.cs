@@ -127,11 +127,11 @@ namespace Fulbaso.Web.Controllers
 
             if (filter.IsAdvanced)
             {
-                return Json(_placeService.GetList(filter.Query, filter.Players, filter.FloorTypes, filter.Locations, filter.Tags, filter.IsIndoor, filter.IsLighted, 0, 0, out count).WithUrl(), JsonRequestBehavior.AllowGet);
+                return Json(_placeService.GetList(filter.Query, filter.Latitude, filter.Longitude, filter.Players, filter.FloorTypes, filter.Locations, filter.Tags, filter.IsIndoor, filter.IsLighted, 0, 0, out count).WithUrl(), JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(_placeService.GetList(filter.Query, 0, 0, out count).WithUrl(), JsonRequestBehavior.AllowGet);
+                return Json(_placeService.GetList(filter.Query, filter.Latitude, filter.Longitude, 0, 0, out count).WithUrl(), JsonRequestBehavior.AllowGet);
             }
         }
 

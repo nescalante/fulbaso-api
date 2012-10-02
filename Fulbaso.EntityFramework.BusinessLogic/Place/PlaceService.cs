@@ -114,13 +114,23 @@ namespace Fulbaso.EntityFramework.Logic
             return query.ToList();
         }
 
-        public IEnumerable<Place> GetList(string value, int init, int rows, out int count)
+        public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int init, int rows, out int count)
         {
             var query = EntityUtil.Context.PlaceViews.Where(c => string.IsNullOrEmpty(value) ||
                 c.exp.Contains(value));
             count = query.Count();
 
-            query = query.OrderBy(q => q.exp.ToUpper().IndexOf(value.ToUpper())).Skip(init);
+            // order by distance
+            if (string.IsNullOrEmpty(value) && latitude.HasValue && longitude.HasValue)
+            {
+                query = PlaceService.OrderByDistance(query, latitude.Value, longitude.Value);
+            }
+            else
+            {
+                query = query.OrderBy(q => q.exp.ToUpper().IndexOf(value.ToUpper()));
+            }
+
+            query = query.Skip(init);
 
             if (rows > 0) query = query.Take(rows);
 
@@ -161,9 +171,9 @@ namespace Fulbaso.EntityFramework.Logic
             return list;
         }
 
-        public IEnumerable<Place> GetList(string value, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, int init, int rows, out int count)
+        public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, int init, int rows, out int count)
         {
-            var places = CreateQuery(players, floorTypes, locations, tags, indoor, lighted);
+            var places = CreateQuery(latitude, longitude, players, floorTypes, locations, tags, indoor, lighted);
 
             if (!string.IsNullOrEmpty(value))
             {
@@ -179,7 +189,7 @@ namespace Fulbaso.EntityFramework.Logic
             return PlaceService.Get(places);
         }
 
-        private static IQueryable<PlaceEntity> CreateQuery(int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted)
+        private static IQueryable<PlaceEntity> CreateQuery(decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted)
         {
             // fix blank entries
             locations = locations.Where(l => !string.IsNullOrEmpty(l)).ToArray();
@@ -203,6 +213,13 @@ namespace Fulbaso.EntityFramework.Logic
                      locations.Contains(p.Location.Region.Description) ||
                      locations.Contains(p.Location.Region.Territory.Description))
                      select p;
+
+            // order by distance
+            if (latitude.HasValue && longitude.HasValue)
+            {
+                places = PlaceService.OrderByDistance(places, latitude.Value, longitude.Value);
+            }
+
             return places;
         }
 
@@ -245,6 +262,34 @@ namespace Fulbaso.EntityFramework.Logic
         {
             int id;
             return ValidatePage(page, out id);
+        }
+
+        internal static IQueryable<PlaceEntity> OrderByDistance(IQueryable<PlaceEntity> query, decimal lat, decimal lng)
+        {
+            var pi = (decimal)Math.PI;
+
+            return from p in query.Where(i => i.MapUa != null && i.MapVa != null)
+                   let la1 = (decimal)p.MapUa
+                   let lo1 = (decimal)p.MapVa
+                   let la2 = (decimal)lat
+                   let lo2 = (decimal)lng
+                   let dist = (SqlFunctions.Acos(SqlFunctions.Sin(la1 * pi / 180M) * SqlFunctions.Sin(la2 * pi / 180M) + SqlFunctions.Cos(la1 * pi / 180M) * SqlFunctions.Cos(la2 * pi / 180M) * SqlFunctions.Cos((lo1 - lo2) * pi / 180M)) / Math.PI * 180)
+                   orderby dist
+                   select p;
+        }
+
+        internal static IQueryable<PlaceView> OrderByDistance(IQueryable<PlaceView> query, decimal lat, decimal lng)
+        {
+            var pi = (decimal)Math.PI;
+
+            return from p in query.Where(i => i.MapUa != null && i.MapVa != null)
+                   let la1 = (decimal)p.MapUa
+                   let lo1 = (decimal)p.MapVa
+                   let la2 = (decimal)lat
+                   let lo2 = (decimal)lng
+                   let dist = (SqlFunctions.Acos(SqlFunctions.Sin(la1 * pi / 180M) * SqlFunctions.Sin(la2 * pi / 180M) + SqlFunctions.Cos(la1 * pi / 180M) * SqlFunctions.Cos(la2 * pi / 180M) * SqlFunctions.Cos((lo1 - lo2) * pi / 180M)) / Math.PI * 180)
+                   orderby dist
+                   select p;
         }
 
         public IEnumerable<Tuple<Place, double?>> GetNearest(Place place, int count = 10, double distance = 0)

@@ -60,7 +60,7 @@
                     <ul class="nav">
                         <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] != "*" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
                         <li class="@(ViewContext.CheckRoute("Advanced", "Search") || ViewContext.CheckRoute("Schedule", "Search")? "active" : "")">@Html.ActionLink("Buscar", "Advanced", "Search", null, new { title = "Buscar canchas" })</li>
-                        <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] == "*" ? "active" : "")">@Html.ActionLink("Canchas", "Index", "Home", new { q = "*" }, new { title = "Listado de canchas" })</li>
+                        <li class="@(ViewContext.CheckRoute("Index", "Home") && ViewContext.HttpContext.Request["q"] == "*" ? "active" : "")">@Html.ActionLink("Canchas", "Index", "Home", new { q = "*" }, new { title = "Listado de canchas", @class = "search-link", })</li>
                         <li class="@(ViewContext.CheckRoute("Map", "Place") ? "active" : "")">@Html.ActionLink("Mapa", "Map", "Place", null, new { title = "Mapa de canchas" })</li>
                         @if (places != null && places.Count > 1)
                         {

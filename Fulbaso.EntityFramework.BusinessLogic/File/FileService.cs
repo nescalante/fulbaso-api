@@ -13,7 +13,7 @@ namespace Fulbaso.EntityFramework.Logic
         {
             var fileName = GenerateFileName(file.FileName, file.CreatedBy.Id);
 
-            input.SaveToFile(FileUtil.GetDirectory() + fileName);
+            input.SaveToFile(fileName);
 
             var entity = new FileEntity
             {

@@ -1,0 +1,17 @@
+﻿@using File = Fulbaso.Contract.File
+
+@model IEnumerable<File>
+
+<div class="row-fluid" style="margin-top: 10px;">
+    <ul class="thumbnails"></ul>
+        @foreach (var f in Model.OrderByDescending(p => p.InsertDate))
+        {
+            <li class="span4" style="margin-bottom: 10px;">
+                <div class="thumbnail">
+                    <img src="@Html.Raw(Url.Content("~/uploaded/" + f.FileName))" alt="@f.Description" />
+                    <p>@f.Description</p>
+                </div>
+            </li>
+        }
+    </ul>
+</div>

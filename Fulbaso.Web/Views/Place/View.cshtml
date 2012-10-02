@@ -82,19 +82,7 @@
             @Html.Partial("General", Model.Place)
         </div>
         <div class="tab-pane" id="images">
-            <div class="row-fluid" style="margin-top: 10px;">
-                <ul class="thumbnails"></ul>
-                    @foreach (var f in Model.Place.Images.OrderByDescending(p => p.InsertDate))
-                    {
-                        <li class="span4" style="margin-bottom: 10px;">
-                            <div class="thumbnail">
-                                <img src="@Html.Raw(Url.Content("~/uploaded/" + f.FileName))" alt="@f.Description" />
-                                <p>@f.Description</p>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
+            @Html.Partial("Images", Model.Place.Images)
         </div>
     </div>
 </div>

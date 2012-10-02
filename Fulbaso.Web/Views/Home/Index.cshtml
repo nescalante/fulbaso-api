@@ -18,13 +18,13 @@
                 }
             }
         </div>
-        <p>También podes probar haciendo una @Html.ActionLink("búsqueda avanzada", "Advanced", "Search") o buscar tu cancha en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*", }, null).</p>
+        <p>También podes probar haciendo una @Html.ActionLink("búsqueda avanzada", "Advanced", "Search") o buscar tu cancha en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*", }, new { @class = "search-link", }).</p>
         <div class="hidden-phone">
             <p>
-                Existen @Html.ActionLink(Model.CourtsCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) complejos. 
+                Existen @Html.ActionLink(Model.CourtsCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info search-link" }) canchas disponibles en @Html.ActionLink(Model.PlacesCount.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info search-link" }) complejos. 
                 @if (Model.OwnedPlaces > 0)
                 {
-                    @Html.ActionLink(Model.OwnedPlaces.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info" }) 
+                    @Html.ActionLink(Model.OwnedPlaces.ToString(), "Index", new { q = "*" }, new { @class = "badge badge-info search-link" }) 
                     <text>complejos siendo administrados.</text>
                 }
             </p>
@@ -71,7 +71,6 @@
                     f.map.markFrom("@Url.Action("GetNearestFromLocation", "Place")?lat=" + position.coords.latitude + "&lng=" + position.coords.longitude, "@Url.Content("~")img/sport_soccer.png");
                     f.places.load("nearestplaces", "@Url.Action("GetNearestList", "Place")?lat=" + position.coords.latitude + "&lng=" + position.coords.longitude);
                 });
-
             }
         });
     </script>

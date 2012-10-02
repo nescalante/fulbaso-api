@@ -139,11 +139,11 @@ namespace Fulbaso.Web.Controllers
         {
             if (filter.IsAdvanced)
             {
-                return _placeService.GetList(filter.Query, filter.Players, filter.FloorTypes, filter.Locations, filter.Tags, filter.IsIndoor, filter.IsLighted, init, Configuration.RowsPerRequest, out count);
+                return _placeService.GetList(filter.Query, filter.Latitude, filter.Longitude, filter.Players, filter.FloorTypes, filter.Locations, filter.Tags, filter.IsIndoor, filter.IsLighted, init, Configuration.RowsPerRequest, out count);
             }
             else
             {
-                return _placeService.GetList(filter.Query, init, Configuration.RowsPerRequest, out count);
+                return _placeService.GetList(filter.Query, filter.Latitude, filter.Longitude, init, Configuration.RowsPerRequest, out count);
             }
         }
     }

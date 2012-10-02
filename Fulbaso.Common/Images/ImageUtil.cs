@@ -3,11 +3,23 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
+using File = Fulbaso.Contract.File;
+using System.Web.Mvc;
+using System.Web;
 
 namespace Fulbaso.Common
 {
     public static class ImageUtil
     {
+        public static string ToUrl(this File file, int width = 0)
+        {
+
+
+            var helper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+
+            return helper.Content("~/uploaded/" + file.FileName);
+        }
+
         public static Image GetImageFromUrl(string url)
         {
             using (MemoryStream ms = ImageUtil.GetStreamFromUrl(url))

@@ -35,6 +35,10 @@ namespace Fulbaso.Web
 
         public int Hour { get; private set; }
 
+        public decimal? Latitude { get; private set; }
+
+        public decimal? Longitude { get; private set; }
+
         public bool IsAdvanced
         {
             get
@@ -134,6 +138,12 @@ namespace Fulbaso.Web
                         {
                             routes.Add("lig", this.IsLighted);
                         }
+                    }
+
+                    if (this.Latitude.HasValue && this.Longitude.HasValue)
+                    {
+                        routes.Add("lat", this.Latitude);
+                        routes.Add("lng", this.Longitude);
                     }
 
                     if (!string.IsNullOrEmpty(this.Query) || !routes.Any())
@@ -411,6 +421,10 @@ namespace Fulbaso.Web
                     this._dateParsed = false;
                     this._hourParsed = false;
                 }
+
+                // latitude & longitude parse
+                this.Latitude = keys.Contains("lat") ? (decimal?)Convert.ToDecimal(collection["lat"].Replace(".", ",")) : null;
+                this.Longitude = keys.Contains("lng") ? (decimal?)Convert.ToDecimal(collection["lng"].Replace(".", ",")) : null;
             }
             catch (Exception ex)
             {

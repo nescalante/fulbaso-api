@@ -7,7 +7,7 @@
             <li style="margin-bottom: 5px;">Hacé una búsqueda rápida desde el buscador que se encuentra en el menú.</li>
             <li style="margin-bottom: 5px;">Ingresá al @Html.ActionLink("buscador avanzado", "Advanced", "Search") y detallá un poco más tu búsqueda.</li>
             <li style="margin-bottom: 5px;">Navegá el @Html.ActionLink("mapa de canchas", "Map", "Place").</li>
-            <li style="margin-bottom: 5px;">Buscá tu cancha en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*" }, null).</li>
+            <li style="margin-bottom: 5px;">Buscá tu cancha en el @Html.ActionLink("listado completo", "Index", "Home", new { q = "*", }, new { @class = "search-link", }).</li>
         </ul>
     </div>
     <div class="span4 hidden-phone">

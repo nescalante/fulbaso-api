@@ -21,9 +21,11 @@ namespace Fulbaso.Common
 
         public static void SaveToFile(this Stream input, string filename)
         {
-            if (!File.Exists(filename))
+            var path = FileUtil.GetPath(filename);
+
+            if (!File.Exists(path))
             {
-                using (Stream file = File.OpenWrite(filename))
+                using (Stream file = File.OpenWrite(path))
                 {
                     CopyStream(input, file);
                 }
@@ -34,13 +36,13 @@ namespace Fulbaso.Common
             }
         }
 
-        public static string GetDirectory()
+        public static string GetPath(string filename)
         {
             string codeBase = Assembly.GetExecutingAssembly().CodeBase;
             UriBuilder uri = new UriBuilder(codeBase);
             string path = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
 
-            return path.Substring(0, path.LastIndexOf('\\')) + ImagesPath;
+            return path.Substring(0, path.LastIndexOf('\\')) + ImagesPath + filename;
         }
     }
 }
