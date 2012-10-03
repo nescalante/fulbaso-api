@@ -2,6 +2,9 @@
 bin
 obj
 
+# upload folder
+uploaded
+
 # mstest test results
 TestResults
 
