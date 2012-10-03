@@ -4,6 +4,8 @@ using System.Linq;
 using Fulbaso.Common;
 using Fulbaso.Contract;
 using File = Fulbaso.Contract.File;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Fulbaso.EntityFramework.Logic
 {
@@ -11,7 +13,10 @@ namespace Fulbaso.EntityFramework.Logic
     {
         public void AddImage(Stream input, File file)
         {
-            var fileName = GenerateFileName(file.FileName, file.CreatedBy.Id);
+            // validate image
+            Image.FromStream(input);
+
+            var fileName = GenerateFileName(file.CreatedBy.Id, input.Length);
 
             input.SaveToFile(fileName);
 
@@ -31,11 +36,31 @@ namespace Fulbaso.EntityFramework.Logic
             file.Id = entity.Id;
         }
 
-        private string GenerateFileName(string fileName, long userId)
+        public File AddImage(string source, string description, long userId)
+        {
+            File file;
+
+            using (var input = FileUtil.GetStreamFromUrl(source))
+            {
+                file = new File
+                {
+                    Description = description,
+                    ContentLength = Convert.ToInt32(input.Length),
+                    ContentType = "image/jpeg",
+                    CreatedBy = new User { Id = userId },
+                };
+
+                AddImage(input, file);
+            }
+
+            return file;
+        }
+
+        private string GenerateFileName(long userId, long length)
         {
             var now = DateTime.Now;
-            var last = EntityUtil.Context.Files.Select(f => f.Id).OrderByDescending(f => f).FirstOrDefault();
-            var name = new string(fileName.Split('.').First().Take(40).ToArray()) + "." + fileName.Split('.').Last();
+            var last = EntityUtil.Context.Files.Select(f => f.Id).OrderByDescending(f => f).FirstOrDefault() + 1;
+            var name = "o.jpg";
 
             return string.Join("_", new object [] {
                 userId,
@@ -43,6 +68,7 @@ namespace Fulbaso.EntityFramework.Logic
                 now.Month,
                 now.Day,
                 last,
+                length,
                 name,
             });
         }

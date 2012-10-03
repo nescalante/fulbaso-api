@@ -52,7 +52,7 @@
                                 @Html.ActionImage("Index", "Configuration", new { court = c.Id, place = Model.Page }, null, "Configuración", Url.Content("~") + "img/cog.png", null)
                                 @Html.ActionImage("Edit", new { court = c.Id, place = Model.Page }, "Editar", Url.Content("~") + "img/pencil.png")
                                 <a data-toggle="modal" href="#dialog-confirm" name="delete" data-id="@c.Id">
-                                    <img title="Borrar" src="@Url.Content("~")img/delete.png" alt="Borrar" />
+                                    <img title="Eliminar" src="@Url.Content("~")img/delete.png" alt="Eliminar" />
                                 </a>
                             </div>
                         </td>

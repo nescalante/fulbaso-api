@@ -69,6 +69,43 @@ namespace Fulbaso.Web.Controllers
             return RedirectToAction("Index", new { place = placeModel.Page, });
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult AddFromUrls(Place placeModel, FormCollection collection)
+        {
+            if (!User.HasPlace(placeModel.Id)) throw new UnauthorizedAccessException();
+
+            var list = collection.AllKeys.Where(k => k.StartsWith("src-"))
+                .Select(k => Convert.ToInt32(k.Substring(4)))
+                .Where(i => collection.AllKeys.Contains("desc-" + i))
+                .Select(i => new { Source = collection["src-" + i], Description = collection["desc-" + i] });
+            
+            foreach (var i in list)
+            {
+                _placeService.AddImage(placeModel.Id, i.Source, i.Description, UserAuthentication.UserId);
+            }
+
+            return RedirectToAction("Index", new { place = placeModel.Page, });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult DeleteImage(int id, string page, FormCollection collection)
+        {
+            _placeService.DeleteImage(id);
+
+            return RedirectToAction("Index", new { place = page, });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult UpdateImage(int id, string text, string page, FormCollection collection)
+        {
+            _placeService.UpdateImage(id, text);
+
+            return RedirectToAction("Index", new { place = page, });
+        }
+
         [HttpGet]
         public ActionResult ParseUrl(string url)
         {

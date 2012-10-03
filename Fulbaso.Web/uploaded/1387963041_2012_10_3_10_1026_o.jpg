@@ -1,0 +1,32 @@
+Treemap:
+Areas - Grupos de productos
+Cada rectangulo un producto
+Tamaño es la cantidad de ventas de ese producto o quizas mejor seria el profit de ese producto, pero eso no lo tenemos.
+
+Areas - Agentes
+Cada rectangulo categoría de habitaciones
+
+Calendar view
+
+
+objetivo de ventas X
+porcentage de ocupación Y - 
+Vendido W
+
+X - W = total a vender
+X - W / Y = precio por habitacion necesario para alcanzar el objetivo.
+
+
+Poder ver los flows para una reserva terminada desde la grilla.
+Para los non-show, no sacarlos por completo, dejar la primer noche.
+
+Filtrar por agente de ventas
+
+Obtener cantidad de noches libres para vender, las que estan en mantenimiento no se deben contabilizar ni en el total
+ni en el porcentage
+
+Mostrar inputs y outputs como columnas y poder ordenar por eso
+
+Que sugiera cuando se agrega un cargo en una reserva el texto "número de la habitación, apellido del pasajero", que sea el placeholder.
+
+Permitir que se pueda vender sobre el stock y habitaciones que no existen.

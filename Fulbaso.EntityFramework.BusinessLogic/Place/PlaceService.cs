@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using Fulbaso.Contract;
 using Fulbaso.Helpers;
 using File = Fulbaso.Contract.File;
+using Fulbaso.Common;
 
 namespace Fulbaso.EntityFramework.Logic
 {
@@ -81,13 +82,45 @@ namespace Fulbaso.EntityFramework.Logic
         public void AddImage(int placeId, Stream input, File file)
         {
             _fileService.AddImage(input, file);
+            PlaceService.AddImage(placeId, file);
+        }
 
+        public void AddImage(int placeId, string source, string description, long userId)
+        {
+            var file = _fileService.AddImage(source, description, userId);
+            PlaceService.AddImage(placeId, file);
+        }
+
+        internal static void AddImage(int placeId, File file)
+        {
             var placeEntity = EntityUtil.Context.Places.Where(p => p.Id == placeId).ToList().First();
             var fileEntity = EntityUtil.Context.Files.Where(f => f.Id == file.Id).ToList().First();
 
             placeEntity.Files.Add(fileEntity);
 
             EntityUtil.Context.SaveChanges();
+        }
+
+        public void UpdateImage(int fileId, string description)
+        {
+            var file = EntityUtil.Context.Files.Where(f => f.Id == fileId).ToList().First();
+            file.Description = description;
+            EntityUtil.Context.SaveChanges();
+        }
+
+        public void DeleteImage(int fileId)
+        {
+            var places = EntityUtil.Context.Files.Where(f => f.Id == fileId).SelectMany(f => f.Places);
+            var file = EntityUtil.Context.Files.Where(f => f.Id == fileId).ToList().First();
+
+            foreach (var p in places)
+            {
+                p.Files.Remove(file);
+            }
+
+            EntityUtil.Context.Files.DeleteObject(file);
+            EntityUtil.Context.SaveChanges();
+            FileUtil.DeleteFile(file.FileName);
         }
 
         public Place Get(int placeId)
@@ -361,19 +394,7 @@ namespace Fulbaso.EntityFramework.Logic
             }
 
             if (place == null) return null;
-
-            place.CourtsInfo = CourtService.Get(EntityUtil.Context.Courts.Where(c => c.PlaceId == place.Id));
-
-            var configs = EntityUtil.Context.CourtConfigurations.Where(c => c.Court.PlaceId == place.Id).ToList();
-            var books = _bookService.GetByPlace(place.Id, day, day.AddDays(1).AddMilliseconds(-1));
-                
-            foreach (var c in place.CourtsInfo)
-            {
-                c.Books = books.Where(cb => cb.Court.Id == c.Id).ToList();
-                c.Configuration = CourtConfigurationService.Get(configs.Where(cc => cc.CourtId == c.Id).ToList());
-            }
-
-            return place;
+            else return Get(place, day);
         }
 
         public Place Get(Place place, DateTime day)

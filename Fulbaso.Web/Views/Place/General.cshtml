@@ -1,10 +1,25 @@
-﻿@using Fulbaso.Contract
+﻿@using Fulbaso.Common
+@using Fulbaso.Contract
+@using File = Fulbaso.Contract.File
 @using Fulbaso.Web
 
 @model Place
 
 @{
     var imagesCount = Model.Images.Count();
+}
+
+@helper AddThumbnail(File file)
+{
+    <li class="span4">
+        <div class="thumbnail">
+            <a href="@file.ToUrl()" title="@file.Description"><img src="@file.ToUrl(300)" alt="@file.Description" /></a>
+            @if (!string.IsNullOrEmpty(file.Description))
+            {
+                <p>@file.Description</p>
+            }
+        </div>
+    </li>
 }
 
 <div class="row">
@@ -44,12 +59,7 @@
                     <ul class="thumbnails">
                         @foreach (var f in Model.Images.OrderByDescending(p => p.InsertDate))
                         {
-                            <li class="span4">
-                                <div class="thumbnail">
-                                    <img src="@Html.Raw(Url.Content("~/uploaded/" + f.FileName))" alt="@f.Description" />
-                                    <p>@f.Description</p>
-                                </div>
-                            </li>
+                            @AddThumbnail(f);
                         }
                     </ul>
                 }
@@ -64,12 +74,9 @@
                                 {
                                     @Html.Raw("<div class=\"item" + (i == 0 ? " active" : "") + "\"><ul class=\"thumbnails\">")
                                 }
-                                <li class="span4">
-                                    <div class="thumbnail">
-                                        <img src="@Html.Raw(Url.Content("~/uploaded/" + f.FileName))" alt="@f.Description" />
-                                        <p>@f.Description</p>
-                                    </div>
-                                </li>
+                                
+                                @AddThumbnail(f);
+                                
                                 if ((i + 1) % 3 == 0 || i + 1 == imagesCount)
                                 {
                                     @Html.Raw("</ul></div>")

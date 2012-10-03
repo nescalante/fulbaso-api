@@ -5,6 +5,11 @@
 @{
     var day = ((DateTime?)ViewBag.Time) ?? DateTime.Today;
     var range = CoreUtil.GetRange(Model.CourtsInfo, day);
+    
+    if (ViewBag.NullLayout != null && ViewBag.NullLayout)
+    {
+        Layout = null;
+    }
 }
 
 @helper DisplayBook(CourtBook book)
@@ -15,17 +20,30 @@
     </td>
 }
 
-@using (Html.BeginForm("Schedule", "Place", FormMethod.Get, new { @class = "form-horizontal" }))
+@if (Layout != null)
+{
+    <div class="page-header">
+        <h2>
+            @Model.Description
+        </h2>
+    </div>
+    <ul class="nav nav-tabs">
+        <li><a href="@Url.Action("ItemView", new { place = Model.Page, })">Información</a></li>
+        <li class="active"><a href="#">Disponibilidad</a></li>
+    </ul>
+}
+
+@using (Html.BeginForm("Schedule", "Place", FormMethod.Get, new { @class = "schedule form-horizontal" }))
 {
     @Html.TextBox("current", day.ToShortDateString(), new { style = "width:120px;", })
-    <button type="submit" class="btn">Buscar</button>
+    <button id="schedulechange" type="submit" class="btn">Buscar</button>
     <div class="pull-right">
-        <a href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(-1).ToShortDateString() })" class="btn"><i class="icon-arrow-left"></i></a>
-        <a href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(1).ToShortDateString() })" class="btn"><i class="icon-arrow-right"></i></a>
+        <a id="schedulesubstract" href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(-1).ToShortDateString(), layout = Layout == null, })" class="btn"><i class="icon-arrow-left"></i></a>
+        <a id="scheduleadd" href="@Url.Action("Schedule", new { place = Model.Page, current = day.AddDays(1).ToShortDateString(), layout = Layout == null, })" class="btn"><i class="icon-arrow-right"></i></a>
     </div>
 }
 
-<table class="table-bordered table-condensed">
+<table class="schedule table-bordered table-condensed">
 	<thead>
 		<tr>
             <th style="width: 1px;"></th>

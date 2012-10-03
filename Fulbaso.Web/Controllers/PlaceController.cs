@@ -28,7 +28,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        //[PlaceAuthorize]
+        [PlaceAuthorize]
         public ActionResult Edit(string place)
         {
             var placeModel = _placeService.Get(place);
@@ -39,7 +39,7 @@ namespace Fulbaso.Web.Controllers
                 return View(placeModel);
             }
             else
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Error404", "Home");
         }
 
         [HttpPost]
@@ -59,9 +59,11 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult ItemView(string place)
+        public ActionResult ItemView(string place, string current)
         {
             var placeModel = _placeService.Get(place);
+            DateTime date;
+            var day = DateTime.TryParse(current, out date) ? date.Date : DateTime.Today;
 
             if (placeModel != null)
             {
@@ -74,10 +76,35 @@ namespace Fulbaso.Web.Controllers
                     IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(placeModel.Id, UserAuthentication.UserId),
                 };
 
+                if (model.HasAdmin)
+                {
+                    model.Place = _placeService.Get(placeModel, day);
+                }
+
                 return View("View", model);
             }
             else
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Error404", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult Images(string place)
+        {
+            var placeModel = _placeService.Get(place);
+
+            if (placeModel != null)
+            {
+                var model = new PlaceModel
+                {
+                    Place = placeModel,
+                    HasAdmin = _placeService.PlaceHasAdmin(placeModel.Id),
+                    IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(placeModel.Id, UserAuthentication.UserId),
+                };
+
+                return View("Images", model);
+            }
+            else
+                return RedirectToAction("Error404", "Home");
         }
 
         [HttpGet]
@@ -136,21 +163,21 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Schedule(string place, string current)
+        public ActionResult Schedule(string place, string current, bool? layout)
         {
             DateTime date;
             var time = DateTime.TryParse(current, out date) ? date : DateTime.Today;
             var model = _placeService.Get(place, time);
 
+            ViewBag.NullLayout = layout;
             ViewBag.Time = time;
 
             if (model != null)
             {
-                ViewBag.IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(model.Id, UserAuthentication.UserId);
                 return View(model);
             }
             else
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Error404", "Home");
         }
 
         [Authorize]

@@ -12,6 +12,12 @@ namespace Fulbaso.Contract
 
         void AddImage(int placeId, Stream input, File file);
 
+        void AddImage(int placeId, string source, string description, long userId);
+
+        void UpdateImage(int id, string text);
+
+        void DeleteImage(int id);
+
         Place Get(Place place, DateTime day);
 
         Place Get(int placeId);

@@ -17,7 +17,7 @@
 
 @Html.Partial("Menu", Model.Page)
 
-@using (Html.BeginForm("AddFromUrl", "Image", FormMethod.Post, new { @class = "form-horizontal" }))
+@using (Html.BeginForm("AddFromUrls", "Image", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.Page)
@@ -73,9 +73,9 @@
 
             function addItem(src, name, target, addHidden) {
                 var item = "<li>";
-                item += "<div class=\"thumbnail\"><img id=\"img-" + filenumber + "\" src=\"" + src + "\"/><div class=\"caption\"><h3>" + name + "</h3><textarea placeholder=\"Ingresa una descripción\" id=\"desc-" + filenumber + "\" name=\"desc-" + filenumber + "\" /><div class=\"clearAll\"></div><a id=\"delete-" + filenumber + "\" class=\"btn btn-danger\">Eliminar</a></div></div>";
+                item += "<div class=\"thumbnail\"><img id=\"img-" + filenumber + "\" src=\"" + src + "\"/><div class=\"caption\"><h3>" + name + "</h3><textarea placeholder=\"Ingresá una descripción\" id=\"desc-" + filenumber + "\" name=\"desc-" + filenumber + "\" /><div class=\"clearAll\"></div><a id=\"delete-" + filenumber + "\" class=\"btn btn-danger\">Eliminar</a></div></div>";
                 if (addHidden) {
-                    item += "<input name=\"src-" + filenumber + "\" type=\"hidden\" val=\"" + src + "\"/>";
+                    item += "<input name=\"src-" + filenumber + "\" type=\"hidden\" value=\"" + src + "\"/>";
                 }
                 item += "</li>";
                 target.append(item);
