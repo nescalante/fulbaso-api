@@ -71,6 +71,7 @@ namespace Fulbaso.Web.Controllers
 
         [HttpPost]
         [Authorize]
+        [HandleError]
         public ActionResult AddFromUrls(Place placeModel, FormCollection collection)
         {
             if (!User.HasPlace(placeModel.Id)) throw new UnauthorizedAccessException();
@@ -111,7 +112,7 @@ namespace Fulbaso.Web.Controllers
         {
             try
             {
-                ImageUtil.GetImageFromUrl(url);
+                ImageHelper.GetImageFromUrl(url);
 
                 return Json(new { status = "ok", }, JsonRequestBehavior.AllowGet);
             }

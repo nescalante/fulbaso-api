@@ -110,7 +110,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         public void DeleteImage(int fileId)
         {
-            var places = EntityUtil.Context.Files.Where(f => f.Id == fileId).SelectMany(f => f.Places);
+            var places = EntityUtil.Context.Files.Where(f => f.Id == fileId).SelectMany(f => f.Places).ToList();
             var file = EntityUtil.Context.Files.Where(f => f.Id == fileId).ToList().First();
 
             foreach (var p in places)
@@ -120,7 +120,7 @@ namespace Fulbaso.EntityFramework.Logic
 
             EntityUtil.Context.Files.DeleteObject(file);
             EntityUtil.Context.SaveChanges();
-            FileUtil.DeleteFile(file.FileName);
+            FileHelper.DeleteFile(file.FileName);
         }
 
         public Place Get(int placeId)
@@ -377,6 +377,18 @@ namespace Fulbaso.EntityFramework.Logic
 
                 var services = EntityUtil.Context.PlaceServices.WhereContains(p => p.PlaceId, list.Select(i => i.Place.Id)).ToList();
                 list.ForEach(i => i.Place.Services = services.Where(s => i.Place.Id == s.PlaceId).Select(s => (Service)s.Service));
+
+                var images = EntityUtil.Context.Places.WhereContains(p => p.Id, list.Select(i => i.Place.Id)).Select(p => new { p.Files, p.Id }).ToList();
+                list.ForEach(i => i.Place.Images = images.Where(s => i.Place.Id == s.Id).First().Files.Select(f => new File
+                {
+                    Id = f.Id,
+                    ContentLength = f.ContentLength,
+                    ContentType = f.ContentType,
+                    Description = f.Description,
+                    FileName = f.FileName,
+                    CreatedBy = new User { Id = f.UserId, },
+                    InsertDate = f.InsertDate,
+                }));
 
                 return list.ToList().Select(p => new Tuple<Place, double?>(p.Place, p.Distance)).ToList();
             }

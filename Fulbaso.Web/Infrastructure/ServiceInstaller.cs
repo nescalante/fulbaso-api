@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Fulbaso.Authentication.Logic;
+using Fulbaso.Common;
 using Fulbaso.EntityFramework.Logic;
 
 namespace Fulbaso.Web
@@ -27,6 +29,20 @@ namespace Fulbaso.Web
               .Where(t => t.Name.EndsWith("Service"))
               .WithService.Select(ByConvention)
               .LifestylePerThread()
+            );
+
+            container.Register(
+                Component
+                    .For<ExceptionHelper>()
+                    .ImplementedBy<ExceptionHelper>()
+                    .LifestyleTransient()
+            );
+
+            container.Register(
+                Component
+                    .For<HttpContextBase>()
+                    .UsingFactoryMethod(() => new HttpContextWrapper(HttpContext.Current))
+                    .LifestylePerWebRequest()
             );
         }
 

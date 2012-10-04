@@ -41,6 +41,8 @@ namespace Fulbaso.Web
 
         public static bool HasPlace(this IPrincipal user, int id)
         {
+            if (UserAuthentication.IsAdmin()) return true;
+
             var places = GetPlaces(user) ?? new List<Place>();
 
             return places.Select(p => p.Id).Contains(id);

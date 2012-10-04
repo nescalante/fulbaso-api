@@ -22,7 +22,7 @@ namespace Fulbaso.Web
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new HandleErrorAttribute { View = "Error" });
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -46,8 +46,9 @@ namespace Fulbaso.Web
 
         protected void Application_Error()
         {
-            Exception exception = this.Server.GetLastError();
-            //_log.Error(exception.Message, exception);
+            ExceptionHelper exceptionHelper = _container.Resolve<ExceptionHelper>();
+            HttpApplicationErrorHandler errorHandler = new HttpApplicationErrorHandler(this, exceptionHelper);
+            errorHandler.HandleApplicationError();
         }
 
         private void InitializeDependencies()

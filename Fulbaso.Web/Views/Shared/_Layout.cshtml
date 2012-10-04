@@ -1,4 +1,5 @@
 ﻿@using Fulbaso.Web
+@using Fulbaso.Common
 @using Fulbaso.Contract
 @using SquishIt.Framework.Minifiers.JavaScript
 @using SquishIt.Framework.Minifiers.CSS
@@ -27,7 +28,7 @@
     @RenderSection("Metadata", false)
     <title>@ViewBag.Title</title>
     @RenderSection("StyleSheets", false)
-    @*<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>*@
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>
     <link rel="Shortcut Icon" href="@Url.Content("~/img/sport_soccer.png")" />
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="Stylesheet" />
     <link href="@Url.Content("~/Content/bootstrap-responsive.min.css")" rel="Stylesheet" />
@@ -42,7 +43,7 @@
             <div class="row">
                 <div class="span12">
                     <div style="padding-left: 30px;">
-                        <img src="@Url.Content("~/img/frontnav.png")" style="height:90px" title="@Configuration.AppTitle"/>
+                        <a href="@Url.Action("Index", "Home")" title="@Configuration.AppTitle"><img src="@Url.Content("~/img/frontnav.png")" style="display:block; height:90px" title="@Configuration.AppTitle"/></a>
                     </div>
                 </div>
             </div>

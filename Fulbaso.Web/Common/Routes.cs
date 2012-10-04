@@ -51,7 +51,6 @@ namespace Fulbaso.Web
 
             // misc
             routes.MapRoute("MapRoute", "mapa", new { controller = "Place", action = "Map" });
-            routes.MapRoute("ConsoleRoute", "consola", new { controller = "Console", action = "Index" });
             routes.MapRoute("AdminRoute", "admin/{place}", new { controller = "Home", action = "Admin" });
             routes.MapRoute("Default", "{controller}/{action}", new { controller = "Home", action = "Index" });
         }

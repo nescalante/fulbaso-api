@@ -9,7 +9,7 @@ using ImageFile = Fulbaso.Contract.File;
 
 namespace Fulbaso.Common
 {
-    public static class ImageUtil
+    public static class ImageHelper
     {
         private static string GetUrl(string fileName)
         {
@@ -54,14 +54,14 @@ namespace Fulbaso.Common
             {
                 var fileName = GetFileName(file, width);
 
-                if (File.Exists(FileUtil.GetPath(fileName)))
+                if (File.Exists(FileHelper.GetPath(fileName)))
                 {
-                    return ImageUtil.GetUrl(fileName);
+                    return ImageHelper.GetUrl(fileName);
                 }
 
                 try
                 {
-                    var source = FileUtil.GetPath(file.FileName);
+                    var source = FileHelper.GetPath(file.FileName);
                     var img = Image.FromFile(source);
 
                     if (img.Width > width)
@@ -73,20 +73,20 @@ namespace Fulbaso.Common
                         g.DrawImage(img, 0, 0, width, GetTargetHeight(img.Width, width, img.Height));
                         g.Dispose();
 
-                        FileUtil.SaveToFile(bitmap.ToStream(ImageFormat.Jpeg), fileName);
+                        FileHelper.SaveToFile(bitmap.ToStream(ImageFormat.Jpeg), fileName);
 
-                        return ImageUtil.GetUrl(fileName);
+                        return ImageHelper.GetUrl(fileName);
                     }
                 }
                 catch { }
             }
                 
-            return ImageUtil.GetUrl(file.FileName);
+            return ImageHelper.GetUrl(file.FileName);
         }
 
         public static Image GetImageFromUrl(string url)
         {
-            using (MemoryStream ms = FileUtil.GetStreamFromUrl(url))
+            using (MemoryStream ms = FileHelper.GetStreamFromUrl(url))
             {
                 return Image.FromStream(ms);
             }

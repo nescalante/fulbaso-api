@@ -4,5 +4,5 @@
     ViewBag.Title = "Error";
 }
 
-<h2>Ha ocurrido un error.</h2>
+<h2>Ha ocurrido un error en la aplicación.</h2>
 <div style="display:none;">@Model.Exception.Message @(Model.Exception.InnerException != null ? Model.Exception.InnerException.Message : "")</div>

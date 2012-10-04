@@ -40,7 +40,7 @@ namespace Fulbaso.EntityFramework.Logic
         {
             File file;
 
-            using (var input = FileUtil.GetStreamFromUrl(source))
+            using (var input = FileHelper.GetStreamFromUrl(source))
             {
                 file = new File
                 {
