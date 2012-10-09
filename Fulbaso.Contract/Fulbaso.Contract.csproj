@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Position.cs" />
     <Compile Include="Configuration\Territory.cs" />
     <Compile Include="Configuration\CourtType.cs" />
     <Compile Include="Configuration\FloorType.cs" />

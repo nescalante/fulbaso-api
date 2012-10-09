@@ -215,7 +215,7 @@ namespace Fulbaso.EntityFramework.Logic
             }
 
             count = places.Count();
-            places = places.OrderBy(q => q.Name).Skip(init);
+            places = places.Skip(init);
 
             if (rows > 0) places = places.Take(rows);
 

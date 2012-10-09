@@ -14,6 +14,24 @@ namespace Fulbaso.Web
 {
     public static class CoreUtil
     {
+        public static void UpdatePosition(decimal lat, decimal lng)
+        {
+            HttpContext.Current.Session["Latitude"] = lat;
+            HttpContext.Current.Session["Longitude"] = lng;
+        }
+
+        public static Position GetPosition()
+        {
+            if (HttpContext.Current.Session["Latitude"] != null && HttpContext.Current.Session["Longitude"] != null)
+            {
+                return new Position { Latitude = Convert.ToDecimal(HttpContext.Current.Session["Latitude"]), Longitude = Convert.ToDecimal(HttpContext.Current.Session["Longitude"]), };
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public static string GetFloors(this IEnumerable<int> list)
         {
             return ContainerUtil.GetApplicationContainer().Resolve<IFloorTypeService>().Get().Where(f => list.Contains(f.Id)).Select(f => f.ToString()).GetJoin();

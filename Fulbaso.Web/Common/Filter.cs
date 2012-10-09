@@ -140,15 +140,25 @@ namespace Fulbaso.Web
                         }
                     }
 
+                    if (!string.IsNullOrEmpty(this.Query) || !routes.Any())
+                    {
+                        routes.Add("q", string.IsNullOrEmpty(this.Query) ? "*" : this.Query);
+                    }
+
                     if (this.Latitude.HasValue && this.Longitude.HasValue)
                     {
                         routes.Add("lat", this.Latitude);
                         routes.Add("lng", this.Longitude);
                     }
-
-                    if (!string.IsNullOrEmpty(this.Query) || !routes.Any())
+                    else
                     {
-                        routes.Add("q", string.IsNullOrEmpty(this.Query) ? "*" : this.Query);
+                        var position = CoreUtil.GetPosition();
+
+                        if (position != null)
+                        {
+                            routes.Add("lat", position.Latitude);
+                            routes.Add("lng", position.Longitude);
+                        }
                     }
 
                     return routes;
@@ -175,6 +185,14 @@ namespace Fulbaso.Web
 
             this._dateParsed = DateTime.TryParse(collection["date"], out date);
             this._hourParsed = int.TryParse(collection["hour"], out hour);
+
+            var position = CoreUtil.GetPosition();
+
+            if (position != null)
+            {
+                this.Latitude = position.Latitude;
+                this.Longitude = position.Longitude;
+            }
         }
 
         public PlacesFilter(string query, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool isIndoor, bool isLighted, DateTime? date = null, int? hour = null)
@@ -191,6 +209,14 @@ namespace Fulbaso.Web
             this._hourParsed = hour != null;
             this.Date = date ?? DateTime.Today;
             this.Hour = hour ?? 0;
+
+            var position = CoreUtil.GetPosition();
+
+            if (position != null)
+            {
+                this.Latitude = position.Latitude;
+                this.Longitude = position.Longitude;
+            }
         }
 
         private static PlacesFilter Clone(PlacesFilter filter)
@@ -423,8 +449,23 @@ namespace Fulbaso.Web
                 }
 
                 // latitude & longitude parse
-                this.Latitude = keys.Contains("lat") ? (decimal?)Convert.ToDecimal(collection["lat"].Replace(".", ",")) : null;
-                this.Longitude = keys.Contains("lng") ? (decimal?)Convert.ToDecimal(collection["lng"].Replace(".", ",")) : null;
+                if (keys.Contains("lat") && keys.Contains("lng"))
+                {
+                    this.Latitude = Convert.ToDecimal(collection["lat"].Replace(".", ","));
+                    this.Longitude = Convert.ToDecimal(collection["lng"].Replace(".", ","));
+
+                    CoreUtil.UpdatePosition(this.Latitude.Value, this.Longitude.Value);
+                }
+                else
+                {
+                    var position = CoreUtil.GetPosition();
+
+                    if (position != null)
+                    {
+                        this.Latitude = position.Latitude;
+                        this.Longitude = position.Longitude;
+                    }
+                }
             }
             catch (Exception ex)
             {
