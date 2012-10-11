@@ -25,6 +25,7 @@
         <label class="control-label" for="url">URL</label>
         <div class="controls">
             <input id="url" type="text" placeholder="Pegá tu URL acá" class="input-xlarge" />
+            <span style="display:none;" id="process"><i style="margin-left:5px;" class="icon-time"></i> Procesando</span>
             <a id="addUrl" style="display: none" class="btn">Agregar</a>
         </div>
     </div>
@@ -48,9 +49,12 @@
                 if (prev != url && $.trim(prev) != "") {
                     $("#urlcontainer").removeClass("success");
                     $("#urlcontainer").removeClass("error");
+                    $("#process").fadeIn();
+                    $("#addUrl").hide();
 
                     url = prev;
                     $.getJSON("@Url.Action("ParseUrl", "Image")", { url: url }, function (data) {
+                        $("#process").hide();
                         if (data.status == "ok") {
                             $("#addUrl").fadeIn();
                             $("#urlcontainer").addClass("success");
@@ -63,17 +67,35 @@
                                 $("#url").val("");
                             });
                         }
+                        else if (data.status == "facebook") {
+                            $("#addUrl").fadeIn();
+                            $("#urlcontainer").addClass("success");
+                            $("#addUrl").unbind("click");
+                            $("#addUrl").click(function () {
+                                $.each(data.content, function (index, item) {
+                                    addItem(item.Source, item.Id, $("#urllist"), true, item.Name);
+                                });
+                            });
+                        }
                         else {
                             $("#urlcontainer").addClass("error");
                             $("#addUrl").hide();
                         }
+                    }).error(function () {
+                        $("#urlcontainer").addClass("error");
+                        $("#addUrl").hide();
+                        $("#process").hide();
                     });
                 }
             });
 
-            function addItem(src, name, target, addHidden) {
+            function addItem(src, name, target, addHidden, description) {
+                if (!description) {
+                    description = "";
+                }
+                
                 var item = "<li>";
-                item += "<div class=\"thumbnail\"><img id=\"img-" + filenumber + "\" src=\"" + src + "\"/><div class=\"caption\"><h3>" + name + "</h3><textarea placeholder=\"Ingresá una descripción\" id=\"desc-" + filenumber + "\" name=\"desc-" + filenumber + "\" /><div class=\"clearAll\"></div><a id=\"delete-" + filenumber + "\" class=\"btn btn-danger\">Eliminar</a></div></div>";
+                item += "<div class=\"thumbnail\"><img id=\"img-" + filenumber + "\" src=\"" + src + "\"/><div class=\"caption\"><h3>" + name + "</h3><textarea placeholder=\"Ingresá una descripción\" id=\"desc-" + filenumber + "\" name=\"desc-" + filenumber + "\">" + description + "</textarea><div class=\"clearAll\"></div><a id=\"delete-" + filenumber + "\" class=\"btn btn-danger\">Eliminar</a></div></div>";
                 if (addHidden) {
                     item += "<input name=\"src-" + filenumber + "\" type=\"hidden\" value=\"" + src + "\"/>";
                 }

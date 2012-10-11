@@ -48,9 +48,14 @@
     <Compile Include="Configuration\FloorType.cs" />
     <Compile Include="Court\CourtConfiguration.cs" />
     <Compile Include="Court\CourtBook.cs" />
+    <Compile Include="Facebook\Album.cs" />
+    <Compile Include="Facebook\AlbumType.cs" />
+    <Compile Include="Facebook\Photo.cs" />
     <Compile Include="Files\File.cs" />
     <Compile Include="Place\Service.cs" />
+    <Compile Include="Services\IAlbumService.cs" />
     <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Services\IPhotoService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\IFloorTypeService.cs" />
     <Compile Include="Services\ICourtTypeService.cs" />

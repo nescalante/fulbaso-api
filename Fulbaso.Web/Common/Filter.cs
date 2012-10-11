@@ -11,7 +11,7 @@ namespace Fulbaso.Web
 {
     public class PlacesFilter
     {
-        private const char separator = ';';
+        private const char separator = '-';
 
         private bool _dateParsed;
 

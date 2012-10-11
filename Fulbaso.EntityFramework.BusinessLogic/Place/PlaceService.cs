@@ -252,6 +252,10 @@ namespace Fulbaso.EntityFramework.Logic
             {
                 places = PlaceService.OrderByDistance(places, latitude.Value, longitude.Value);
             }
+            else
+            {
+                places = places.OrderBy(p => p.Name);
+            }
 
             return places;
         }

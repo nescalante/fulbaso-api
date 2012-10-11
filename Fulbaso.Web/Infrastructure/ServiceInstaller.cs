@@ -8,6 +8,7 @@ using Castle.Windsor;
 using Fulbaso.Authentication.Logic;
 using Fulbaso.Common;
 using Fulbaso.EntityFramework.Logic;
+using Fulbaso.Facebook.Logic;
 
 namespace Fulbaso.Web
 {
@@ -18,6 +19,14 @@ namespace Fulbaso.Web
             container.Register(
              AllTypes
               .FromAssemblyContaining<PlaceService>()
+              .Where(t => t.Name.EndsWith("Service"))
+              .WithService.Select(ByConvention)
+              .LifestylePerThread()
+            );
+
+            container.Register(
+             AllTypes
+              .FromAssemblyContaining<AlbumService>()
               .Where(t => t.Name.EndsWith("Service"))
               .WithService.Select(ByConvention)
               .LifestylePerThread()

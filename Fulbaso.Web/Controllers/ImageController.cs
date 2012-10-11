@@ -11,10 +11,14 @@ namespace Fulbaso.Web.Controllers
     public class ImageController : BaseController
     {
         private IPlaceService _placeService;
+        private IAlbumService _albumService;
+        private IPhotoService _photoService;
 
-        public ImageController(IPlaceService placeService)
+        public ImageController(IPlaceService placeService, IAlbumService albumService, IPhotoService photoService)
         {
             _placeService = placeService;
+            _albumService = albumService;
+            _photoService = photoService;
         }
 
         [HttpGet]
@@ -118,7 +122,17 @@ namespace Fulbaso.Web.Controllers
             }
             catch (ArgumentException ex)
             {
-                return Json(new { status = "error", message = "No se pudo encontrar la imagen.", }, JsonRequestBehavior.AllowGet);
+                try
+                {
+                    var albums = _albumService.Get(url.Split('/').Last().Split('?').First());
+                    var photos = albums.SelectMany(a => _photoService.GetFromAlbum(a.Id));
+
+                    return Json(new { status = "facebook", content = photos, }, JsonRequestBehavior.AllowGet);
+                }
+                catch
+                {
+                    return Json(new { status = "error", message = "No se pudo encontrar el recurso.", }, JsonRequestBehavior.AllowGet);
+                }
             }
             catch (WebException ex)
             {

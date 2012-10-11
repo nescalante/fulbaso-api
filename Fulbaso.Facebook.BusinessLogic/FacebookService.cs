@@ -23,9 +23,14 @@ namespace Fulbaso.Facebook.Logic
             {
                 if (_client == null)
                 {
-                    if (Token == null) throw new InvalidOperationException("Token must be initialized before getting client. Initialize using SetToken method.");
-
-                    _client = new FacebookClient(Token);
+                    if (Token == null)
+                    {
+                        _client = new FacebookClient();
+                    }
+                    else
+                    {
+                        _client = new FacebookClient(Token);
+                    }
                 }
 
                 return _client;
@@ -37,6 +42,7 @@ namespace Fulbaso.Facebook.Logic
             if (token == null) throw new ArgumentNullException("token");
 
             Token = token;
+            _client = null;
         }
     }
 }
