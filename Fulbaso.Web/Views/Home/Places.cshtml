@@ -1,10 +1,13 @@
-﻿@using Fulbaso.Contract
+﻿@using Fulbaso.Common
+@using Fulbaso.Contract
 @using Fulbaso.Web
 
 @model IEnumerable<Place>
 
 @{
     var filter = new PlacesFilter(this.Request.QueryString);
+    int init;
+    int.TryParse(this.Request.QueryString["init"], out init);
     ViewBag.Title = string.IsNullOrEmpty(filter.Reference) ? "Listado de canchas" : ("Canchas " + filter.Reference);
 }
 
@@ -21,7 +24,7 @@
         <div id="places">
             @Html.Partial("List", Model)
         </div>
-        <a id="loadmore" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
+        <a id="loadmore" href="@Url.Action("Index", "Home", filter.Route)&init=@(init + Configuration.RowsPerRequest)" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
     </div>
     <div class="span4">
         <div class="hidden-phone">

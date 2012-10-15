@@ -44,7 +44,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? init)
         {
             var filter = new PlacesFilter(this.Request.QueryString);
 
@@ -64,7 +64,7 @@ namespace Fulbaso.Web.Controllers
             else
             {
                 int count;
-                var model = GetPlacesList(0, filter, out count);
+                var model = GetPlacesList(init ?? 0, filter, out count);
 
                 if (model.Count() == 1 && model.First().Description == filter.Query)
                 {
