@@ -37,7 +37,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         public int GetOwnedPlaces()
         {
-            return EntityUtil.Context.Users.SelectMany(u => u.Places.Select(up => up.Id)).Distinct().Count();
+            return EntityUtil.Context.UserPlaces.Select(u => u.PlaceId).Distinct().Count();
         }
     }
 }   

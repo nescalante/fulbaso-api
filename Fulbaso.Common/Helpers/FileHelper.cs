@@ -42,11 +42,6 @@ namespace Fulbaso.Common
         public static string GetPath(string filename)
         {
             return Path.Combine(HttpContext.Current.Server.MapPath(@"~/uploaded/"), filename);
-            //string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            //UriBuilder uri = new UriBuilder(codeBase);
-            //string path = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
-
-            //return path.Substring(0, path.LastIndexOf('\\')) + ImagesPath + filename;
         }
 
         public static MemoryStream GetStreamFromUrl(string url)

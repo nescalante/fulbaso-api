@@ -26,15 +26,17 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Courts_CourtTypes", "CourtTypes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.CourtTypeEntity), "Courts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.CourtEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Courts_FloorTypes", "FloorTypes", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.FloorTypeEntity), "Courts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.CourtEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Courts_Places", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.PlaceEntity), "Courts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.CourtEntity), true)]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Files_Users", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.UserEntity), "Files", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.FileEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Locations_Regions", "Regions", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.RegionEntity), "Locations", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.LocationEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Places_Locations", "Locations", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Fulbaso.EntityFramework.LocationEntity), "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), true)]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Places_Users", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Fulbaso.EntityFramework.UserEntity), "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_PlaceServices_Places", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.PlaceEntity), "PlaceServices", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceService), true)]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_UserPlaces_Places", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.PlaceEntity), "UserPlaces", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserPlaceEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Regions_Territories", "Territories", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.TerritoryEntity), "Regions", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.RegionEntity), true)]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_UserPlaces_Users", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.UserEntity), "UserPlaces", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserPlaceEntity), true)]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_UserRoles_Users", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.UserEntity), "UserRoles", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserRoleEntity), true)]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "PlaceFiles", "Files", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.FileEntity), "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity))]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "UserFavourites", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity))]
-[assembly: EdmRelationshipAttribute("ObjectContextModel", "UserPlaces", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity))]
-[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Places_Users", "UserEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Fulbaso.EntityFramework.UserEntity), "PlaceEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), true)]
-[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Files_Users", "UserEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.UserEntity), "File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.FileEntity), true)]
-[assembly: EdmRelationshipAttribute("ObjectContextModel", "PlaceFiles", "FileEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.FileEntity), "PlaceEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity))]
 
 #endregion
 
@@ -169,6 +171,22 @@ namespace Fulbaso.EntityFramework
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<FileEntity> Files
+        {
+            get
+            {
+                if ((_Files == null))
+                {
+                    _Files = base.CreateObjectSet<FileEntity>("Files");
+                }
+                return _Files;
+            }
+        }
+        private ObjectSet<FileEntity> _Files;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<FloorTypeEntity> FloorTypes
         {
             get
@@ -265,6 +283,38 @@ namespace Fulbaso.EntityFramework
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<UserPlaceEntity> UserPlaces
+        {
+            get
+            {
+                if ((_UserPlaces == null))
+                {
+                    _UserPlaces = base.CreateObjectSet<UserPlaceEntity>("UserPlaces");
+                }
+                return _UserPlaces;
+            }
+        }
+        private ObjectSet<UserPlaceEntity> _UserPlaces;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<UserRoleEntity> UserRoles
+        {
+            get
+            {
+                if ((_UserRoles == null))
+                {
+                    _UserRoles = base.CreateObjectSet<UserRoleEntity>("UserRoles");
+                }
+                return _UserRoles;
+            }
+        }
+        private ObjectSet<UserRoleEntity> _UserRoles;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<UserEntity> Users
         {
             get
@@ -297,18 +347,18 @@ namespace Fulbaso.EntityFramework
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<FileEntity> Files
+        public ObjectSet<AutocompleteValue> AutocompleteValues
         {
             get
             {
-                if ((_Files == null))
+                if ((_AutocompleteValues == null))
                 {
-                    _Files = base.CreateObjectSet<FileEntity>("Files");
+                    _AutocompleteValues = base.CreateObjectSet<AutocompleteValue>("AutocompleteValues");
                 }
-                return _Files;
+                return _AutocompleteValues;
             }
         }
-        private ObjectSet<FileEntity> _Files;
+        private ObjectSet<AutocompleteValue> _AutocompleteValues;
 
         #endregion
         #region AddTo Methods
@@ -351,6 +401,14 @@ namespace Fulbaso.EntityFramework
         public void AddToCourtTypes(CourtTypeEntity courtTypeEntity)
         {
             base.AddObject("CourtTypes", courtTypeEntity);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Files EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToFiles(FileEntity fileEntity)
+        {
+            base.AddObject("Files", fileEntity);
         }
     
         /// <summary>
@@ -402,6 +460,22 @@ namespace Fulbaso.EntityFramework
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the UserPlaces EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToUserPlaces(UserPlaceEntity userPlaceEntity)
+        {
+            base.AddObject("UserPlaces", userPlaceEntity);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the UserRoles EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToUserRoles(UserRoleEntity userRoleEntity)
+        {
+            base.AddObject("UserRoles", userRoleEntity);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the Users EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToUsers(UserEntity userEntity)
@@ -418,11 +492,11 @@ namespace Fulbaso.EntityFramework
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Files EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the AutocompleteValues EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToFiles(FileEntity fileEntity)
+        public void AddToAutocompleteValues(AutocompleteValue autocompleteValue)
         {
-            base.AddObject("Files", fileEntity);
+            base.AddObject("AutocompleteValues", autocompleteValue);
         }
 
         #endregion
@@ -432,6 +506,114 @@ namespace Fulbaso.EntityFramework
     #endregion
     
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ObjectContextModel", Name="AutocompleteValue")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class AutocompleteValue : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new AutocompleteValue object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="type">Initial value of the Type property.</param>
+        public static AutocompleteValue CreateAutocompleteValue(global::System.Int32 id, global::System.String type)
+        {
+            AutocompleteValue autocompleteValue = new AutocompleteValue();
+            autocompleteValue.Id = id;
+            autocompleteValue.Type = type;
+            return autocompleteValue;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                if (_Type != value)
+                {
+                    OnTypeChanging(value);
+                    ReportPropertyChanging("Type");
+                    _Type = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Type");
+                    OnTypeChanged();
+                }
+            }
+        }
+        private global::System.String _Type;
+        partial void OnTypeChanging(global::System.String value);
+        partial void OnTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Value
+        {
+            get
+            {
+                return _Value;
+            }
+            set
+            {
+                OnValueChanging(value);
+                ReportPropertyChanging("Value");
+                _Value = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Value");
+                OnValueChanged();
+            }
+        }
+        private global::System.String _Value;
+        partial void OnValueChanging(global::System.String value);
+        partial void OnValueChanged();
+
+        #endregion
+    
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
@@ -2144,16 +2326,16 @@ namespace Fulbaso.EntityFramework
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Files_Users", "UserEntity")]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Files_Users", "Users")]
         public UserEntity User
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "UserEntity").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "Users").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "UserEntity").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "Users").Value = value;
             }
         }
         /// <summary>
@@ -2165,13 +2347,13 @@ namespace Fulbaso.EntityFramework
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "UserEntity");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "Users");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "UserEntity", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_Files_Users", "Users", value);
                 }
             }
         }
@@ -2182,18 +2364,18 @@ namespace Fulbaso.EntityFramework
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "PlaceFiles", "PlaceEntity")]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "PlaceFiles", "Places")]
         public EntityCollection<PlaceEntity> Places
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PlaceEntity>("ObjectContextModel.PlaceFiles", "PlaceEntity");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PlaceEntity>("ObjectContextModel.PlaceFiles", "Places");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.PlaceFiles", "PlaceEntity", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.PlaceFiles", "Places", value);
                 }
             }
         }
@@ -3014,6 +3196,44 @@ namespace Fulbaso.EntityFramework
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Places_Users", "Users")]
+        public UserEntity Owner
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "Users").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "Users").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<UserEntity> OwnerReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "Users");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "Users", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_PlaceServices_Places", "PlaceServices")]
         public EntityCollection<PlaceService> Services
         {
@@ -3036,6 +3256,50 @@ namespace Fulbaso.EntityFramework
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_UserPlaces_Places", "UserPlaces")]
+        public EntityCollection<UserPlaceEntity> Admins
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserPlaceEntity>("ObjectContextModel.FK_UserPlaces_Places", "UserPlaces");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserPlaceEntity>("ObjectContextModel.FK_UserPlaces_Places", "UserPlaces", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "PlaceFiles", "Files")]
+        public EntityCollection<FileEntity> Files
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FileEntity>("ObjectContextModel.PlaceFiles", "Files");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FileEntity>("ObjectContextModel.PlaceFiles", "Files", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "UserFavourites", "Users")]
         public EntityCollection<UserEntity> Favourites
         {
@@ -3048,88 +3312,6 @@ namespace Fulbaso.EntityFramework
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserEntity>("ObjectContextModel.UserFavourites", "Users", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "UserPlaces", "Users")]
-        public EntityCollection<UserEntity> Admins
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserEntity>("ObjectContextModel.UserPlaces", "Users");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserEntity>("ObjectContextModel.UserPlaces", "Users", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Places_Users", "UserEntity")]
-        public UserEntity Users
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<UserEntity> UsersReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_Places_Users", "UserEntity", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "PlaceFiles", "FileEntity")]
-        public EntityCollection<FileEntity> Files
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FileEntity>("ObjectContextModel.PlaceFiles", "FileEntity");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FileEntity>("ObjectContextModel.PlaceFiles", "FileEntity", value);
                 }
             }
         }
@@ -3275,22 +3457,49 @@ namespace Fulbaso.EntityFramework
         /// <summary>
         /// Create a new PlaceView object.
         /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="location">Initial value of the Location property.</param>
         /// <param name="region">Initial value of the Region property.</param>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static PlaceView CreatePlaceView(global::System.String name, global::System.String location, global::System.String region, global::System.Int32 id)
+        public static PlaceView CreatePlaceView(global::System.Int32 id, global::System.String name, global::System.String location, global::System.String region)
         {
             PlaceView placeView = new PlaceView();
+            placeView.Id = id;
             placeView.Name = name;
             placeView.Location = location;
             placeView.Region = region;
-            placeView.Id = id;
             return placeView;
         }
 
         #endregion
         #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3496,33 +3705,6 @@ namespace Fulbaso.EntityFramework
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _Id;
-        partial void OnIdChanging(global::System.Int32 value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public Nullable<global::System.Decimal> MapUa
@@ -3567,6 +3749,30 @@ namespace Fulbaso.EntityFramework
         private Nullable<global::System.Decimal> _MapVa;
         partial void OnMapVaChanging(Nullable<global::System.Decimal> value);
         partial void OnMapVaChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MapLocation
+        {
+            get
+            {
+                return _MapLocation;
+            }
+            set
+            {
+                OnMapLocationChanging(value);
+                ReportPropertyChanging("MapLocation");
+                _MapLocation = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MapLocation");
+                OnMapLocationChanged();
+            }
+        }
+        private global::System.String _MapLocation;
+        partial void OnMapLocationChanging(global::System.String value);
+        partial void OnMapLocationChanged();
 
         #endregion
     
@@ -4205,6 +4411,94 @@ namespace Fulbaso.EntityFramework
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Files_Users", "Files")]
+        public EntityCollection<FileEntity> Files
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FileEntity>("ObjectContextModel.FK_Files_Users", "Files");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FileEntity>("ObjectContextModel.FK_Files_Users", "Files", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Places_Users", "Places")]
+        public EntityCollection<PlaceEntity> PlacesCreated
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PlaceEntity>("ObjectContextModel.FK_Places_Users", "Places");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.FK_Places_Users", "Places", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_UserPlaces_Users", "UserPlaces")]
+        public EntityCollection<UserPlaceEntity> Places
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserPlaceEntity>("ObjectContextModel.FK_UserPlaces_Users", "UserPlaces");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserPlaceEntity>("ObjectContextModel.FK_UserPlaces_Users", "UserPlaces", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_UserRoles_Users", "UserRoles")]
+        public EntityCollection<UserRoleEntity> Roles
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserRoleEntity>("ObjectContextModel.FK_UserRoles_Users", "UserRoles");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserRoleEntity>("ObjectContextModel.FK_UserRoles_Users", "UserRoles", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "UserFavourites", "Places")]
         public EntityCollection<PlaceEntity> Favourites
         {
@@ -4220,6 +4514,122 @@ namespace Fulbaso.EntityFramework
                 }
             }
         }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ObjectContextModel", Name="UserPlaceEntity")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class UserPlaceEntity : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new UserPlaceEntity object.
+        /// </summary>
+        /// <param name="userId">Initial value of the UserId property.</param>
+        /// <param name="placeId">Initial value of the PlaceId property.</param>
+        /// <param name="role">Initial value of the Role property.</param>
+        public static UserPlaceEntity CreateUserPlaceEntity(global::System.Int64 userId, global::System.Int32 placeId, global::System.String role)
+        {
+            UserPlaceEntity userPlaceEntity = new UserPlaceEntity();
+            userPlaceEntity.UserId = userId;
+            userPlaceEntity.PlaceId = placeId;
+            userPlaceEntity.Role = role;
+            return userPlaceEntity;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 UserId
+        {
+            get
+            {
+                return _UserId;
+            }
+            set
+            {
+                if (_UserId != value)
+                {
+                    OnUserIdChanging(value);
+                    ReportPropertyChanging("UserId");
+                    _UserId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("UserId");
+                    OnUserIdChanged();
+                }
+            }
+        }
+        private global::System.Int64 _UserId;
+        partial void OnUserIdChanging(global::System.Int64 value);
+        partial void OnUserIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 PlaceId
+        {
+            get
+            {
+                return _PlaceId;
+            }
+            set
+            {
+                if (_PlaceId != value)
+                {
+                    OnPlaceIdChanging(value);
+                    ReportPropertyChanging("PlaceId");
+                    _PlaceId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("PlaceId");
+                    OnPlaceIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _PlaceId;
+        partial void OnPlaceIdChanging(global::System.Int32 value);
+        partial void OnPlaceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Role
+        {
+            get
+            {
+                return _Role;
+            }
+            set
+            {
+                if (_Role != value)
+                {
+                    OnRoleChanging(value);
+                    ReportPropertyChanging("Role");
+                    _Role = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Role");
+                    OnRoleChanged();
+                }
+            }
+        }
+        private global::System.String _Role;
+        partial void OnRoleChanging(global::System.String value);
+        partial void OnRoleChanged();
+
+        #endregion
+    
+        #region Navigation Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4227,18 +4637,34 @@ namespace Fulbaso.EntityFramework
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "UserPlaces", "Places")]
-        public EntityCollection<PlaceEntity> Places
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_UserPlaces_Places", "Places")]
+        public PlaceEntity Place
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PlaceEntity>("ObjectContextModel.UserPlaces", "Places");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<PlaceEntity>("ObjectContextModel.FK_UserPlaces_Places", "Places").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<PlaceEntity>("ObjectContextModel.FK_UserPlaces_Places", "Places").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<PlaceEntity> PlaceReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<PlaceEntity>("ObjectContextModel.FK_UserPlaces_Places", "Places");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.UserPlaces", "Places", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<PlaceEntity>("ObjectContextModel.FK_UserPlaces_Places", "Places", value);
                 }
             }
         }
@@ -4249,21 +4675,124 @@ namespace Fulbaso.EntityFramework
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Places_Users", "PlaceEntity")]
-        public EntityCollection<PlaceEntity> Places_1
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_UserPlaces_Users", "Users")]
+        public UserEntity User
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PlaceEntity>("ObjectContextModel.FK_Places_Users", "PlaceEntity");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_UserPlaces_Users", "Users").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_UserPlaces_Users", "Users").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<UserEntity> UserReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_UserPlaces_Users", "Users");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.FK_Places_Users", "PlaceEntity", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_UserPlaces_Users", "Users", value);
                 }
             }
         }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ObjectContextModel", Name="UserRoleEntity")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class UserRoleEntity : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new UserRoleEntity object.
+        /// </summary>
+        /// <param name="userId">Initial value of the UserId property.</param>
+        /// <param name="role">Initial value of the Role property.</param>
+        public static UserRoleEntity CreateUserRoleEntity(global::System.Int64 userId, global::System.String role)
+        {
+            UserRoleEntity userRoleEntity = new UserRoleEntity();
+            userRoleEntity.UserId = userId;
+            userRoleEntity.Role = role;
+            return userRoleEntity;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 UserId
+        {
+            get
+            {
+                return _UserId;
+            }
+            set
+            {
+                if (_UserId != value)
+                {
+                    OnUserIdChanging(value);
+                    ReportPropertyChanging("UserId");
+                    _UserId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("UserId");
+                    OnUserIdChanged();
+                }
+            }
+        }
+        private global::System.Int64 _UserId;
+        partial void OnUserIdChanging(global::System.Int64 value);
+        partial void OnUserIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Role
+        {
+            get
+            {
+                return _Role;
+            }
+            set
+            {
+                if (_Role != value)
+                {
+                    OnRoleChanging(value);
+                    ReportPropertyChanging("Role");
+                    _Role = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Role");
+                    OnRoleChanged();
+                }
+            }
+        }
+        private global::System.String _Role;
+        partial void OnRoleChanging(global::System.String value);
+        partial void OnRoleChanged();
+
+        #endregion
+    
+        #region Navigation Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4271,18 +4800,34 @@ namespace Fulbaso.EntityFramework
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Files_Users", "File")]
-        public EntityCollection<FileEntity> Files
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_UserRoles_Users", "Users")]
+        public UserEntity User
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FileEntity>("ObjectContextModel.FK_Files_Users", "File");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_UserRoles_Users", "Users").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_UserRoles_Users", "Users").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<UserEntity> UserReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserEntity>("ObjectContextModel.FK_UserRoles_Users", "Users");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FileEntity>("ObjectContextModel.FK_Files_Users", "File", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserEntity>("ObjectContextModel.FK_UserRoles_Users", "Users", value);
                 }
             }
         }

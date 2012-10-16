@@ -24,7 +24,10 @@
         <div id="places">
             @Html.Partial("List", Model)
         </div>
-        <a id="loadmore" href="@Url.Action("Index", "Home", filter.Route)&init=@(init + Configuration.RowsPerRequest)" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
+        @if (ViewBag.Places > Model.Count() + init)
+        {
+            <a id="loadmore" href="@Url.Action("Index", "Home", filter.Route)&init=@(init + Configuration.RowsPerRequest)" class="btn btn-primary" style="margin-left: 20px; width: 16em;">Mostrar más</a>
+        }
     </div>
     <div class="span4">
         <div class="hidden-phone">

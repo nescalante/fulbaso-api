@@ -35,7 +35,8 @@
 }
 
 <div class="tabbable">
-    <ul class="nav nav-tabs">
+    <ul @(!Model.HasAdmin && !Model.Place.Images.Any() ? "style=\"display:none;\"" : "")  
+        class="nav nav-tabs@(!Model.HasAdmin ? " visible-phone" : "")">
         <li class="active">
             <a href="#info" data-toggle="tab">Información</a>
         </li>

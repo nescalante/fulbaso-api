@@ -140,8 +140,8 @@ namespace Fulbaso.EntityFramework.Logic
 
         public IEnumerable<Place> GetByUser(long userId)
         {
-            var query = EntityUtil.Context.Users.Where(u => u.Id == userId)
-                .SelectMany(u => u.Places)
+            var query = EntityUtil.Context.UserPlaces.Where(u => u.UserId == userId)
+                .Select(u => u.Place).Distinct()
                 .Select(p => new Place { Description = p.Name, Page = p.Page, Id = p.Id, });
 
             return query.ToList();
@@ -181,6 +181,7 @@ namespace Fulbaso.EntityFramework.Logic
                             Phone = i.Phone,
                             Page = i.Page,
                             Location = new Location { Description = i.Location, Region = Region.Create<Region>(i.Region), },
+                            MapLocation = i.MapLocation,
                             Courts = (int)i.Courts,
                             MapUa = i.MapUa,
                             MapVa = i.MapVa,
@@ -367,6 +368,7 @@ namespace Fulbaso.EntityFramework.Logic
                                    Address = p.Address,
                                    Phone = p.Phone,
                                    Location = new Location { Description = p.Location.Description, Region = new Region { Description = p.Location.Region.Description }, },
+                                   MapLocation = p.MapLocation,
                                    Courts = p.Courts.Count(),
                                    MapUa = p.MapUa, 
                                    MapVa = p.MapVa, 
