@@ -59,7 +59,7 @@ namespace Fulbaso.Web
 
         public static bool HasPlace(this IPrincipal user, int id)
         {
-            if (UserAuthentication.IsAdmin()) return true;
+            if (user.IsInRole("Admin")) return true;
 
             var places = GetPlaces(user) ?? new List<Place>();
 

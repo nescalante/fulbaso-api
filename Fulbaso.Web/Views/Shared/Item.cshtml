@@ -12,7 +12,8 @@
         new { Class = "ui-info phone", Text = Model.Phone, },
         new { Class = "ui-info courts", Text = Model.Courts.ToString() + " cancha" + (Model.Courts > 1 ? "s" : ""), }, 
     };
-    var isAdmin = UserAuthentication.IsAdmin();
+    
+    var isAdmin = User.IsInRole("Admin");
 }
 
 <div data-id="@Model.Id" data-ua="@Model.MapUa" data-va="@Model.MapVa" class="mapitem place-info" href="@Url.Action("ItemView", "Place", new { place = Model.Page })">
@@ -34,18 +35,5 @@
         }
         </ul>
     </div>
-    @if (Model.Images != null && Model.Images.Any())
-    {
-        <div class="row-fluid hidden-phone" style="margin-bottom: 10px;">
-            @foreach (var f in Model.Images.OrderByDescending(i => i.InsertDate).Take(4))
-            {
-                <div style="margin-left: 1.5%;" class="span3">
-                    <a href="@Url.Action("ItemView", "Place", new { place = Model.Page })" title="@f.Description">
-                        <img style="display:block; " src="@f.ToUrl(120)" title="@f.Description" alt="@f.Description" />
-                    </a>
-                </div>
-            }
-        </div>
-    }
 </div>
 

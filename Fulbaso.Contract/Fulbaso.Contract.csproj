@@ -56,6 +56,7 @@
     <Compile Include="Services\IAlbumService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\IPhotoService.cs" />
+    <Compile Include="Services\IRoleService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\IFloorTypeService.cs" />
     <Compile Include="Services\ICourtTypeService.cs" />

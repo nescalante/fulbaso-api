@@ -25,7 +25,7 @@
                 {
                     <a id="favourite" class="btn" title="Votar por esta cancha"><i class="icon-thumbs-up"></i></a>
                 }
-                if (UserAuthentication.IsAdmin())
+                if (User.IsInRole("Admin"))
                 {
                     <a href="@Url.Action("Admin", "Home", new { place = Model.Place.Page })" class="btn" title="Administrar">Administrar</a>
                 }

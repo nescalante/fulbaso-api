@@ -21,7 +21,7 @@ namespace Fulbaso.Common.Security
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            if (UserAuthentication.IsAdmin()) return true;
+            if (httpContext.User.IsInRole("Admin")) return true;
 
             var place = httpContext.Request.RequestContext.RouteData.Values["place"];
 

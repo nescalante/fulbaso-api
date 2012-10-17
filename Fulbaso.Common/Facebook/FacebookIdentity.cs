@@ -1,5 +1,8 @@
 ﻿using System.Security.Principal;
+using System.Linq;
 using Fulbaso.Contract;
+using System.Collections.Generic;
+using System;
 
 namespace Fulbaso.Common
 {
@@ -10,6 +13,8 @@ namespace Fulbaso.Common
             this.Name = user.Name;
             this.Id = user.Id;
             this.Token = user.Token;
+            this.Roles = user.Roles != null ? user.Roles.ToArray() : new string[] { };
+            this.PlaceRoles = user.PlaceRoles != null ? user.PlaceRoles.ToArray() : new List<Tuple<Place, string>>().ToArray();
         }
 
         public string AuthenticationType
@@ -35,6 +40,18 @@ namespace Fulbaso.Common
         }
 
         public string Token
+        {
+            get;
+            private set;
+        }
+
+        public string[] Roles
+        {
+            get;
+            private set;
+        }
+
+        public Tuple<Place, string>[] PlaceRoles
         {
             get;
             private set;

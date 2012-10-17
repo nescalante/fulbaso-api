@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Principal;
 
 namespace Fulbaso.Common
@@ -20,7 +21,7 @@ namespace Fulbaso.Common
 
         public bool IsInRole(string role)
         {
-            return true;
+            return this.Identity is FacebookIdentity && (this.Identity as FacebookIdentity).Roles.Contains(role);
         }
     }
 }

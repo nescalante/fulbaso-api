@@ -1,5 +1,5 @@
 ﻿using System;
-using Fulbaso.Helpers;
+using System.Collections.Generic;
 
 namespace Fulbaso.Contract
 {
@@ -17,6 +17,10 @@ namespace Fulbaso.Contract
         public string UserName { get; set; }
 
         public string Email { get; set; }
+
+        public IEnumerable<string> Roles { get; set; }
+
+        public IEnumerable<Tuple<Place, string>> PlaceRoles { get; set; }
 
         public DateTime? Birthday { get; set; }
 

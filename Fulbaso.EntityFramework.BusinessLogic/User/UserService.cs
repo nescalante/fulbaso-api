@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Fulbaso.Contract;
 using System.Linq.Expressions;
+using Fulbaso.Contract;
+using Fulbaso.Helpers;
 
 namespace Fulbaso.EntityFramework.Logic
 {
@@ -71,7 +71,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         internal static IEnumerable<User> Get(IQueryable<UserEntity> query)
         {
-            return (from u in query.ToList()
+            return (from u in query.Include(q => q.Roles).Include(q => q.Places).ToList()
                     select new User
                     {
                         Id = u.Id,
@@ -84,6 +84,8 @@ namespace Fulbaso.EntityFramework.Logic
                         Created = u.Created,
                         LastLogin = u.LastLogin,
                         Token = u.Token,
+                        Roles = u.Roles.Select(r => r.Role).ToList(),
+                        PlaceRoles = u.Places.Select(r => new Tuple<Place, string>(EntityDataObject.Create<Place>(r.PlaceId), r.Role)).ToList(),
                     }).ToList();
         }
     }

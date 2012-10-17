@@ -33,6 +33,8 @@ namespace Fulbaso.Authentication.Logic
                 // update user data with service
                 graphUser.Created = user.Created;
                 graphUser.LastLogin = DateTime.Now;
+                graphUser.Roles = user.Roles;
+                graphUser.PlaceRoles = user.PlaceRoles;
                 _userService.Update(graphUser);
             }
 

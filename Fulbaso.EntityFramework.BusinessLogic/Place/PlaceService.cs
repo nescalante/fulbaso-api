@@ -141,8 +141,7 @@ namespace Fulbaso.EntityFramework.Logic
         public IEnumerable<Place> GetByUser(long userId)
         {
             var query = EntityUtil.Context.UserPlaces.Where(u => u.UserId == userId)
-                .Select(u => u.Place).Distinct()
-                .Select(p => new Place { Description = p.Name, Page = p.Page, Id = p.Id, });
+                .Select(p => new Place { Description = p.Place.Name, Page = p.Place.Page, Id = p.Place.Id, }).Distinct();
 
             return query.ToList();
         }

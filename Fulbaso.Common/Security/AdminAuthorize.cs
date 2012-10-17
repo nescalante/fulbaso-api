@@ -13,7 +13,7 @@ namespace Fulbaso.Common.Security
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            return UserAuthentication.IsAdmin();
+            return httpContext.User.IsInRole("Admin");
         }
     }
 }

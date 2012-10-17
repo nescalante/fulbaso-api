@@ -114,6 +114,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>User.resx</DependentUpon>
     </Compile>
+    <Compile Include="Security\UserExtension.cs" />
     <Compile Include="Utility\ContainerUtil.cs" />
     <Compile Include="Places\Distance.cs" />
     <Compile Include="Places\LocationParser.cs" />
