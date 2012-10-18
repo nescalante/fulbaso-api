@@ -490,7 +490,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         public bool PlaceHasAdmin(int placeId)
         {
-            return EntityUtil.Context.Places.Where(p => p.Id == placeId && p.Admins.Any()).Any();
+            return EntityUtil.Context.CourtBooks.Where(p => p.Court.PlaceId == placeId).Any();
         }
     }
 }

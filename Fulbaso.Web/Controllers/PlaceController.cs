@@ -88,26 +88,6 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Images(string place)
-        {
-            var placeModel = _placeService.Get(place);
-
-            if (placeModel != null)
-            {
-                var model = new PlaceModel
-                {
-                    Place = placeModel,
-                    HasAdmin = _placeService.PlaceHasAdmin(placeModel.Id),
-                    IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(placeModel.Id, UserAuthentication.UserId),
-                };
-
-                return View("Images", model);
-            }
-            else
-                return RedirectToAction("Error404", "Home");
-        }
-
-        [HttpGet]
         public ActionResult GetNearest(string place)
         {
             return Json(_placeService.GetNearest(place, 0, 30).WithUrl(), JsonRequestBehavior.AllowGet);
