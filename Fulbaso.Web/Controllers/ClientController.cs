@@ -20,7 +20,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [PlaceAuthorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string place)
         {
             var placeModel = _placeService.Get(place);

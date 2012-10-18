@@ -14,7 +14,7 @@ namespace Fulbaso.Common
             this.Id = user.Id;
             this.Token = user.Token;
             this.Roles = user.Roles != null ? user.Roles.ToArray() : new string[] { };
-            this.PlaceRoles = user.PlaceRoles != null ? user.PlaceRoles.ToArray() : new List<Tuple<Place, string>>().ToArray();
+            this.PlaceRoles = user.PlaceRoles != null ? user.PlaceRoles.ToArray() : new List<Tuple<int, string>>().ToArray();
         }
 
         public string AuthenticationType
@@ -51,7 +51,7 @@ namespace Fulbaso.Common
             private set;
         }
 
-        public Tuple<Place, string>[] PlaceRoles
+        public Tuple<int, string>[] PlaceRoles
         {
             get;
             private set;

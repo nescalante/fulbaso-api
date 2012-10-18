@@ -28,7 +28,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [PlaceAuthorize]
+        [Authorize(Roles = "Editor,Admin")]
         public ActionResult Edit(string place)
         {
             var placeModel = _placeService.Get(place);
@@ -43,7 +43,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [PlaceAuthorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(Place placeModel, FormCollection collection)
         {
             if (!string.IsNullOrEmpty(collection["LocationJson"]))

@@ -85,7 +85,7 @@ namespace Fulbaso.EntityFramework.Logic
                         LastLogin = u.LastLogin,
                         Token = u.Token,
                         Roles = u.Roles.Select(r => r.Role).ToList(),
-                        PlaceRoles = u.Places.Select(r => new Tuple<Place, string>(EntityDataObject.Create<Place>(r.PlaceId), r.Role)).ToList(),
+                        PlaceRoles = u.Places.Select(r => new Tuple<int, string>(r.PlaceId, r.Role)).ToList(),
                     }).ToList();
         }
     }

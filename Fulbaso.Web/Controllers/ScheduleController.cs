@@ -19,7 +19,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [PlaceAuthorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string place, string current)
         {
             DateTime date;

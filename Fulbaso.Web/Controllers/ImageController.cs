@@ -22,7 +22,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [PlaceAuthorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string place)
         {
             var model = _placeService.Get(place);
@@ -31,7 +31,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [PlaceAuthorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult FromUrl(string place)
         {
             var model = _placeService.Get(place);
@@ -40,7 +40,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [PlaceAuthorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult FromFile(string place)
         {
             var model = _placeService.Get(place);

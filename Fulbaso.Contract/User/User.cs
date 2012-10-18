@@ -20,7 +20,7 @@ namespace Fulbaso.Contract
 
         public IEnumerable<string> Roles { get; set; }
 
-        public IEnumerable<Tuple<Place, string>> PlaceRoles { get; set; }
+        public IEnumerable<Tuple<int, string>> PlaceRoles { get; set; }
 
         public DateTime? Birthday { get; set; }
 

@@ -135,10 +135,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Html.resx</DependentUpon>
     </Compile>
-    <Compile Include="Security\AdminAuthorize.cs" />
-    <Compile Include="Security\PlaceAuthorize.cs" />
     <Compile Include="Security\UserAuthentication.cs" />
     <Compile Include="Facebook\FacebookPrincipal.cs" />
+    <Compile Include="Utility\ContextUtil.cs" />
     <Compile Include="Utility\ResourceCompressor.cs" />
   </ItemGroup>
   <ItemGroup>
