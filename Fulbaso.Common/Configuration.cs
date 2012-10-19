@@ -14,6 +14,8 @@ namespace Fulbaso.Common
 
         public readonly static string AppTitle = Get("AppTitle");
 
+        public readonly static string AppSecret = Get("AppSecret");
+
         public readonly static string AppId = Get("AppId");
 
         public static bool IgnoreMinification

@@ -20,7 +20,6 @@ namespace Fulbaso.Facebook.Logic
                 FirstName = user.first_name,
                 LastName = user.last_name,
                 Email = user.email,
-                Birthday = user.birthday,
                 Token = this.Token,
             };
 

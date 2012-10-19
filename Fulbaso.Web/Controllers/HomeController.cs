@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
-using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Common;
+using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 using Fulbaso.Web.Models;
-using System;
-using Fulbaso.Common.Security;
 
 namespace Fulbaso.Web.Controllers
 {
@@ -109,9 +109,10 @@ namespace Fulbaso.Web.Controllers
         [HttpGet]
         public ActionResult LogOut()
         {
+            var url = "https://www.facebook.com/logout.php?next=" + Url.Action("Index", "Home", null, "http") + "&access_token=" + UserAuthentication.Token;
             _authentication.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return Redirect(url);
         }
 
         [HttpPost]
@@ -119,6 +120,32 @@ namespace Fulbaso.Web.Controllers
         {
             _authentication.Login(token);
             return Redirect(Request.UrlReferrer.AbsolutePath);
+        }
+
+        [HttpGet]
+        public ActionResult GetToken(string code, string state)
+        {
+            var tokenUrl = "https://graph.facebook.com/oauth/access_token?client_id=" + Configuration.AppId +
+                           "&client_secret=" + Configuration.AppSecret +
+                           "&redirect_uri=" + Url.Action("GetToken", "Home", null, "http") +
+                           "&code=" + code;
+
+            var request = WebRequest.Create(tokenUrl) as HttpWebRequest;
+            var token = request.GetString();
+
+            _authentication.Login(token.Substring("access_token=".Length));
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult LogIn()
+        {
+            var url = "https://www.facebook.com/dialog/oauth?client_id=" + Configuration.AppId + 
+                      "&redirect_uri=" + Url.Action("GetToken", "Home", null, "http") + 
+                      "&scope=email,user_about_me,user_birthday,user_hometown,user_photos,friends_about_me,offline_access,create_event&state=" + Guid.NewGuid();
+
+            return Redirect(url);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]

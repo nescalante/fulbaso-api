@@ -8,6 +8,7 @@ namespace Fulbaso.Web
         internal static void Map(this RouteCollection routes)
         {
             // user routes
+            routes.MapRoute("LogInRoute", "login", new { controller = "Home", action = "LogIn", });
             routes.MapRoute("LogOutRoute", "cerrarsesion", new { controller = "Home", action = "LogOut", });
             routes.MapRoute("Error404Route", "404", new { controller = "Home", action = "Error404", });
 
