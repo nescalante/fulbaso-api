@@ -114,15 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Filter.cs" />
-    <Compile Include="Consoles\WebConsole.cs" />
     <Compile Include="Common\CoreUtil.cs" />
     <Compile Include="Common\Html\HtmlExtensions.cs" />
     <Compile Include="Common\Html\ImageExtensions.cs" />
     <Compile Include="Common\InterfaceUtil.cs" />
     <Compile Include="Common\Resources.cs" />
     <Compile Include="Common\Routes.cs" />
-    <Compile Include="Consoles\ConsoleUtil.cs" />
-    <Compile Include="Consoles\SignalConnection.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\ClientController.cs" />

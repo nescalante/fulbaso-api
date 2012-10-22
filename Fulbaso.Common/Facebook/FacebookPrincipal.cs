@@ -53,5 +53,25 @@ namespace Fulbaso.Common
             // user is not in role
             return false;
         }
+
+        public bool IsInRole(string role, int placeId)
+        {
+            // cast identity
+            var identity = this.Identity as FacebookIdentity;
+
+            // not authenticated
+            if (identity == null)
+            {
+                return false;
+            }
+
+            // in site role
+            if (identity.Roles.Contains(role))
+            {
+                return true;
+            }
+
+            return identity.PlaceRoles.Where(pr => pr.Item1 == placeId && pr.Item2 == role).Any();
+        }
     }
 }

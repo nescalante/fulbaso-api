@@ -150,15 +150,10 @@ namespace Fulbaso.Web
                         routes.Add("lat", this.Latitude);
                         routes.Add("lng", this.Longitude);
                     }
-                    else
+                    else if (Position.HasValue)
                     {
-                        var position = CoreUtil.GetPosition();
-
-                        if (position != null)
-                        {
-                            routes.Add("lat", position.Latitude);
-                            routes.Add("lng", position.Longitude);
-                        }
+                        routes.Add("lat", Position.Latitude);
+                        routes.Add("lng", Position.Longitude);
                     }
 
                     return routes;
@@ -186,12 +181,10 @@ namespace Fulbaso.Web
             this._dateParsed = DateTime.TryParse(collection["date"], out date);
             this._hourParsed = int.TryParse(collection["hour"], out hour);
 
-            var position = CoreUtil.GetPosition();
-
-            if (position != null)
+            if (Position.HasValue)
             {
-                this.Latitude = position.Latitude;
-                this.Longitude = position.Longitude;
+                this.Latitude = Position.Latitude;
+                this.Longitude = Position.Longitude;
             }
         }
 
@@ -210,12 +203,10 @@ namespace Fulbaso.Web
             this.Date = date ?? DateTime.Today;
             this.Hour = hour ?? 0;
 
-            var position = CoreUtil.GetPosition();
-
-            if (position != null)
+            if (Position.HasValue)
             {
-                this.Latitude = position.Latitude;
-                this.Longitude = position.Longitude;
+                this.Latitude = Position.Latitude;
+                this.Longitude = Position.Longitude;
             }
         }
 
@@ -454,16 +445,14 @@ namespace Fulbaso.Web
                     this.Latitude = Convert.ToDecimal(collection["lat"].Replace(".", ","));
                     this.Longitude = Convert.ToDecimal(collection["lng"].Replace(".", ","));
 
-                    CoreUtil.UpdatePosition(this.Latitude.Value, this.Longitude.Value);
+                    Position.Set(this.Latitude.Value, this.Longitude.Value);
                 }
                 else
                 {
-                    var position = CoreUtil.GetPosition();
-
-                    if (position != null)
+                    if (Position.HasValue)
                     {
-                        this.Latitude = position.Latitude;
-                        this.Longitude = position.Longitude;
+                        this.Latitude = Position.Latitude;
+                        this.Longitude = Position.Longitude;
                     }
                 }
             }

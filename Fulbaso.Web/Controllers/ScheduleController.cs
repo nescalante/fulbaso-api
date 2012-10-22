@@ -11,11 +11,13 @@ namespace Fulbaso.Web.Controllers
     {
         private IPlaceService _placeService;
         private ICourtBookService _courtBookService;
+        private UserAuthentication _authentication;
 
-        public ScheduleController(IPlaceService placeService, ICourtBookService courtBookService)
+        public ScheduleController(IPlaceService placeService, ICourtBookService courtBookService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _courtBookService = courtBookService;
+            _authentication = authentication;
         }
 
         [HttpGet]
@@ -41,7 +43,7 @@ namespace Fulbaso.Web.Controllers
 
             bookModel.StartTime = new DateTime(day.Year, day.Month, day.Day, bookModel.StartTime.Hour, bookModel.StartTime.Minute, 0);
             bookModel.EndTime = new DateTime(day.Year, day.Month, day.Day, bookModel.EndTime.Hour, bookModel.EndTime.Minute, 0);
-            bookModel.User = UserAuthentication.UserId;
+            bookModel.User = _authentication.GetUser().Id;
 
             if (bookModel.Id == 0)
             {

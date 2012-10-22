@@ -8,6 +8,7 @@ using Fulbaso.Contract;
 using Fulbaso.Helpers;
 using File = Fulbaso.Contract.File;
 using Fulbaso.Common;
+using Fulbaso.Common.Security;
 
 namespace Fulbaso.EntityFramework.Logic
 {
@@ -15,11 +16,13 @@ namespace Fulbaso.EntityFramework.Logic
     {
         private ICourtBookService _bookService;
         private IFileService _fileService;
+        private UserAuthentication _authentication;
 
-        public PlaceService(ICourtBookService bookService, IFileService fileService)
+        public PlaceService(ICourtBookService bookService, IFileService fileService, UserAuthentication authentication)
         {
             _bookService = bookService;
             _fileService = fileService;
+            _authentication = authentication;
         }
 
         public void Add(Place place)
@@ -144,6 +147,20 @@ namespace Fulbaso.EntityFramework.Logic
                 .Select(p => new Place { Description = p.Place.Name, Page = p.Place.Page, Id = p.Place.Id, }).Distinct();
 
             return query.ToList();
+        }
+
+        public IEnumerable<Place> GetByUser()
+        {
+            var user = _authentication.GetUser();
+
+            if (user != null)
+            {
+                return this.GetByUser(_authentication.GetUser().Id);
+            }
+            else
+            {
+                return new List<Place>();
+            }
         }
 
         public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int init, int rows, out int count)

@@ -35,6 +35,8 @@ namespace Fulbaso.Contract
 
         string ValidatePage(string page, out int id);
 
+        IEnumerable<Place> GetByUser();
+
         IEnumerable<Place> GetByUser(long userId);
 
         IEnumerable<string> GetForAutocomplete(string prefixText, int count);

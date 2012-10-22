@@ -17,14 +17,16 @@ namespace Fulbaso.Web.Controllers
         private IFavouriteService _favouriteService;
         private IFloorTypeService _floorTypeService;
         private ILocationService _locationService;
+        private UserAuthentication _authentication;
 
-        public PlaceController(IPlaceService placeService, ICourtService courtService, IFavouriteService favouriteService, IFloorTypeService floorTypeService, ILocationService locationService)
+        public PlaceController(IPlaceService placeService, ICourtService courtService, IFavouriteService favouriteService, IFloorTypeService floorTypeService, ILocationService locationService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _courtService = courtService;
             _favouriteService = favouriteService;
             _floorTypeService = floorTypeService;
             _locationService = locationService;
+            _authentication = authentication;
         }
 
         [HttpGet]
@@ -69,11 +71,12 @@ namespace Fulbaso.Web.Controllers
             {
                 placeModel.CourtsInfo = _courtService.GetByPlace(placeModel.Id);
 
+                var user = _authentication.GetUser();
                 var model = new PlaceModel
                 {
                     Place = placeModel,
                     HasAdmin = _placeService.PlaceHasAdmin(placeModel.Id),
-                    IsFavourite = UserAuthentication.User != null && _favouriteService.IsFavourite(placeModel.Id, UserAuthentication.UserId),
+                    IsFavourite = user != null && _favouriteService.IsFavourite(placeModel.Id, user.Id),
                 };
 
                 if (model.HasAdmin)
@@ -164,14 +167,14 @@ namespace Fulbaso.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public void DeleteFavourite(int favourite)
         {
-            _favouriteService.Remove(favourite, UserAuthentication.UserId);
+            _favouriteService.Remove(favourite, _authentication.GetUser().Id);
         }
 
         [Authorize]
         [AcceptVerbs(HttpVerbs.Post)]
         public void AddFavourite(int favourite)
         {
-            _favouriteService.Add(favourite, UserAuthentication.UserId);
+            _favouriteService.Add(favourite, _authentication.GetUser().Id);
         }
     }
 }

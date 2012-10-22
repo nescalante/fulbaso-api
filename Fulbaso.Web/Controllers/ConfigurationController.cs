@@ -109,7 +109,9 @@ namespace Fulbaso.Web.Controllers
         [HttpPost]
         public void Delete(int id)
         {
-            if (!User.GetPlaces().Any(up => up.Id == _courtConfigurationService.GetPlaceId(id)))
+            var user = User as FacebookPrincipal;
+
+            if (!user.IsInRole("Admin", _courtConfigurationService.GetPlaceId(id)))
             {
                 throw new UnauthorizedAccessException();
             }

@@ -14,22 +14,19 @@ namespace Fulbaso.Web
 {
     public static class CoreUtil
     {
-        public static void UpdatePosition(decimal lat, decimal lng)
+        public static List<Place> GetPlaces(this IPrincipal user)
         {
-            HttpContext.Current.Session["Latitude"] = lat;
-            HttpContext.Current.Session["Longitude"] = lng;
-        }
-
-        public static Position GetPosition()
-        {
-            if (HttpContext.Current.Session["Latitude"] != null && HttpContext.Current.Session["Longitude"] != null)
+            if (user != null && !string.IsNullOrEmpty(user.Identity.Name))
             {
-                return new Position { Latitude = Convert.ToDecimal(HttpContext.Current.Session["Latitude"]), Longitude = Convert.ToDecimal(HttpContext.Current.Session["Longitude"]), };
+                if (HttpContext.Current.Session["Places"] == null)
+                {
+                    HttpContext.Current.Session["Places"] = ContainerUtil.GetApplicationContainer().Resolve<IPlaceService>().GetByUser();
+                }
+
+                return HttpContext.Current.Session["Places"] as List<Place>;
             }
             else
-            {
                 return null;
-            }
         }
 
         public static string GetFloors(this IEnumerable<int> list)
@@ -42,28 +39,11 @@ namespace Fulbaso.Web
             return list.Select(i => ((Service)i).GetDescription()).GetJoin();
         }
 
-        public static List<Place> GetPlaces(this IPrincipal user)
-        {
-            if (user != null && !string.IsNullOrEmpty(user.Identity.Name))
-            {
-                if (HttpContext.Current.Session["Places"] == null)
-                {
-                    HttpContext.Current.Session["Places"] = ContainerUtil.GetApplicationContainer().Resolve<IPlaceService>().GetByUser(UserAuthentication.UserId);
-                }
-
-                return HttpContext.Current.Session["Places"] as List<Place>;
-            }
-            else
-                return null;
-        }
-
         public static bool HasPlace(this IPrincipal user, int id)
         {
-            if (user.IsInRole("Admin")) return true;
+            var fp = user as FacebookPrincipal;
 
-            var places = GetPlaces(user) ?? new List<Place>();
-
-            return places.Select(p => p.Id).Contains(id);
+            return fp != null && fp.IsInRole("Admin", id);
         }
 
         public static IEnumerable<Tuple<Place, double?>> WithUrl(this IEnumerable<Tuple<Place, double?>> list)

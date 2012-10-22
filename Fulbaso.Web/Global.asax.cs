@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
 using Fulbaso.Common;
-using Fulbaso.Web.Console;
 using log4net;
 using SignalR;
 
@@ -28,7 +27,6 @@ namespace Fulbaso.Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.MapConnection<SignalConnection>("echo", "echo/{*operation}");
             routes.Map();
         }
 

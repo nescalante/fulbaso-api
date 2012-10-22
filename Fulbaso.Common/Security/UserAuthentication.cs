@@ -20,15 +20,15 @@ namespace Fulbaso.Common.Security
         {
             try
             {
-                if (UserAuthentication.User != null && UserAuthentication.User.Token == token) return;
+                if (this.User != null && this.User.Token == token) return;
 
                 _userService.SetToken(token);
                 HttpContext.Current.Session.Remove("Places");
-                UserAuthentication.User = _userService.GetUser();
+                this.User = _userService.GetUser();
             }
             catch
             {
-                UserAuthentication.User = null;
+                this.User = null;
                 HttpContext.Current.Session.Remove("Places");
                 FormsAuthentication.SignOut();
 
@@ -38,22 +38,12 @@ namespace Fulbaso.Common.Security
 
         public void Logout()
         {
-            UserAuthentication.User = null;
+            this.User = null;
             HttpContext.Current.Session.Remove("Places");
             FormsAuthentication.SignOut();
         }
 
-        public static long UserId
-        {
-            get 
-            {
-                if (UserAuthentication.User == null) throw new InvalidOperationException("No user logged in.");
-
-                return UserAuthentication.User.Id; 
-            }
-        }
-
-        public static User User
+        private User User
         {
             get
             {
@@ -61,21 +51,15 @@ namespace Fulbaso.Common.Security
 
                 return HttpContext.Current.Session[usersession] as User;
             }
-
-            private set
+            set
             {
                 HttpContext.Current.Session[usersession] = value;
             }
         }
 
-        public static string Token
+        public User GetUser()
         {
-            get
-            {
-                if (UserAuthentication.User == null) throw new InvalidOperationException("Cant get user token, no user logged in.");
-
-                return UserAuthentication.User.Token;
-            }
+            return this.User;
         }
     }
 }

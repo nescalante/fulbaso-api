@@ -148,7 +148,7 @@ namespace Fulbaso.Importer
                     _output.Write("Page doesn't exists.");
                     return;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     _output.Write("Page error.");
                 }

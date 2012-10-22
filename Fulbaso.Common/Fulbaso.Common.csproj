@@ -102,6 +102,7 @@
     <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Mvc\BaseController.cs" />
     <Compile Include="Mvc\WindsorControllerFactory.cs" />
+    <Compile Include="Places\Position.cs" />
     <Compile Include="Resources\Regex.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

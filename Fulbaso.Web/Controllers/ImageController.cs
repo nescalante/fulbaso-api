@@ -13,12 +13,14 @@ namespace Fulbaso.Web.Controllers
         private IPlaceService _placeService;
         private IAlbumService _albumService;
         private IPhotoService _photoService;
+        private UserAuthentication _authentication;
 
-        public ImageController(IPlaceService placeService, IAlbumService albumService, IPhotoService photoService)
+        public ImageController(IPlaceService placeService, IAlbumService albumService, IPhotoService photoService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _albumService = albumService;
             _photoService = photoService;
+            _authentication = authentication;
         }
 
         [HttpGet]
@@ -64,7 +66,7 @@ namespace Fulbaso.Web.Controllers
                     ContentType = f.ContentType,
                     FileName = f.FileName,
                     Description = collection.AllKeys.Contains(desc) ? collection[desc] : null,
-                    CreatedBy = UserAuthentication.User,
+                    CreatedBy = _authentication.GetUser(),
                 };
 
                 _placeService.AddImage(placeModel.Id, f.InputStream, file);
@@ -75,7 +77,6 @@ namespace Fulbaso.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        [HandleError]
         public ActionResult AddFromUrls(Place placeModel, FormCollection collection)
         {
             if (!User.HasPlace(placeModel.Id)) throw new UnauthorizedAccessException();
@@ -87,7 +88,7 @@ namespace Fulbaso.Web.Controllers
             
             foreach (var i in list)
             {
-                _placeService.AddImage(placeModel.Id, i.Source, i.Description, UserAuthentication.UserId);
+                _placeService.AddImage(placeModel.Id, i.Source, i.Description, _authentication.GetUser().Id);
             }
 
             return RedirectToAction("Index", new { place = placeModel.Page, });
@@ -120,7 +121,7 @@ namespace Fulbaso.Web.Controllers
 
                 return Json(new { status = "ok", }, JsonRequestBehavior.AllowGet);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
                 try
                 {
@@ -134,7 +135,7 @@ namespace Fulbaso.Web.Controllers
                     return Json(new { status = "error", message = "No se pudo encontrar el recurso.", }, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 return Json(new { status = "error", message = "URL inválida.", }, JsonRequestBehavior.AllowGet);
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using Fulbaso.Common;
 using Fulbaso.Common.Security;
@@ -109,7 +110,7 @@ namespace Fulbaso.Web.Controllers
         [HttpGet]
         public ActionResult LogOut()
         {
-            var url = "https://www.facebook.com/logout.php?next=" + Url.Action("Index", "Home", null, "http") + "&access_token=" + UserAuthentication.Token;
+            var url = "https://www.facebook.com/logout.php?next=" + Url.Action("Index", "Home", null, "http") + "&access_token=" + _authentication.GetUser().Token;
             _authentication.Logout();
 
             return Redirect(url);
@@ -125,15 +126,23 @@ namespace Fulbaso.Web.Controllers
         [HttpGet]
         public ActionResult GetToken(string code, string state)
         {
-            var tokenUrl = "https://graph.facebook.com/oauth/access_token?client_id=" + Configuration.AppId +
-                           "&client_secret=" + Configuration.AppSecret +
-                           "&redirect_uri=" + Url.Action("GetToken", "Home", null, "http") +
-                           "&code=" + code;
+            try
+            {
+                var tokenUrl = "https://graph.facebook.com/oauth/access_token?client_id=" + Configuration.AppId +
+                               "&client_secret=" + Configuration.AppSecret +
+                               "&redirect_uri=" + Url.Action("GetToken", "Home", null, "http") +
+                               "&code=" + code;
 
-            var request = WebRequest.Create(tokenUrl) as HttpWebRequest;
-            var token = request.GetString();
+                var request = WebRequest.Create(tokenUrl) as HttpWebRequest;
+                var token = request.GetString();
+                var qs = HttpUtility.ParseQueryString(token);
 
-            _authentication.Login(token.Substring("access_token=".Length));
+                _authentication.Login(qs["access_token"]);
+            }
+            catch (Exception ex)
+            {
+                throw new UnauthorizedAccessException("Could not authorize user.", ex);
+            }
 
             return RedirectToAction("Index");
         }
