@@ -8,11 +8,13 @@ namespace Fulbaso.Common.Security
 {
     public class UserAuthentication
     {
-        private IAuthenticationService _userService;
+        private IAuthenticationService _authentication;
+        private IUserService _userService;
         private const string usersession = "user_key";
 
-        public UserAuthentication(IAuthenticationService userService)
+        public UserAuthentication(IAuthenticationService authentication, IUserService userService)
         {
+            _authentication = authentication;
             _userService = userService;
         }
 
@@ -22,9 +24,12 @@ namespace Fulbaso.Common.Security
             {
                 if (this.User != null && this.User.Token == token) return;
 
-                _userService.SetToken(token);
+                _authentication.SetToken(token);
                 HttpContext.Current.Session.Remove("Places");
-                this.User = _userService.GetUser();
+                this.User = _authentication.GetUser();
+
+                HttpContext.Current.Response.Cookies["user"]["id"] = this.User.Id.ToString();
+                HttpContext.Current.Response.Cookies["user"]["token"] = this.User.Token;
             }
             catch
             {
@@ -39,6 +44,7 @@ namespace Fulbaso.Common.Security
         public void Logout()
         {
             this.User = null;
+            HttpContext.Current.Response.Cookies["user"].Expires = DateTime.Now.AddDays(-1D);
             HttpContext.Current.Session.Remove("Places");
             FormsAuthentication.SignOut();
         }
@@ -48,6 +54,27 @@ namespace Fulbaso.Common.Security
             get
             {
                 if (HttpContext.Current == null) return null;
+
+                var user = HttpContext.Current.Session[usersession] as User;
+
+                if (user != null)
+                {
+                    return user;
+                }
+                else
+                {
+                    var cookie = HttpContext.Current.Request.Cookies["user"];
+                    long userId;
+
+                    if (cookie != null && cookie["id"] != null && long.TryParse(cookie["id"], out userId))
+                    {
+                        _authentication.SetToken(cookie["id"]);
+                        user = _userService.Get(userId);
+                        HttpContext.Current.Session[usersession] = user;
+
+                        return user;
+                    }
+                }
 
                 return HttpContext.Current.Session[usersession] as User;
             }
