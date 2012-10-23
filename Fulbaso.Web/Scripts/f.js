@@ -168,7 +168,9 @@ var f = f || {
 
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
-        var href = $(".search-link").attr("href");
-        $(".search-link").attr("href", href + "&lat=" + position.coords.latitude.toString().replace(".", ",") + "&lng=" + position.coords.longitude.toString().replace(".", ","));
+        $(".search-link").each(function () {
+            var href = $(this).attr("href");
+            $(this).attr("href", href + "&lat=" + position.coords.latitude.toString().replace(".", ",") + "&lng=" + position.coords.longitude.toString().replace(".", ","));
+        });
     });
 }

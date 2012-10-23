@@ -148,8 +148,15 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult LogIn()
+        public ActionResult LogIn(string lat, string lng)
         {
+            decimal dlat, dlng;
+
+            if (decimal.TryParse(lat, out dlat) && decimal.TryParse(lng, out dlng))
+            {
+                Position.Set(dlat, dlng);
+            }
+
             var url = "https://www.facebook.com/dialog/oauth?client_id=" + Configuration.AppId + 
                       "&redirect_uri=" + Url.Action("GetToken", "Home", null, "http") + 
                       "&scope=email,user_about_me,user_birthday,user_hometown,user_photos,friends_about_me,offline_access,create_event&state=" + Guid.NewGuid();

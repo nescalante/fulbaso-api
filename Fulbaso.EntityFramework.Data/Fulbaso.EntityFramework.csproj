@@ -63,6 +63,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ObjectContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.Config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

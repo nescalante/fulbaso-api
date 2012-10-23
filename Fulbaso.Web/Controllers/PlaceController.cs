@@ -112,6 +112,8 @@ namespace Fulbaso.Web.Controllers
         [HttpGet]
         public ActionResult GetNearestList(decimal lat, decimal lng)
         {
+            Position.Set(lat, lng);
+
             return View("List", _placeService.GetNearest(lat, lng, 10).Select(i => i.Item1).WithUrl());
         }
 

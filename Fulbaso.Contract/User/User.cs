@@ -29,5 +29,7 @@ namespace Fulbaso.Contract
         public DateTime Created { get; set; }
 
         public DateTime LastLogin { get; set; }
+
+        public Territory Territory { get; set; }
     }
 }

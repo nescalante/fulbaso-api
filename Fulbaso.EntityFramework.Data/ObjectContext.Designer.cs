@@ -37,6 +37,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_UserRoles_Users", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.UserEntity), "UserRoles", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserRoleEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "PlaceFiles", "Files", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.FileEntity), "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity))]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "UserFavourites", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity))]
+[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Users_Territories", "TerritoryEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.TerritoryEntity), "UserEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity), true)]
 
 #endregion
 
@@ -359,6 +360,22 @@ namespace Fulbaso.EntityFramework
             }
         }
         private ObjectSet<AutocompleteValue> _AutocompleteValues;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<PlaceLocation> PlaceLocations
+        {
+            get
+            {
+                if ((_PlaceLocations == null))
+                {
+                    _PlaceLocations = base.CreateObjectSet<PlaceLocation>("PlaceLocations");
+                }
+                return _PlaceLocations;
+            }
+        }
+        private ObjectSet<PlaceLocation> _PlaceLocations;
 
         #endregion
         #region AddTo Methods
@@ -498,6 +515,14 @@ namespace Fulbaso.EntityFramework
         {
             base.AddObject("AutocompleteValues", autocompleteValue);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the PlaceLocations EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPlaceLocations(PlaceLocation placeLocation)
+        {
+            base.AddObject("PlaceLocations", placeLocation);
+        }
 
         #endregion
     }
@@ -522,11 +547,13 @@ namespace Fulbaso.EntityFramework
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="type">Initial value of the Type property.</param>
-        public static AutocompleteValue CreateAutocompleteValue(global::System.Int32 id, global::System.String type)
+        /// <param name="territoryId">Initial value of the TerritoryId property.</param>
+        public static AutocompleteValue CreateAutocompleteValue(global::System.Int32 id, global::System.String type, global::System.Int32 territoryId)
         {
             AutocompleteValue autocompleteValue = new AutocompleteValue();
             autocompleteValue.Id = id;
             autocompleteValue.Type = type;
+            autocompleteValue.TerritoryId = territoryId;
             return autocompleteValue;
         }
 
@@ -610,6 +637,33 @@ namespace Fulbaso.EntityFramework
         private global::System.String _Value;
         partial void OnValueChanging(global::System.String value);
         partial void OnValueChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 TerritoryId
+        {
+            get
+            {
+                return _TerritoryId;
+            }
+            set
+            {
+                if (_TerritoryId != value)
+                {
+                    OnTerritoryIdChanging(value);
+                    ReportPropertyChanging("TerritoryId");
+                    _TerritoryId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("TerritoryId");
+                    OnTerritoryIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _TerritoryId;
+        partial void OnTerritoryIdChanging(global::System.Int32 value);
+        partial void OnTerritoryIdChanged();
 
         #endregion
     
@@ -3322,6 +3376,201 @@ namespace Fulbaso.EntityFramework
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ObjectContextModel", Name="PlaceLocation")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class PlaceLocation : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new PlaceLocation object.
+        /// </summary>
+        /// <param name="locationId">Initial value of the LocationId property.</param>
+        /// <param name="location">Initial value of the Location property.</param>
+        /// <param name="regionId">Initial value of the RegionId property.</param>
+        /// <param name="region">Initial value of the Region property.</param>
+        /// <param name="territoryId">Initial value of the TerritoryId property.</param>
+        public static PlaceLocation CreatePlaceLocation(global::System.Int32 locationId, global::System.String location, global::System.Int32 regionId, global::System.String region, global::System.Int32 territoryId)
+        {
+            PlaceLocation placeLocation = new PlaceLocation();
+            placeLocation.LocationId = locationId;
+            placeLocation.Location = location;
+            placeLocation.RegionId = regionId;
+            placeLocation.Region = region;
+            placeLocation.TerritoryId = territoryId;
+            return placeLocation;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Count
+        {
+            get
+            {
+                return _Count;
+            }
+            set
+            {
+                OnCountChanging(value);
+                ReportPropertyChanging("Count");
+                _Count = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Count");
+                OnCountChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Count;
+        partial void OnCountChanging(Nullable<global::System.Int32> value);
+        partial void OnCountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 LocationId
+        {
+            get
+            {
+                return _LocationId;
+            }
+            set
+            {
+                if (_LocationId != value)
+                {
+                    OnLocationIdChanging(value);
+                    ReportPropertyChanging("LocationId");
+                    _LocationId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("LocationId");
+                    OnLocationIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _LocationId;
+        partial void OnLocationIdChanging(global::System.Int32 value);
+        partial void OnLocationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Location
+        {
+            get
+            {
+                return _Location;
+            }
+            set
+            {
+                if (_Location != value)
+                {
+                    OnLocationChanging(value);
+                    ReportPropertyChanging("Location");
+                    _Location = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Location");
+                    OnLocationChanged();
+                }
+            }
+        }
+        private global::System.String _Location;
+        partial void OnLocationChanging(global::System.String value);
+        partial void OnLocationChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RegionId
+        {
+            get
+            {
+                return _RegionId;
+            }
+            set
+            {
+                if (_RegionId != value)
+                {
+                    OnRegionIdChanging(value);
+                    ReportPropertyChanging("RegionId");
+                    _RegionId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("RegionId");
+                    OnRegionIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _RegionId;
+        partial void OnRegionIdChanging(global::System.Int32 value);
+        partial void OnRegionIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Region
+        {
+            get
+            {
+                return _Region;
+            }
+            set
+            {
+                if (_Region != value)
+                {
+                    OnRegionChanging(value);
+                    ReportPropertyChanging("Region");
+                    _Region = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Region");
+                    OnRegionChanged();
+                }
+            }
+        }
+        private global::System.String _Region;
+        partial void OnRegionChanging(global::System.String value);
+        partial void OnRegionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 TerritoryId
+        {
+            get
+            {
+                return _TerritoryId;
+            }
+            set
+            {
+                if (_TerritoryId != value)
+                {
+                    OnTerritoryIdChanging(value);
+                    ReportPropertyChanging("TerritoryId");
+                    _TerritoryId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("TerritoryId");
+                    OnTerritoryIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _TerritoryId;
+        partial void OnTerritoryIdChanging(global::System.Int32 value);
+        partial void OnTerritoryIdChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="ObjectContextModel", Name="PlaceService")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -3461,13 +3710,15 @@ namespace Fulbaso.EntityFramework
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="location">Initial value of the Location property.</param>
         /// <param name="region">Initial value of the Region property.</param>
-        public static PlaceView CreatePlaceView(global::System.Int32 id, global::System.String name, global::System.String location, global::System.String region)
+        /// <param name="territoryId">Initial value of the TerritoryId property.</param>
+        public static PlaceView CreatePlaceView(global::System.Int32 id, global::System.String name, global::System.String location, global::System.String region, global::System.Int32 territoryId)
         {
             PlaceView placeView = new PlaceView();
             placeView.Id = id;
             placeView.Name = name;
             placeView.Location = location;
             placeView.Region = region;
+            placeView.TerritoryId = territoryId;
             return placeView;
         }
 
@@ -3773,6 +4024,33 @@ namespace Fulbaso.EntityFramework
         private global::System.String _MapLocation;
         partial void OnMapLocationChanging(global::System.String value);
         partial void OnMapLocationChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 TerritoryId
+        {
+            get
+            {
+                return _TerritoryId;
+            }
+            set
+            {
+                if (_TerritoryId != value)
+                {
+                    OnTerritoryIdChanging(value);
+                    ReportPropertyChanging("TerritoryId");
+                    _TerritoryId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("TerritoryId");
+                    OnTerritoryIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _TerritoryId;
+        partial void OnTerritoryIdChanging(global::System.Int32 value);
+        partial void OnTerritoryIdChanged();
 
         #endregion
     
@@ -4102,6 +4380,28 @@ namespace Fulbaso.EntityFramework
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Users_Territories", "UserEntity")]
+        public EntityCollection<UserEntity> Users
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserEntity>("ObjectContextModel.FK_Users_Territories", "UserEntity");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserEntity>("ObjectContextModel.FK_Users_Territories", "UserEntity", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -4123,13 +4423,15 @@ namespace Fulbaso.EntityFramework
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="created">Initial value of the Created property.</param>
         /// <param name="lastLogin">Initial value of the LastLogin property.</param>
-        public static UserEntity CreateUserEntity(global::System.Int64 id, global::System.String name, global::System.DateTime created, global::System.DateTime lastLogin)
+        /// <param name="territoryId">Initial value of the TerritoryId property.</param>
+        public static UserEntity CreateUserEntity(global::System.Int64 id, global::System.String name, global::System.DateTime created, global::System.DateTime lastLogin, global::System.Int32 territoryId)
         {
             UserEntity userEntity = new UserEntity();
             userEntity.Id = id;
             userEntity.Name = name;
             userEntity.Created = created;
             userEntity.LastLogin = lastLogin;
+            userEntity.TerritoryId = territoryId;
             return userEntity;
         }
 
@@ -4378,6 +4680,30 @@ namespace Fulbaso.EntityFramework
         private global::System.String _Token;
         partial void OnTokenChanging(global::System.String value);
         partial void OnTokenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 TerritoryId
+        {
+            get
+            {
+                return _TerritoryId;
+            }
+            set
+            {
+                OnTerritoryIdChanging(value);
+                ReportPropertyChanging("TerritoryId");
+                _TerritoryId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TerritoryId");
+                OnTerritoryIdChanged();
+            }
+        }
+        private global::System.Int32 _TerritoryId;
+        partial void OnTerritoryIdChanging(global::System.Int32 value);
+        partial void OnTerritoryIdChanged();
 
         #endregion
     
@@ -4511,6 +4837,44 @@ namespace Fulbaso.EntityFramework
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.UserFavourites", "Places", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Users_Territories", "TerritoryEntity")]
+        public TerritoryEntity Territory
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<TerritoryEntity>("ObjectContextModel.FK_Users_Territories", "TerritoryEntity").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<TerritoryEntity>("ObjectContextModel.FK_Users_Territories", "TerritoryEntity").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<TerritoryEntity> TerritoryReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<TerritoryEntity>("ObjectContextModel.FK_Users_Territories", "TerritoryEntity");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<TerritoryEntity>("ObjectContextModel.FK_Users_Territories", "TerritoryEntity", value);
                 }
             }
         }

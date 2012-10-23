@@ -7,9 +7,9 @@ namespace Fulbaso.EntityFramework.Logic
 {
     internal static class AutocompleteService
     {
-        internal static IEnumerable<string> GetForAutocomplete(string prefixText, int count)
+        internal static IEnumerable<string> GetForAutocomplete(string prefixText, int count, int territoryId)
         {
-            return EntityUtil.Context.AutocompleteValues.Where(p => p.Value.Contains(prefixText))
+            return EntityUtil.Context.AutocompleteValues.Where(p => p.TerritoryId == territoryId && p.Value.Contains(prefixText))
                 .OrderBy(p => p.Value.ToLower().IndexOf(prefixText.ToLower()))
                 .Take(count).Select(p => p.Value).ToList();
         }

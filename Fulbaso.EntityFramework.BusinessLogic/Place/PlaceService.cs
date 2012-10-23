@@ -131,9 +131,9 @@ namespace Fulbaso.EntityFramework.Logic
             return PlaceService.Get(r => r.Id == placeId).SingleOrDefault();
         }
 
-        public IEnumerable<string> GetForAutocomplete(string prefixText, int count)
+        public IEnumerable<string> GetForAutocomplete(string prefixText, int count, int? territoryId = null)
         {
-            return AutocompleteService.GetForAutocomplete(prefixText, count);
+            return AutocompleteService.GetForAutocomplete(prefixText, count, territoryId ?? this.DefaultTerritoryId);
         }
 
         public IEnumerable<Tuple<string, int>> GetTags()
@@ -163,9 +163,11 @@ namespace Fulbaso.EntityFramework.Logic
             }
         }
 
-        public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int init, int rows, out int count)
+        public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int init, int rows, out int count, int? territoryId = null)
         {
-            var query = EntityUtil.Context.PlaceViews.Where(c => string.IsNullOrEmpty(value) ||
+            territoryId = territoryId ?? this.DefaultTerritoryId;
+
+            var query = EntityUtil.Context.PlaceViews.Where(c => c.TerritoryId == territoryId.Value && string.IsNullOrEmpty(value) ||
                 c.exp.Contains(value));
             count = query.Count();
 
@@ -221,9 +223,9 @@ namespace Fulbaso.EntityFramework.Logic
             return list;
         }
 
-        public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, int init, int rows, out int count)
+        public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, int init, int rows, out int count, int? territoryId = null)
         {
-            var places = CreateQuery(latitude, longitude, players, floorTypes, locations, tags, indoor, lighted);
+            var places = CreateQuery(latitude, longitude, players, floorTypes, locations, tags, indoor, lighted, territoryId ?? this.DefaultTerritoryId);
 
             if (!string.IsNullOrEmpty(value))
             {
@@ -239,7 +241,7 @@ namespace Fulbaso.EntityFramework.Logic
             return PlaceService.Get(places);
         }
 
-        private static IQueryable<PlaceEntity> CreateQuery(decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted)
+        private static IQueryable<PlaceEntity> CreateQuery(decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, int territoryId)
         {
             // fix blank entries
             locations = locations.Where(l => !string.IsNullOrEmpty(l)).ToArray();
@@ -259,7 +261,8 @@ namespace Fulbaso.EntityFramework.Logic
             }
 
             places = from p in places
-                     where (locations.Count() == 0 || locations.Contains(p.Location.Description) ||
+                     where p.Location.Region.TerritoryId == territoryId &&
+                     (locations.Count() == 0 || locations.Contains(p.Location.Description) ||
                      locations.Contains(p.Location.Region.Description) ||
                      locations.Contains(p.Location.Region.Territory.Description))
                      select p;
@@ -508,6 +511,14 @@ namespace Fulbaso.EntityFramework.Logic
         public bool PlaceHasAdmin(int placeId)
         {
             return EntityUtil.Context.CourtBooks.Where(p => p.Court.PlaceId == placeId).Any();
+        }
+
+        private int DefaultTerritoryId
+        {
+            get
+            {
+                return EntityUtil.Context.Territories.Select(t => t.Id).First();
+            }
         }
     }
 }
