@@ -33,6 +33,7 @@
     {
         <div class="hidden-phone span4">
             @Html.Partial("Search", filter)
+            <a class="btn" href="@Url.Action("Index", "Home", filter.Route)">Mostrar listado</a>
         </div>
     }
 </div>

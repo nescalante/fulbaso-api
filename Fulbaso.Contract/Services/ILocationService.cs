@@ -10,6 +10,8 @@ namespace Fulbaso.Contract
 
         IEnumerable<Location> Get(string name = null);
 
+        IEnumerable<string> GetRelated(string name);
+
         IEnumerable<Location> GetByRegion(int regionId);
 
         IEnumerable<string> GetForAutocomplete(string prefixText, int count);

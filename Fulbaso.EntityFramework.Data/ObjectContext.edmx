@@ -59,6 +59,12 @@
       [PlaceViews].[IsActive] AS [IsActive]
       FROM [dbo].[PlaceViews] AS [PlaceViews]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="RelatedLocations" EntityType="ObjectContextModel.Store.RelatedLocations" store:Type="Views" store:Schema="dbo" store:Name="RelatedLocations">
+            <DefiningQuery>SELECT 
+      [RelatedLocations].[Value] AS [Value], 
+      [RelatedLocations].[Related] AS [Related]
+      FROM [dbo].[RelatedLocations] AS [RelatedLocations]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Clients_Places" Association="ObjectContextModel.Store.FK_Clients_Places">
             <End Role="Places" EntitySet="Places" />
             <End Role="Clients" EntitySet="Clients" />
@@ -387,6 +393,17 @@
           <Property Name="MapVa" Type="decimal" Scale="10" />
           <Property Name="MapLocation" Type="varchar" MaxLength="200" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'f.dbo.RelatedLocations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="RelatedLocations">
+          <Key>
+            <PropertyRef Name="Value" />
+            <PropertyRef Name="Related" />
+          </Key>
+          <Property Name="Value" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Related" Type="varchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Clients_Places">
           <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
@@ -739,6 +756,7 @@
           </AssociationSet>
           <EntitySet Name="AutocompleteValues" EntityType="ObjectContextModel.AutocompleteValue" />
           <EntitySet Name="PlaceLocations" EntityType="ObjectContextModel.PlaceLocation" />
+          <EntitySet Name="RelatedLocations" EntityType="ObjectContextModel.RelatedLocation" />
         </EntityContainer>
         <EntityType Name="ClientEntity">
           <Key>
@@ -1209,6 +1227,14 @@
           <Property Type="String" Name="Region" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="TerritoryId" Nullable="false" />
         </EntityType>
+        <EntityType Name="RelatedLocation">
+          <Key>
+            <PropertyRef Name="Value" />
+            <PropertyRef Name="Related" />
+          </Key>
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Related" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1389,6 +1415,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RelatedLocations">
+            <EntityTypeMapping TypeName="ObjectContextModel.RelatedLocation">
+              <MappingFragment StoreEntitySet="RelatedLocations">
+                <ScalarProperty Name="Related" ColumnName="Related" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1524,6 +1558,7 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="ObjectContextModel.AutocompleteValue" Width="1.5" PointX="3.375" PointY="0.75" Height="1.5956835937500031" />
         <EntityTypeShape EntityType="ObjectContextModel.PlaceLocation" Width="1.5" PointX="3.375" PointY="3.75" Height="2.1725878906250031" />
+        <EntityTypeShape EntityType="ObjectContextModel.RelatedLocation" Width="1.5" PointX="5.375" PointY="0.75" Height="1.4033821614583388" />
       </Diagram>
     </Diagrams>
   </Designer>

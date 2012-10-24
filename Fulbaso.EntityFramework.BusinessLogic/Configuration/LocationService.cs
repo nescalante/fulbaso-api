@@ -35,6 +35,11 @@ namespace Fulbaso.EntityFramework.Logic
             return LocationService.Get(c => string.IsNullOrEmpty(name) || c.Description.Contains(name));
         }
 
+        public IEnumerable<string> GetRelated(string name)
+        {
+            return EntityUtil.Context.RelatedLocations.Where(l => l.Related == name).Select(l => l.Value).ToList();
+        }
+
         public IEnumerable<Location> GetByRegion(int regionId)
         {
             return LocationService.Get(r => r.RegionId == regionId).ToList();

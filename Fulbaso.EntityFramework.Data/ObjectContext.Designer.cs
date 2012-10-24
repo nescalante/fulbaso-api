@@ -375,6 +375,22 @@ namespace Fulbaso.EntityFramework
             }
         }
         private ObjectSet<PlaceLocation> _PlaceLocations;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<RelatedLocation> RelatedLocations
+        {
+            get
+            {
+                if ((_RelatedLocations == null))
+                {
+                    _RelatedLocations = base.CreateObjectSet<RelatedLocation>("RelatedLocations");
+                }
+                return _RelatedLocations;
+            }
+        }
+        private ObjectSet<RelatedLocation> _RelatedLocations;
 
         #endregion
         #region AddTo Methods
@@ -521,6 +537,14 @@ namespace Fulbaso.EntityFramework
         public void AddToPlaceLocations(PlaceLocation placeLocation)
         {
             base.AddObject("PlaceLocations", placeLocation);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the RelatedLocations EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToRelatedLocations(RelatedLocation relatedLocation)
+        {
+            base.AddObject("RelatedLocations", relatedLocation);
         }
 
         #endregion
@@ -4278,6 +4302,90 @@ namespace Fulbaso.EntityFramework
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ObjectContextModel", Name="RelatedLocation")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class RelatedLocation : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new RelatedLocation object.
+        /// </summary>
+        /// <param name="value">Initial value of the Value property.</param>
+        /// <param name="related">Initial value of the Related property.</param>
+        public static RelatedLocation CreateRelatedLocation(global::System.String value, global::System.String related)
+        {
+            RelatedLocation relatedLocation = new RelatedLocation();
+            relatedLocation.Value = value;
+            relatedLocation.Related = related;
+            return relatedLocation;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Value
+        {
+            get
+            {
+                return _Value;
+            }
+            set
+            {
+                if (_Value != value)
+                {
+                    OnValueChanging(value);
+                    ReportPropertyChanging("Value");
+                    _Value = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Value");
+                    OnValueChanged();
+                }
+            }
+        }
+        private global::System.String _Value;
+        partial void OnValueChanging(global::System.String value);
+        partial void OnValueChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Related
+        {
+            get
+            {
+                return _Related;
+            }
+            set
+            {
+                if (_Related != value)
+                {
+                    OnRelatedChanging(value);
+                    ReportPropertyChanging("Related");
+                    _Related = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Related");
+                    OnRelatedChanged();
+                }
+            }
+        }
+        private global::System.String _Related;
+        partial void OnRelatedChanging(global::System.String value);
+        partial void OnRelatedChanged();
+
+        #endregion
+    
     }
     
     /// <summary>

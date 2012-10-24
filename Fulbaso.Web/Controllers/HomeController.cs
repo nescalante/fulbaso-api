@@ -16,13 +16,17 @@ namespace Fulbaso.Web.Controllers
         private IPlaceService _placeService;
         private IReportService _reportService;
         private IFloorTypeService _floorTypeService;
+        private ILocationService _locationService;
+        private ITerritoryService _territoryService;
         private UserAuthentication _authentication;
 
-        public HomeController(IPlaceService placeService, IReportService reportService, IFloorTypeService floorTypeService, UserAuthentication authentication)
+        public HomeController(IPlaceService placeService, IReportService reportService, IFloorTypeService floorTypeService, ILocationService locationService, ITerritoryService territoryService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _reportService = reportService;
             _floorTypeService = floorTypeService;
+            _locationService = locationService;
+            _territoryService = territoryService;
             _authentication = authentication;
         }
 
@@ -74,9 +78,34 @@ namespace Fulbaso.Web.Controllers
 
                 ViewBag.FloorTypes = _floorTypeService.Get();
                 ViewBag.Places = count;
+                ViewBag.PossibleLocations = GetPossibleLocations(filter);
 
                 return View("Places", model);
             }
+        }
+
+        private List<string> GetPossibleLocations(PlacesFilter filter)
+        {
+            var locations = filter.Locations.ToList();
+
+            if (!locations.Any())
+            {
+                locations.AddRange(_territoryService.Get().Select(t => t.Description));
+            }
+
+            if (Position.Location != null)
+            {
+                locations.Add(Position.Location.Description);
+                locations.Add(Position.Location.Region.Description);
+            }
+
+            foreach (var l in filter.Locations)
+            {
+                locations.AddRange(_locationService.GetRelated(l));
+            }
+
+            locations = locations.Distinct().ToList();
+            return locations;
         }
 
         [HttpPost]

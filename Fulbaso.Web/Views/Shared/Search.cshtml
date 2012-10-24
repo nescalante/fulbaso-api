@@ -7,12 +7,21 @@
 @{
     var action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
     var controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
+    var locations = ViewBag.PossibleLocations as List<string> ?? new List<string>();
+    var list = locations.Where(l => !Model.Locations.Any(m => m.ToUpper().Trim() == l.ToUpper().Trim()))
+        .Select(l => new { IsActive = false, Description = l })
+        .Concat(Model.Locations.Select(l => new { IsActive = true, Description = l })).OrderBy(l => l.Description);
+        
+    if (action.ToLower() == "map")
+    {
+        list = null; 
+    }
 }
 
 <h3>Búsqueda rápida</h3>
 <h4>Jugadores</h4>
 <ul class="nav nav-pills">
-    @foreach (var p in new [] { 5, 6, 7, 8, 9, 10, 11 })
+    @foreach (var p in new[] { 5, 6, 7, 8, 9, 10, 11 })
     {
         if (Model.Players.Contains((byte)p))
         {
@@ -55,23 +64,19 @@
     <li @(Model.IsIndoor ? "class=active" : "")><a title="Canchas techadas" href="@Url.Action(action, controller, Model.WithChangedIndoor().Route)">Techada</a></li>
     <li @(Model.IsLighted ? "class=active" : "")><a title="Canchas iluminadas" href="@Url.Action(action, controller, Model.WithChangedLighted().Route)">Iluminada</a></li>
 </ul>
-@if (Model.Locations.Any())
+@if (list != null && list.Any())
 {
     <h4>Ubicación</h4>
     <ul class="nav nav-pills">
-        @foreach (var l in Model.Locations)
+        @foreach (var l in list)
         {
-            <li class="active"><a title="Canchas en @l" href="@Url.Action(action, controller, Model.WithoutLocation(l).Route)">@l</a></li>
-        }
-        @if (Position.Location != null)
-        {
-            if (!Model.Locations.Any(l => l.ToUpper() == Position.Location.Description.ToUpper()))
+            if (l.IsActive)
             {
-                <li><a title="Canchas en @Position.Location.Description" href="@Url.Action(action, controller, Model.WithLocation(Position.Location.Description).Route)">@Position.Location.Description</a></li>
+                <li class="active"><a title="Canchas en @l.Description" href="@Url.Action(action, controller, Model.WithoutLocation(l.Description).Route)">@l.Description</a></li>
             }
-            if (!Model.Locations.Any(l => l.ToUpper() == Position.Location.Region.Description.ToUpper()))
+            else
             {
-                <li><a title="Canchas en @Position.Location.Region.Description" href="@Url.Action(action, controller, Model.WithLocation(Position.Location.Region.Description).Route)">@Position.Location.Region.Description</a></li>
+                <li><a title="Canchas en @l.Description" href="@Url.Action(action, controller, Model.WithLocation(l.Description).Route)">@l.Description</a></li>
             }
         }
     </ul>

@@ -17,15 +17,17 @@ namespace Fulbaso.Web.Controllers
         private IFavouriteService _favouriteService;
         private IFloorTypeService _floorTypeService;
         private ILocationService _locationService;
+        private ITerritoryService _territoryService;
         private UserAuthentication _authentication;
 
-        public PlaceController(IPlaceService placeService, ICourtService courtService, IFavouriteService favouriteService, IFloorTypeService floorTypeService, ILocationService locationService, UserAuthentication authentication)
+        public PlaceController(IPlaceService placeService, ICourtService courtService, IFavouriteService favouriteService, IFloorTypeService floorTypeService, ILocationService locationService, ITerritoryService territoryService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _courtService = courtService;
             _favouriteService = favouriteService;
             _floorTypeService = floorTypeService;
             _locationService = locationService;
+            _territoryService = territoryService;
             _authentication = authentication;
         }
 
