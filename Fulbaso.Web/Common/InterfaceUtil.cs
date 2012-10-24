@@ -60,7 +60,7 @@ namespace Fulbaso.Web
         internal static int[] GetInts(FormCollection collection, string tag)
         {
             return collection.AllKeys.Where(k => k.StartsWith(tag) && Convert.ToBoolean(collection[k].Split(',').First()))
-                .Select(k => Convert.ToInt32(k.Split('-').Last())).ToArray();
+                .Select(k => Convert.ToInt32(k.Split('-').Last())).Distinct().ToArray();
         }
 
         internal static int[] GetInts(string list, char separator)

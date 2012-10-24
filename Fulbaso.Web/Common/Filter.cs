@@ -172,8 +172,7 @@ namespace Fulbaso.Web
 
             this.Players = InterfaceUtil.GetInts(collection, "player");
             this.FloorTypes = InterfaceUtil.GetInts(collection, "floor");
-            this.Locations = collection.AllKeys.Where(k => k.StartsWith("location"))
-                .Select(k => collection[k]).Concat(new[] { collection["searchlocation"] }).Where(l => !string.IsNullOrEmpty(l)).ToArray();
+            this.Locations = collection["searchlocation"].Split(',').Select(l => l.Trim()).Distinct().ToArray();
             this.Tags = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null).Select(s => (byte)s).ToArray();
             this.IsIndoor = Convert.ToBoolean(collection["indoor"].Split(',').First());
             this.IsLighted = Convert.ToBoolean(collection["lighted"].Split(',').First());

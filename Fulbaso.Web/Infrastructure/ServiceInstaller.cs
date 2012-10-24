@@ -9,13 +9,18 @@ using Fulbaso.Authentication.Logic;
 using Fulbaso.Common;
 using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Facebook.Logic;
+using Fulbaso.Common.Security;
 
 namespace Fulbaso.Web
 {
     public class ServiceInstaller : IWindsorInstaller
     {
+        private IWindsorContainer _container;
+
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
+            _container = container;
+
             container.Register(
              AllTypes
               .FromAssemblyContaining<PlaceService>()
@@ -50,9 +55,21 @@ namespace Fulbaso.Web
             container.Register(
                 Component
                     .For<HttpContextBase>()
-                    .UsingFactoryMethod(() => new HttpContextWrapper(HttpContext.Current))
+                    .UsingFactoryMethod(() => this.GetContext())
                     .LifestylePerWebRequest()
             );
+        }
+
+        public HttpContextWrapper GetContext()
+        {
+            var user = _container.Resolve<UserAuthentication>().GetUser();
+
+            if (user != null)
+            {
+                HttpContext.Current.User = new FacebookPrincipal(new FacebookIdentity(user));
+            }
+
+            return new HttpContextWrapper(HttpContext.Current);
         }
 
         private IEnumerable<Type> ByConvention(Type type, Type[] types)

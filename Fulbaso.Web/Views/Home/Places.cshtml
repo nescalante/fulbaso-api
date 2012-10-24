@@ -6,6 +6,8 @@
 
 @{
     var filter = new PlacesFilter(this.Request.QueryString);
+    var action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+    var controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
     int init;
     int.TryParse(this.Request.QueryString["init"], out init);
     ViewBag.Title = string.IsNullOrEmpty(filter.Reference) ? "Listado de canchas" : ("Canchas " + filter.Reference);

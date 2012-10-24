@@ -86,31 +86,15 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Error404(string aspxerrorpath)
+        public ActionResult Error404(string aspxerrorpath, string returnUrl)
         {
-            if (!string.IsNullOrEmpty(aspxerrorpath))
-            {
-                var page = _placeService.ValidatePage(aspxerrorpath.Split('/').Last());
-
-                if (!string.IsNullOrEmpty(page))
-                {
-                    return RedirectToAction("ItemView", "Place", new { place = page });
-                }
-                else
-                {
-                    return RedirectToAction("Error404");
-                }
-            }
-            else
-            {
-                return View("404");
-            }
+            throw new HttpException((int)HttpStatusCode.NotFound, "");
         }
         
         [HttpGet]
         public ActionResult LogOut()
         {
-            var url = "https://www.facebook.com/logout.php?next=" + Url.Action("Index", "Home", null, "http") + "&access_token=" + _authentication.GetUser().Token;
+            var url = string.Format("https://www.facebook.com/logout.php?next={0}&access_token={1}", Url.Action("Index", "Home", null, "http"), _authentication.GetUser().Token);
             _authentication.Logout();
 
             return Redirect(url);
@@ -128,11 +112,7 @@ namespace Fulbaso.Web.Controllers
         {
             try
             {
-                var tokenUrl = "https://graph.facebook.com/oauth/access_token?client_id=" + Configuration.AppId +
-                               "&client_secret=" + Configuration.AppSecret +
-                               "&redirect_uri=" + Url.Action("GetToken", "Home", null, "http") +
-                               "&code=" + code;
-
+                var tokenUrl = string.Format("https://graph.facebook.com/oauth/access_token?client_id={0}&client_secret={1}&redirect_uri={2}&code={3}", Configuration.AppId, Configuration.AppSecret, Url.Action("GetToken", "Home", null, "http"), code);
                 var request = WebRequest.Create(tokenUrl) as HttpWebRequest;
                 var token = request.GetString();
                 var qs = HttpUtility.ParseQueryString(token);

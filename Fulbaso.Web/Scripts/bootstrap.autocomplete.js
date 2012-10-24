@@ -121,7 +121,10 @@
   }
 
   , matcher: function (item) {
-      return ~item.toLowerCase().indexOf(this.query.toLowerCase())
+      var list = this.query.split(",");
+      var term = $.trim(list[list.length - 1]);
+
+      return ~item.toLowerCase().indexOf(term.toLowerCase())
   }
 
   , sorter: function (items) {

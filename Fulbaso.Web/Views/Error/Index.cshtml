@@ -2,4 +2,20 @@
 
 @model ErrorViewModel
            
-@Model.Exception
+@if (this.User.IsInRole("Admin"))
+{
+    <h2>@Model.Message</h2>
+
+    @Model.Exception
+}
+else
+{
+    if (Model.Exception.IsHttpNotFound())
+    {
+        Html.RenderPartial("404");
+    }
+    else
+    {
+        
+    }
+}

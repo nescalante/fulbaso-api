@@ -21,11 +21,8 @@
         <div class="control-group">
             <label class="control-label" for="searchlocation">Ubicación</label>
             <div class="controls">
-                @Html.TextBox("searchlocation", "", new { autocomplete = "off" })
-                <span class="help-inline">Busque y seleccione para agregar. Si desea quitar algún item de la búsqueda haga click en él.</span>
-            </div>
-            <div class="controls">
-                <div id="label-tags"></div>
+                @Html.TextBox("searchlocation", "", new { @class = "input-xlarge", autocomplete = "off" })
+                <span class="help-inline">Escribí los lugares donde quieras buscar separados por coma.</span>
             </div>
         </div>
         <div class="control-group">
@@ -134,15 +131,19 @@
 
             $("#date").datepicker();
             var cache = {}, lastReq;
-            var c = 0;
+            var locations;
             $("#searchlocation").typeahead({
                 source: function (typeahead, query) {
-                    var term = query;
+                    var list = query.split(",");
+                    var term = $.trim(list[list.length - 1]);
+                    locations = $("#searchlocation").val();
+
                     if (term in cache) {
                         typeahead.process(cache[term]);
                         return;
                     }
-                    lastReq = $.getJSON('@Url.Action("FindLocation", "Search")', { term: query }, function (data, status, req) {
+
+                    lastReq = $.getJSON('@Url.Action("FindLocation", "Search")', { term: term }, function (data, status, req) {
                         cache[term] = data;
                         if (req === lastReq) {
                             typeahead.process(data);
@@ -150,15 +151,10 @@
                     });
                 },
                 onselect: function (item) {
-                    c++
-                    $("#searchlocation").val("");
-                    if ($(".label-success[data-location='" + item.value + "']").length == 0)
-                    {
-                        $("#label-tags").append("<span data-location=\"" + item.value + "\" class=\"label label-success\">" + item.value + "<input type=\"hidden\" name=\"location-" + c + "\" value=\"" + item.value + "\"/></span>" + (c % 10 == 0 ? "<br>" : ""));
-                        $("[data-location='" + item.value + "']").last().click(function () {
-                            $(this).remove();
-                        });
-                    }
+                    var recalculate = (locations.lastIndexOf(",") > -1 ? locations.substring(0, locations.lastIndexOf(",")) + ", " : "") + item.value;
+                    var array = recalculate.split(",");
+                    $.each(array, function (key, value) { array[key] = $.trim(value); });
+                    $("#searchlocation").val(array.join(", ") + ", ");
                     $("#searchlocation").focus();
                 }
             });

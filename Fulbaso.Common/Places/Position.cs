@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web;
 using System.Web.SessionState;
+using Fulbaso.Contract;
+using Fulbaso.Helpers;
 
 namespace Fulbaso.Common
 {
@@ -53,6 +55,28 @@ namespace Fulbaso.Common
             private set
             {
                 Session["Longitude"] = value;
+            }
+        }
+
+        public static Location Location
+        {
+            get
+            {
+                if (!Position.HasValue) return null;
+
+                if (Session["Location"] != null) return Session["Location"] as Location;
+
+                try
+                {
+                    var gr = new Geocoding().Get(Position.Latitude, Position.Longitude);
+                    Session["Location"] = gr.GetLocation();
+                }
+                catch
+                {
+                    Session["Location"] = null;
+                }
+
+                return Session["Location"] as Location;
             }
         }
 

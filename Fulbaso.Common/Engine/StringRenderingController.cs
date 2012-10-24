@@ -8,7 +8,7 @@ namespace Fulbaso.Common
 	/// <summary>
 	/// Our implementation of controller base.
 	/// </summary>
-	public abstract class StringRenderingController : Controller
+	public abstract class StringRenderingController : BaseController
 	{
 		/// <summary>
 		/// Renders a view as a string.

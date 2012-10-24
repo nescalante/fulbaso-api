@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using log4net;
 using Fulbaso.Common.Resources;
+using Fulbaso.Common.Security;
 
 namespace Fulbaso.Common
 {
@@ -32,6 +33,13 @@ namespace Fulbaso.Common
         public void HandleApplicationError()
         {
             HttpContextWrapper context = new HttpContextWrapper(HttpContext.Current);
+
+            var user = ContainerUtil.GetApplicationContainer().Resolve<UserAuthentication>().GetUser();
+            if (user != null)
+            {
+                HttpContext.Current.User = new FacebookPrincipal(new FacebookIdentity(user));
+            }
+
             using (ErrorController controller = ErrorController.Instance(context))
             {
                 Exception exception = application.Server.GetLastError();
