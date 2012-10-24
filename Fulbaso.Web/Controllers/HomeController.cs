@@ -82,7 +82,7 @@ namespace Fulbaso.Web.Controllers
         [HttpPost]
         public ActionResult Index(string searchtext, FormCollection collection)
         {
-            return RedirectToAction("Index", new { q = searchtext });
+            return RedirectToAction("Index", new { q = string.IsNullOrEmpty(searchtext) ? "*" : searchtext });
         }
 
         [HttpGet]

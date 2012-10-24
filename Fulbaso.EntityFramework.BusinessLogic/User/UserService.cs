@@ -23,7 +23,6 @@ namespace Fulbaso.EntityFramework.Logic
                 Token = user.Token,
                 Created = DateTime.Now,
                 LastLogin = DateTime.Now,
-                TerritoryId = user.Territory.Id
             };
 
             Repository<UserEntity>.Add(userEntity);
@@ -45,7 +44,6 @@ namespace Fulbaso.EntityFramework.Logic
             userEntity.Token = user.Token;
             userEntity.Created = user.Created;
             userEntity.LastLogin = user.LastLogin;
-            userEntity.TerritoryId = user.Territory.Id;
 
             EntityUtil.Context.SaveChanges();
         }
@@ -88,7 +86,6 @@ namespace Fulbaso.EntityFramework.Logic
                         Token = u.Token,
                         Roles = u.Roles.Select(r => r.Role).ToList(),
                         PlaceRoles = u.Places.Select(r => new Tuple<int, string>(r.PlaceId, r.Role)).ToList(),
-                        Territory = EntityDataObject.Create<Territory>(u.TerritoryId),
                     }).ToList();
         }
     }

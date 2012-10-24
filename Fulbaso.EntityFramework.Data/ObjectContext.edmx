@@ -55,7 +55,8 @@
       [PlaceViews].[exp] AS [exp], 
       [PlaceViews].[MapUa] AS [MapUa], 
       [PlaceViews].[MapVa] AS [MapVa], 
-      [PlaceViews].[MapLocation] AS [MapLocation]
+      [PlaceViews].[MapLocation] AS [MapLocation], 
+      [PlaceViews].[IsActive] AS [IsActive]
       FROM [dbo].[PlaceViews] AS [PlaceViews]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Clients_Places" Association="ObjectContextModel.Store.FK_Clients_Places">
@@ -141,10 +142,6 @@
           <AssociationSet Name="FK_UserRoles_Users" Association="ObjectContextModel.Store.FK_UserRoles_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserRoles" EntitySet="UserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Users_Territories" Association="ObjectContextModel.Store.FK_Users_Territories">
-            <End Role="Territories" EntitySet="Territories" />
-            <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Clients">
@@ -331,7 +328,6 @@
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="LastLogin" Type="datetime" Nullable="false" />
           <Property Name="Token" Type="varchar" MaxLength="200" />
-          <Property Name="TerritoryId" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'f.dbo.AutocompleteValues' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -375,6 +371,7 @@
             <PropertyRef Name="Location" />
             <PropertyRef Name="Region" />
             <PropertyRef Name="TerritoryId" />
+            <PropertyRef Name="IsActive" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
@@ -389,6 +386,7 @@
           <Property Name="MapUa" Type="decimal" Scale="10" />
           <Property Name="MapVa" Type="decimal" Scale="10" />
           <Property Name="MapLocation" Type="varchar" MaxLength="200" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Clients_Places">
           <End Role="Places" Type="ObjectContextModel.Store.Places" Multiplicity="1" />
@@ -642,18 +640,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Users_Territories">
-          <End Role="Territories" Type="ObjectContextModel.Store.Territories" Multiplicity="1" />
-          <End Role="Users" Type="ObjectContextModel.Store.Users" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Territories">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="TerritoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -753,10 +739,6 @@
           </AssociationSet>
           <EntitySet Name="AutocompleteValues" EntityType="ObjectContextModel.AutocompleteValue" />
           <EntitySet Name="PlaceLocations" EntityType="ObjectContextModel.PlaceLocation" />
-          <AssociationSet Name="FK_Users_Territories" Association="ObjectContextModel.FK_Users_Territories">
-            <End Role="TerritoryEntity" EntitySet="Territories" />
-            <End Role="UserEntity" EntitySet="Users" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ClientEntity">
           <Key>
@@ -922,7 +904,6 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Regions" Relationship="ObjectContextModel.FK_Regions_Territories" FromRole="Territories" ToRole="Regions" />
-          <NavigationProperty Name="Users" Relationship="ObjectContextModel.FK_Users_Territories" FromRole="TerritoryEntity" ToRole="UserEntity" />
         </EntityType>
         <EntityType Name="UserPlaceEntity">
           <Key>
@@ -965,8 +946,6 @@
           <NavigationProperty Name="Places" Relationship="ObjectContextModel.FK_UserPlaces_Users" FromRole="Users" ToRole="UserPlaces" />
           <NavigationProperty Name="Roles" Relationship="ObjectContextModel.FK_UserRoles_Users" FromRole="Users" ToRole="UserRoles" />
           <NavigationProperty Name="Favourites" Relationship="ObjectContextModel.UserFavourites" FromRole="Users" ToRole="Places" />
-          <Property Type="Int32" Name="TerritoryId" Nullable="false" />
-          <NavigationProperty Name="Territory" Relationship="ObjectContextModel.FK_Users_Territories" FromRole="UserEntity" ToRole="TerritoryEntity" />
         </EntityType>
         <EntityType Name="PlaceView">
           <Key>
@@ -975,6 +954,7 @@
             <PropertyRef Name="Location" />
             <PropertyRef Name="Region" />
             <PropertyRef Name="TerritoryId" />
+            <PropertyRef Name="IsActive" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
@@ -989,6 +969,7 @@
           <Property Name="MapVa" Type="Decimal" Precision="18" Scale="10" />
           <Property Name="MapLocation" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
           <Property Type="Int32" Name="TerritoryId" Nullable="false" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
         </EntityType>
         <Association Name="FK_Clients_Places">
           <End Role="Places" Type="ObjectContextModel.PlaceEntity" Multiplicity="1" />
@@ -1228,18 +1209,6 @@
           <Property Type="String" Name="Region" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="Int32" Name="TerritoryId" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Users_Territories">
-          <End Type="ObjectContextModel.TerritoryEntity" Role="TerritoryEntity" Multiplicity="1" />
-          <End Type="ObjectContextModel.UserEntity" Role="UserEntity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TerritoryEntity">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserEntity">
-              <PropertyRef Name="TerritoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1355,7 +1324,6 @@
             <ScalarProperty Name="Role" ColumnName="Role" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Users"><EntityTypeMapping TypeName="ObjectContextModel.UserEntity"><MappingFragment StoreEntitySet="Users">
-            <ScalarProperty Name="TerritoryId" ColumnName="TerritoryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="Name" ColumnName="Name" />
             <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -1368,7 +1336,8 @@
             <ScalarProperty Name="Token" ColumnName="Token" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="PlaceViews"><EntityTypeMapping TypeName="ObjectContextModel.PlaceView"><MappingFragment StoreEntitySet="PlaceViews">
-            <ScalarProperty Name="TerritoryId" ColumnName="TerritoryId" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="TerritoryId" ColumnName="TerritoryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="Name" ColumnName="Name" />
             <ScalarProperty Name="Address" ColumnName="Address" />
@@ -1452,7 +1421,7 @@
         <EntityTypeShape EntityType="ObjectContextModel.PlaceEntity" Width="1.5" PointX="7.5" PointY="8.625" Height="5.4417122395833353" IsExpanded="true" />
         <EntityTypeShape EntityType="ObjectContextModel.PlaceService" Width="1.5" PointX="9.75" PointY="13.625" Height="1.5956835937499996" IsExpanded="true" />
         <EntityTypeShape EntityType="ObjectContextModel.RegionEntity" Width="1.5" PointX="3" PointY="10.25" Height="2.1725878906250031" IsExpanded="true" />
-        <EntityTypeShape EntityType="ObjectContextModel.TerritoryEntity" Width="1.5" PointX="0.75" PointY="10.375" Height="1.7879850260416745" IsExpanded="true" />
+        <EntityTypeShape EntityType="ObjectContextModel.TerritoryEntity" Width="1.5" PointX="0.75" PointY="10.375" Height="1.7879850260416657" IsExpanded="true" />
         <EntityTypeShape EntityType="ObjectContextModel.UserPlaceEntity" Width="1.5" PointX="15" PointY="15" Height="1.9802864583333388" IsExpanded="true" />
         <EntityTypeShape EntityType="ObjectContextModel.UserRoleEntity" Width="1.5" PointX="12" PointY="22.25" Height="1.5956835937500031" IsExpanded="true" />
         <EntityTypeShape EntityType="ObjectContextModel.UserEntity" Width="1.5" PointX="9.75" PointY="19.25" Height="4.0956022135416674" IsExpanded="true" />
@@ -1511,9 +1480,9 @@
           <ConnectorPoint PointX="7.5" PointY="11.3362939453125" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_Places_Users" ManuallyRouted="false">
-          <ConnectorPoint PointX="9.75" PointY="21.986426565755213" />
-          <ConnectorPoint PointX="8.25" PointY="21.986426565755213" />
-          <ConnectorPoint PointX="8.25" PointY="14.066712239583335" />
+          <ConnectorPoint PointX="9.75" PointY="21.496585766069387" />
+          <ConnectorPoint PointX="8.237304609375" PointY="21.496585766069387" />
+          <ConnectorPoint PointX="8.237304609375" PointY="14.066712239583335" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_PlaceServices_Places" ManuallyRouted="false">
           <ConnectorPoint PointX="9" PointY="13.845856119791668" />
@@ -1522,15 +1491,13 @@
         <AssociationConnector Association="ObjectContextModel.FK_UserPlaces_Places" ManuallyRouted="false">
           <ConnectorPoint PointX="8.6562525" PointY="14.066712239583335" />
           <ConnectorPoint PointX="8.6562525" PointY="16.814392903645835" />
-          <ConnectorPoint PointX="8.7760454166666673" PointY="16.814392903645835" />
-          <ConnectorPoint PointX="8.9427120833333351" PointY="16.814392903645835" />
           <ConnectorPoint PointX="11.541666666666666" PointY="16.814392903645835" />
           <ConnectorPoint PointX="11.708333333333334" PointY="16.814392903645835" />
           <ConnectorPoint PointX="15" PointY="16.814392903645835" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_Regions_Territories" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="11.365143229166666" />
-          <ConnectorPoint PointX="3" PointY="11.365143229166666" />
+          <ConnectorPoint PointX="2.25" PointY="11.268992513020834" />
+          <ConnectorPoint PointX="3" PointY="11.268992513020834" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_UserPlaces_Users" ManuallyRouted="false">
           <ConnectorPoint PointX="11.25" PointY="21.874746093749998" />
@@ -1538,32 +1505,25 @@
           <ConnectorPoint PointX="15.75" PointY="16.980286458333339" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.FK_UserRoles_Users" ManuallyRouted="false">
-          <ConnectorPoint PointX="11.25" PointY="22.9901025390625" />
-          <ConnectorPoint PointX="12" PointY="22.9901025390625" />
+          <ConnectorPoint PointX="11.25" PointY="22.797801106770834" />
+          <ConnectorPoint PointX="12" PointY="22.797801106770834" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.PlaceFiles" ManuallyRouted="false">
           <ConnectorPoint PointX="12" PointY="18.96875" />
           <ConnectorPoint PointX="11.614583333333334" PointY="18.96875" />
           <ConnectorPoint PointX="11.447916666666666" PointY="18.96875" />
-          <ConnectorPoint PointX="8.9427120833333351" PointY="18.96875" />
-          <ConnectorPoint PointX="8.7760454166666673" PointY="18.96875" />
-          <ConnectorPoint PointX="8.3333333333333339" PointY="18.96875" />
-          <ConnectorPoint PointX="8.1666666666666661" PointY="18.96875" />
-          <ConnectorPoint PointX="7.8437475" PointY="18.96875" />
-          <ConnectorPoint PointX="7.8437475" PointY="14.066712239583335" />
+          <ConnectorPoint PointX="8.4467785546875014" PointY="18.96875" />
+          <ConnectorPoint PointX="8.4467785546875014" PointY="14.066712239583335" />
         </AssociationConnector>
         <AssociationConnector Association="ObjectContextModel.UserFavourites" ManuallyRouted="false">
-          <ConnectorPoint PointX="8.8593787500000012" PointY="14.066712239583335" />
-          <ConnectorPoint PointX="8.8593787500000012" PointY="20.586960782877611" />
-          <ConnectorPoint PointX="9.75" PointY="20.586960782877611" />
+          <ConnectorPoint PointX="7.8373998046875" PointY="14.066712239583335" />
+          <ConnectorPoint PointX="7.8373998046875" PointY="20.3420403830347" />
+          <ConnectorPoint PointX="8.1539712760416663" PointY="20.3420403830347" />
+          <ConnectorPoint PointX="8.3206379427083341" PointY="20.3420403830347" />
+          <ConnectorPoint PointX="9.75" PointY="20.3420403830347" />
         </AssociationConnector>
         <EntityTypeShape EntityType="ObjectContextModel.AutocompleteValue" Width="1.5" PointX="3.375" PointY="0.75" Height="1.5956835937500031" />
         <EntityTypeShape EntityType="ObjectContextModel.PlaceLocation" Width="1.5" PointX="3.375" PointY="3.75" Height="2.1725878906250031" />
-        <AssociationConnector Association="ObjectContextModel.FK_Users_Territories" >
-          <ConnectorPoint PointX="1.5" PointY="12.355286458333334" />
-          <ConnectorPoint PointX="1.5" PointY="22.889568321940104" />
-          <ConnectorPoint PointX="9.75" PointY="22.889568321940104" />
-        </AssociationConnector>
       </Diagram>
     </Diagrams>
   </Designer>

@@ -37,7 +37,6 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_UserRoles_Users", "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.UserEntity), "UserRoles", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserRoleEntity), true)]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "PlaceFiles", "Files", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.FileEntity), "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity))]
 [assembly: EdmRelationshipAttribute("ObjectContextModel", "UserFavourites", "Places", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.PlaceEntity), "Users", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity))]
-[assembly: EdmRelationshipAttribute("ObjectContextModel", "FK_Users_Territories", "TerritoryEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Fulbaso.EntityFramework.TerritoryEntity), "UserEntity", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Fulbaso.EntityFramework.UserEntity), true)]
 
 #endregion
 
@@ -3711,7 +3710,8 @@ namespace Fulbaso.EntityFramework
         /// <param name="location">Initial value of the Location property.</param>
         /// <param name="region">Initial value of the Region property.</param>
         /// <param name="territoryId">Initial value of the TerritoryId property.</param>
-        public static PlaceView CreatePlaceView(global::System.Int32 id, global::System.String name, global::System.String location, global::System.String region, global::System.Int32 territoryId)
+        /// <param name="isActive">Initial value of the IsActive property.</param>
+        public static PlaceView CreatePlaceView(global::System.Int32 id, global::System.String name, global::System.String location, global::System.String region, global::System.Int32 territoryId, global::System.Boolean isActive)
         {
             PlaceView placeView = new PlaceView();
             placeView.Id = id;
@@ -3719,6 +3719,7 @@ namespace Fulbaso.EntityFramework
             placeView.Location = location;
             placeView.Region = region;
             placeView.TerritoryId = territoryId;
+            placeView.IsActive = isActive;
             return placeView;
         }
 
@@ -4051,6 +4052,33 @@ namespace Fulbaso.EntityFramework
         private global::System.Int32 _TerritoryId;
         partial void OnTerritoryIdChanging(global::System.Int32 value);
         partial void OnTerritoryIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsActive
+        {
+            get
+            {
+                return _IsActive;
+            }
+            set
+            {
+                if (_IsActive != value)
+                {
+                    OnIsActiveChanging(value);
+                    ReportPropertyChanging("IsActive");
+                    _IsActive = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("IsActive");
+                    OnIsActiveChanged();
+                }
+            }
+        }
+        private global::System.Boolean _IsActive;
+        partial void OnIsActiveChanging(global::System.Boolean value);
+        partial void OnIsActiveChanged();
 
         #endregion
     
@@ -4380,28 +4408,6 @@ namespace Fulbaso.EntityFramework
                 }
             }
         }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Users_Territories", "UserEntity")]
-        public EntityCollection<UserEntity> Users
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserEntity>("ObjectContextModel.FK_Users_Territories", "UserEntity");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserEntity>("ObjectContextModel.FK_Users_Territories", "UserEntity", value);
-                }
-            }
-        }
 
         #endregion
     }
@@ -4423,15 +4429,13 @@ namespace Fulbaso.EntityFramework
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="created">Initial value of the Created property.</param>
         /// <param name="lastLogin">Initial value of the LastLogin property.</param>
-        /// <param name="territoryId">Initial value of the TerritoryId property.</param>
-        public static UserEntity CreateUserEntity(global::System.Int64 id, global::System.String name, global::System.DateTime created, global::System.DateTime lastLogin, global::System.Int32 territoryId)
+        public static UserEntity CreateUserEntity(global::System.Int64 id, global::System.String name, global::System.DateTime created, global::System.DateTime lastLogin)
         {
             UserEntity userEntity = new UserEntity();
             userEntity.Id = id;
             userEntity.Name = name;
             userEntity.Created = created;
             userEntity.LastLogin = lastLogin;
-            userEntity.TerritoryId = territoryId;
             return userEntity;
         }
 
@@ -4680,30 +4684,6 @@ namespace Fulbaso.EntityFramework
         private global::System.String _Token;
         partial void OnTokenChanging(global::System.String value);
         partial void OnTokenChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 TerritoryId
-        {
-            get
-            {
-                return _TerritoryId;
-            }
-            set
-            {
-                OnTerritoryIdChanging(value);
-                ReportPropertyChanging("TerritoryId");
-                _TerritoryId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("TerritoryId");
-                OnTerritoryIdChanged();
-            }
-        }
-        private global::System.Int32 _TerritoryId;
-        partial void OnTerritoryIdChanging(global::System.Int32 value);
-        partial void OnTerritoryIdChanged();
 
         #endregion
     
@@ -4837,44 +4817,6 @@ namespace Fulbaso.EntityFramework
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PlaceEntity>("ObjectContextModel.UserFavourites", "Places", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ObjectContextModel", "FK_Users_Territories", "TerritoryEntity")]
-        public TerritoryEntity Territory
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<TerritoryEntity>("ObjectContextModel.FK_Users_Territories", "TerritoryEntity").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<TerritoryEntity>("ObjectContextModel.FK_Users_Territories", "TerritoryEntity").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<TerritoryEntity> TerritoryReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<TerritoryEntity>("ObjectContextModel.FK_Users_Territories", "TerritoryEntity");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<TerritoryEntity>("ObjectContextModel.FK_Users_Territories", "TerritoryEntity", value);
                 }
             }
         }

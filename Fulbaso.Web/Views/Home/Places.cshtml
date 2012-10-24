@@ -44,14 +44,10 @@
             var last, html, init;
 
             function loadMore() {
-                if (init != last && html != null) {
+                if (init != last && html != null && $.trim(html) != "") {
                     last = init;
-
                     $("#loadmore").hide();
-                    $(html)
-                        .hide()
-                        .appendTo("#places")
-                        .fadeIn();
+                    $(html).hide().appendTo("#places").fadeIn();
                     html = null;
                 }
             
@@ -60,11 +56,11 @@
 
             $("#loadmore").click(function () {
                 loadMore();
+                return false;
             });
 
             function loadHtml() {
-                if ($(".place-info").length != @ViewBag.Places)
-                {
+                if ($(".place-info").length != @ViewBag.Places) {
                     init = $(".place-info").length;
 
                     $.get("@Html.Raw(Url.Action("List", "Home", filter.Route))&init=" + init, function (data) { 
@@ -76,8 +72,7 @@
                         }
                     }).error(function () { $("#loadmore").hide(); });
                 }
-                else
-                {
+                else {
                     $("#loadmore").hide();
                 }
             }
