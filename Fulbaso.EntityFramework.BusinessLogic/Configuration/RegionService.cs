@@ -32,7 +32,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         public IEnumerable<Region> Get(string name = null)
         {
-            return RegionService.Get(c => string.IsNullOrEmpty(name) || c.Description.Contains(name));
+            return RegionService.Get(c => string.IsNullOrEmpty(name) || c.Description == name);
         }
 
         internal static IEnumerable<Region> Get(Expression<Func<RegionEntity, bool>> predicate)
@@ -43,12 +43,12 @@ namespace Fulbaso.EntityFramework.Logic
 
         internal static IEnumerable<Region> Get(IQueryable<RegionEntity> query)
         {
-            return (from r in query.Include(q => q.Territory).ToList()
+            return (from r in query.ToList()
                     select new Region
                     {
                         Id = r.Id,
                         Description = r.Description,
-                        Territory = r.Territory.ToEntity(),
+                        Territory = EntityDataObject.Create<Region>(r.TerritoryId),
                         IsActive = r.IsActive,
                     }).ToList();
         }

@@ -15,5 +15,7 @@ namespace Fulbaso.Contract
         IEnumerable<Location> GetByRegion(int regionId);
 
         IEnumerable<string> GetForAutocomplete(string prefixText, int count);
+
+        IEnumerable<string> FilterOrigin(IEnumerable<string> locations);
     }
 }

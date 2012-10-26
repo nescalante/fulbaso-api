@@ -46,6 +46,8 @@ namespace Fulbaso.Common
                 locationService.Add(locationDto);
             }
 
+            locationDto.Region = regionService.Get(locationDto.Region.Id);
+
             return locationDto;
         }
     }

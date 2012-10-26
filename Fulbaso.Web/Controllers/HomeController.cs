@@ -8,6 +8,7 @@ using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
 using Fulbaso.Web.Models;
+using Fulbaso.Helpers;
 
 namespace Fulbaso.Web.Controllers
 {
@@ -86,7 +87,12 @@ namespace Fulbaso.Web.Controllers
 
         private List<string> GetPossibleLocations(PlacesFilter filter)
         {
-            var locations = filter.Locations.ToList();
+            var locations = new List<string>();
+
+            foreach (var l in filter.Locations)
+            {
+                locations.AddRange(_locationService.GetRelated(l));
+            }
 
             if (!locations.Any())
             {
@@ -99,13 +105,7 @@ namespace Fulbaso.Web.Controllers
                 locations.Add(Position.Location.Region.Description);
             }
 
-            foreach (var l in filter.Locations)
-            {
-                locations.AddRange(_locationService.GetRelated(l));
-            }
-
-            locations = locations.Distinct().ToList();
-            return locations;
+            return locations.Distinct(new CaseInsensitiveComparer()).Where(l => !string.IsNullOrEmpty(l)).ToList();
         }
 
         [HttpPost]

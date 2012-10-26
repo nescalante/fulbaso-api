@@ -7,9 +7,9 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Fulbaso.Authentication.Logic;
 using Fulbaso.Common;
+using Fulbaso.Common.Security;
 using Fulbaso.EntityFramework.Logic;
 using Fulbaso.Facebook.Logic;
-using Fulbaso.Common.Security;
 
 namespace Fulbaso.Web
 {

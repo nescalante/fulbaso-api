@@ -12,13 +12,11 @@ namespace Fulbaso.Web
     public class PlacesFilter
     {
         private const char separator = '-';
-
         private bool _dateParsed;
-
         private bool _hourParsed;
 
         public string Query { get; private set; }
-
+        
         public int[] Players { get; private set; }
 
         public int[] FloorTypes { get; private set; }
@@ -165,6 +163,87 @@ namespace Fulbaso.Web
             }
         }
 
+        public PlacesFilter(NameValueCollection collection, bool withSchedule = false)
+        {
+            try
+            {
+                var keys = collection.AllKeys;
+
+                // text query parser
+                if (keys.Contains("q"))
+                {
+                    this.Query = collection["q"];
+                    this.Query = this.Query == "*" ? string.Empty : this.Query;
+                }
+
+                // players parse
+                this.Players = keys.Contains("j") ? InterfaceUtil.GetInts(collection["j"], separator) : new int[] { };
+
+                // floor types parse
+                this.FloorTypes = keys.Contains("s") ? InterfaceUtil.GetInts(collection["s"], separator) : new int[] { };
+
+                // locations parse
+                this.Locations = keys.Contains("l") ? (collection["l"] ?? "").Split(separator).Where(i => !string.IsNullOrEmpty(i)).ToArray() : new string[] { };
+
+                // tags parse
+                this.Tags = keys.Contains("t") ? InterfaceUtil.GetBytes(collection["t"], separator) : new byte[] { };
+
+                // indoor parse
+                this.IsIndoor = keys.Contains("ind") && Convert.ToBoolean(collection["ind"]);
+
+                // lighted parse
+                this.IsLighted = keys.Contains("lig") && Convert.ToBoolean(collection["lig"]);
+
+                // parse schedule
+                if (withSchedule)
+                {
+                    DateTime date = DateTime.Today;
+                    int hour = 0;
+                    if (keys.Contains("d") && DateTime.TryParse(collection["d"], out date))
+                    {
+                        this.Date = date;
+                    }
+                    else
+                    {
+                        this.Date = DateTime.Today;
+                    }
+
+                    this._dateParsed = true;
+                    this._hourParsed = true;
+                    if (keys.Contains("h") && int.TryParse(collection["h"], out hour))
+                    {
+                        this.Hour = hour;
+                    }
+                }
+                else
+                {
+                    this._dateParsed = false;
+                    this._hourParsed = false;
+                }
+
+                // latitude & longitude parse
+                if (keys.Contains("lat") && keys.Contains("lng"))
+                {
+                    this.Latitude = Convert.ToDecimal(collection["lat"].Replace(".", ","));
+                    this.Longitude = Convert.ToDecimal(collection["lng"].Replace(".", ","));
+
+                    Position.Set(this.Latitude.Value, this.Longitude.Value);
+                }
+                else
+                {
+                    if (Position.HasValue)
+                    {
+                        this.Latitude = Position.Latitude;
+                        this.Longitude = Position.Longitude;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Could not parse query values collection.", ex);
+            }
+        }
+
         public PlacesFilter(FormCollection collection)
         {
             DateTime date;
@@ -209,9 +288,9 @@ namespace Fulbaso.Web
             }
         }
 
-        private static PlacesFilter Clone(PlacesFilter filter)
+        private PlacesFilter Clone()
         {
-            return new PlacesFilter(filter.Query, filter.Players, filter.FloorTypes, filter.Locations, filter.Tags, filter.IsIndoor, filter.IsLighted);
+            return new PlacesFilter(this.Query, this.Players, this.FloorTypes, this.Locations, this.Tags, this.IsIndoor, this.IsLighted);
         }
 
         public PlacesFilter AddPlayerOption(int player)
@@ -302,7 +381,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithPlayerOption(int player)
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.AddPlayerOption(player);
 
             return filter;
@@ -310,7 +389,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithFloorType(int floorType)
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.AddFloorType(floorType);
 
             return filter;
@@ -318,7 +397,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithLocation(string location)
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.AddLocation(location);
 
             return filter;
@@ -326,7 +405,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithTag(byte tag)
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.AddTag(tag);
 
             return filter;
@@ -334,7 +413,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithoutPlayerOption(int player)
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.RemovePlayerOption(player);
 
             return filter;
@@ -342,7 +421,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithoutFloorType(int floorType)
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.RemoveFloorType(floorType);
 
             return filter;
@@ -350,7 +429,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithoutLocation(string location)
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.RemoveLocation(location);
 
             return filter;
@@ -358,7 +437,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithoutTag(byte tag)
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.RemoveTag(tag);
 
             return filter;
@@ -366,7 +445,7 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithChangedIndoor()
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.ChangeIndoor();
 
             return filter;
@@ -374,91 +453,10 @@ namespace Fulbaso.Web
 
         public PlacesFilter WithChangedLighted()
         {
-            var filter = PlacesFilter.Clone(this);
+            var filter = this.Clone();
             filter.ChangeLighted();
 
             return filter;
-        }
-
-        public PlacesFilter(NameValueCollection collection, bool withSchedule = false)
-        {
-            try
-            {
-                var keys = collection.AllKeys;
-
-                // text query parser
-                if (keys.Contains("q"))
-                {
-                    this.Query = collection["q"];
-                    this.Query = this.Query == "*" ? string.Empty : this.Query;
-                }
-
-                // players parse
-                this.Players = keys.Contains("j") ? InterfaceUtil.GetInts(collection["j"], separator) : new int[] { };
-
-                // floor types parse
-                this.FloorTypes = keys.Contains("s") ? InterfaceUtil.GetInts(collection["s"], separator) : new int[] { };
-
-                // locations parse
-                this.Locations = keys.Contains("l") ? (collection["l"] ?? "").Split(separator).Where(i => !string.IsNullOrEmpty(i)).ToArray() : new string[] { };
-
-                // tags parse
-                this.Tags = keys.Contains("t") ? InterfaceUtil.GetBytes(collection["t"], separator) : new byte [] { };
-
-                // indoor parse
-                this.IsIndoor = keys.Contains("ind") && Convert.ToBoolean(collection["ind"]);
-
-                // lighted parse
-                this.IsLighted = keys.Contains("lig") && Convert.ToBoolean(collection["lig"]);
-
-                // parse schedule
-                if (withSchedule)
-                {
-                    DateTime date = DateTime.Today;
-                    int hour = 0;
-                    if (keys.Contains("d") && DateTime.TryParse(collection["d"], out date))
-                    {
-                        this.Date = date;
-                    }
-                    else
-                    {
-                        this.Date = DateTime.Today;
-                    }
-
-                    this._dateParsed = true;
-                    this._hourParsed = true;
-                    if (keys.Contains("h") && int.TryParse(collection["h"], out hour))
-                    {
-                        this.Hour = hour;
-                    }
-                }
-                else
-                {
-                    this._dateParsed = false;
-                    this._hourParsed = false;
-                }
-
-                // latitude & longitude parse
-                if (keys.Contains("lat") && keys.Contains("lng"))
-                {
-                    this.Latitude = Convert.ToDecimal(collection["lat"].Replace(".", ","));
-                    this.Longitude = Convert.ToDecimal(collection["lng"].Replace(".", ","));
-
-                    Position.Set(this.Latitude.Value, this.Longitude.Value);
-                }
-                else
-                {
-                    if (Position.HasValue)
-                    {
-                        this.Latitude = Position.Latitude;
-                        this.Longitude = Position.Longitude;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Could not parse query values collection.", ex);
-            }
         }
 
         public override string ToString()

@@ -24,11 +24,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="DESCRIPTION" content="@(Configuration.AppTitle), Canchas de fútbol" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @RenderSection("Metadata", false)
     <title>@ViewBag.Title</title>
     @RenderSection("StyleSheets", false)
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css' /> 
     <link rel="Shortcut Icon" href="@Url.Content("~/img/sport_soccer.png")" />
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="Stylesheet" />
     <link href="@Url.Content("~/Content/bootstrap-responsive.min.css")" rel="Stylesheet" />
@@ -84,7 +84,7 @@
                     {
                         using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "navbar-search pull-left", }))
                         {
-                            <input id="searchtext" name="searchtext" type="text" autocomplete="off" class="search-query span2" placeholder="Buscar" value="@ViewBag.Query" />
+                            <input id="searchtext" name="searchtext" style="line-height: 20px;" type="text" autocomplete="off" class="search-query span2" placeholder="Buscar" value="@ViewBag.Query" />
                         }
                     }
                     @Html.Partial("_LogOnPartial")

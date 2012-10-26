@@ -16,12 +16,14 @@ namespace Fulbaso.EntityFramework.Logic
     {
         private ICourtBookService _bookService;
         private IFileService _fileService;
+        private ILocationService _locationService;
         private UserAuthentication _authentication;
 
-        public PlaceService(ICourtBookService bookService, IFileService fileService, UserAuthentication authentication)
+        public PlaceService(ICourtBookService bookService, IFileService fileService, ILocationService locationService, UserAuthentication authentication)
         {
             _bookService = bookService;
             _fileService = fileService;
+            _locationService = locationService;
             _authentication = authentication;
         }
 
@@ -223,7 +225,9 @@ namespace Fulbaso.EntityFramework.Logic
 
         public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool indoor, bool lighted, int init, int rows, out int count)
         {
-            var places = CreateQuery(latitude, longitude, players, floorTypes, locations, tags, indoor, lighted);
+            var filteredLocations = _locationService.FilterOrigin(locations).ToArray();
+
+            var places = CreateQuery(latitude, longitude, players, floorTypes, filteredLocations, tags, indoor, lighted);
 
             if (!string.IsNullOrEmpty(value))
             {

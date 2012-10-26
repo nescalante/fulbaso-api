@@ -64,7 +64,13 @@ namespace Fulbaso.Common
             {
                 if (!Position.HasValue) return null;
 
-                if (Session["Location"] != null) return Session["Location"] as Location;
+                var location = Session["Location"] as Location;
+
+                if (location != null)
+                {
+                    if (location.Id == 0) return null;
+                    else return location;
+                }
 
                 try
                 {
@@ -73,7 +79,7 @@ namespace Fulbaso.Common
                 }
                 catch
                 {
-                    Session["Location"] = null;
+                    Session["Location"] = EntityDataObject.Create<Location>(0);
                 }
 
                 return Session["Location"] as Location;

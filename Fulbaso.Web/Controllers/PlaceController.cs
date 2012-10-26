@@ -32,6 +32,12 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Editor,Admin")]
         public ActionResult Edit(string place)
         {

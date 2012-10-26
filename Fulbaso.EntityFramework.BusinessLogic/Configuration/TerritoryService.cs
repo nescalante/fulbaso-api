@@ -30,7 +30,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         public IEnumerable<Territory> Get(string name = null)
         {
-            return TerritoryService.Get(c => string.IsNullOrEmpty(name) || c.Description.Contains(name));
+            return TerritoryService.Get(c => string.IsNullOrEmpty(name) || c.Description == name);
         }
 
         internal static IEnumerable<Territory> Get(Expression<Func<TerritoryEntity, bool>> predicate)

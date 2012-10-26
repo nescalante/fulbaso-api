@@ -10,6 +10,15 @@ namespace Fulbaso.EntityFramework.Logic
 {
     public class LocationService : ILocationService
     {
+        private ITerritoryService _territoryService;
+        private IRegionService _regionService;
+
+        public LocationService(ITerritoryService territoryService, IRegionService regionService)
+        {
+            _territoryService = territoryService;
+            _regionService = regionService;
+        }
+
         public void Add(Location location)
         {
             var entity = new LocationEntity
@@ -32,7 +41,7 @@ namespace Fulbaso.EntityFramework.Logic
 
         public IEnumerable<Location> Get(string name = null)
         {
-            return LocationService.Get(c => string.IsNullOrEmpty(name) || c.Description.Contains(name));
+            return LocationService.Get(c => string.IsNullOrEmpty(name) || c.Description == name);
         }
 
         public IEnumerable<string> GetRelated(string name)
@@ -75,14 +84,45 @@ namespace Fulbaso.EntityFramework.Logic
 
         internal static IEnumerable<Location> Get(IQueryable<LocationEntity> query)
         {
-            return (from r in query.Include(p => p.Region).ToList()
+            return (from r in query.ToList()
                     select new Location
                     {
                         Id = r.Id,
                         Description = r.Description,
-                        Region = r.Region.ToEntity<Region>(),
+                        Region = EntityDataObject.Create<Region>(r.RegionId),
                         IsActive = r.IsActive,
                     }).ToList();
+        }
+
+        public IEnumerable<string> FilterOrigin(IEnumerable<string> locations)
+        {
+            locations = locations.Distinct(new CaseInsensitiveComparer());
+
+            var entities = this.GetEntities(locations);
+            var list = new List<string>();
+
+            foreach (var e in entities)
+            {
+                if (!((e is Territory && entities.Where(r => r is Region && (r as Region).Territory.Id == e.Id).Any()) || 
+                    (e is Region && entities.Where(r => r is Location && (r as Location).Region.Id == e.Id).Any())))
+                {
+                    list.Add(e.Description);
+                }
+            }
+
+            return list.Distinct().ToList();
+        }
+
+        private IEnumerable<IEntity> GetEntities(IEnumerable<string> locations)
+        {
+            return (from l in locations
+                    let lo = this.Get(l).FirstOrDefault()
+                    let ro = _regionService.Get(l).FirstOrDefault()
+                    let to = _territoryService.Get(l).FirstOrDefault()
+                    select to != null ? to as IEntity:
+                           ro != null ? ro as IEntity:
+                           lo != null ? lo as IEntity:
+                           null).ToList();
         }
     }
 }
