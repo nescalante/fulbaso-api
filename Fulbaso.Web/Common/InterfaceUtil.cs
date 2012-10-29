@@ -35,8 +35,8 @@ namespace Fulbaso.Web
 
             if (!string.IsNullOrEmpty(remark))
             {
-                var val = remark.Trim().ToLower();
-                var ix = description.ToLower().IndexOf(val);
+                var val = remark.Trim().ToLower().GetAscii();
+                var ix = description.GetAscii().ToLower().IndexOf(val);
 
                 while (ix >= 0)
                 {

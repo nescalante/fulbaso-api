@@ -19,6 +19,23 @@
 }
 
 <h3>Búsqueda rápida</h3>
+@if (list != null && list.Any())
+{
+    <h4>Ubicación</h4>
+    <ul class="nav nav-pills">
+        @foreach (var l in list)
+        {
+            if (l.IsActive)
+            {
+                <li class="active"><a title="Canchas en @l.Description" href="@Url.Action(action, controller, Model.WithoutLocation(l.Description).Route)">@l.Description</a></li>
+            }
+            else
+            {
+                <li><a title="Canchas en @l.Description" href="@Url.Action(action, controller, Model.WithLocation(l.Description).Route)">@l.Description</a></li>
+            }
+        }
+    </ul>
+}
 <h4>Jugadores</h4>
 <ul class="nav nav-pills">
     @foreach (var p in new[] { 5, 6, 7, 8, 9, 10, 11 })
@@ -64,20 +81,3 @@
     <li @(Model.IsIndoor ? "class=active" : "")><a title="Canchas techadas" href="@Url.Action(action, controller, Model.WithChangedIndoor().Route)">Techada</a></li>
     <li @(Model.IsLighted ? "class=active" : "")><a title="Canchas iluminadas" href="@Url.Action(action, controller, Model.WithChangedLighted().Route)">Iluminada</a></li>
 </ul>
-@if (list != null && list.Any())
-{
-    <h4>Ubicación</h4>
-    <ul class="nav nav-pills">
-        @foreach (var l in list)
-        {
-            if (l.IsActive)
-            {
-                <li class="active"><a title="Canchas en @l.Description" href="@Url.Action(action, controller, Model.WithoutLocation(l.Description).Route)">@l.Description</a></li>
-            }
-            else
-            {
-                <li><a title="Canchas en @l.Description" href="@Url.Action(action, controller, Model.WithLocation(l.Description).Route)">@l.Description</a></li>
-            }
-        }
-    </ul>
-}

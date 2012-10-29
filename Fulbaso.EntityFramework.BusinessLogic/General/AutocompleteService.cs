@@ -10,7 +10,7 @@ namespace Fulbaso.EntityFramework.Logic
         internal static IEnumerable<string> GetForAutocomplete(string prefixText, int count)
         {
             return EntityUtil.Context.AutocompleteValues.Where(p => p.Value.Contains(prefixText))
-                .OrderBy(p => p.Value.ToLower().IndexOf(prefixText.ToLower()))
+                .OrderBy(p => p.Value.ToLower().IndexOf(prefixText.ToLower())).ThenBy(p => p.Value.Length)
                 .Take(count).Select(p => p.Value).ToList();
         }
 

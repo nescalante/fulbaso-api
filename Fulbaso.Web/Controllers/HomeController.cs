@@ -94,15 +94,16 @@ namespace Fulbaso.Web.Controllers
                 locations.AddRange(_locationService.GetRelated(l));
             }
 
+            if (Position.Location != null)
+            {
+                locations.AddRange(_locationService.GetRelated(Position.Location.Description));
+                locations.Add(Position.Location.Description);
+                locations.Add(Position.Location.Region.Description);
+            }
+
             if (!locations.Any())
             {
                 locations.AddRange(_territoryService.Get().Select(t => t.Description));
-            }
-
-            if (Position.Location != null)
-            {
-                locations.Add(Position.Location.Description);
-                locations.Add(Position.Location.Region.Description);
             }
 
             return locations.Distinct(new CaseInsensitiveComparer()).Where(l => !string.IsNullOrEmpty(l)).ToList();

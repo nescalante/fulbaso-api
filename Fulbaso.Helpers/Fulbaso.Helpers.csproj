@@ -60,6 +60,7 @@
     <Compile Include="Interfaces\IEntityWithID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structs\EnumHelper.cs" />
+    <Compile Include="Structs\StringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
