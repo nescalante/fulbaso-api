@@ -139,7 +139,7 @@ namespace Fulbaso.Importer
                         MapVa = lng,
                     };
 
-                    _placeService.Add(place);
+                    _placeService.Add(place, 1);
 
                     CreateCourts(ref html, ref ix, place);
                 }

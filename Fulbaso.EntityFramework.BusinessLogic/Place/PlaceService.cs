@@ -27,22 +27,45 @@ namespace Fulbaso.EntityFramework.Logic
             _authentication = authentication;
         }
 
-        public void Add(Place place)
+        public void Add(Place place, long userId)
         {
+            // try to set the place page name 
+            var name = this.GetAscii(place.Description);
+            
+            if (!this.IsAvailable(name))
+            {
+                // if it's not available, try to concat the location to the name
+                name = GetAscii(name + place.Location.Description);
+
+                // if it's not available, try to concat a number
+                if (!this.IsAvailable(name))
+                {
+                    name = this.GetAscii(place.Description);
+                    int c = 1;
+
+                    while (!this.IsAvailable(name + c))
+                    {
+                        c++;
+                    }
+
+                    name = name + c;
+                }
+            }
+
             var placeEntity = new PlaceEntity
             {
                 Name = place.Description,
                 Description = place.Info,
                 Address = place.Address,
                 LocationId = place.Location.Id,
-                MapLocation = place.MapLocation,
                 MapUa = place.MapUa,
                 MapVa = place.MapVa,
                 Phone = place.Phone,
                 HowToArrive = place.HowToArrive,
                 DateFrom = DateTime.Today,
-                IsActive = place.IsActive,
-                Page = place.Page,
+                IsActive = false,
+                Page = name,
+                CreatedBy = userId,
             };
 
             foreach (var s in place.Services)
@@ -50,6 +73,14 @@ namespace Fulbaso.EntityFramework.Logic
 
             Repository<PlaceEntity>.Add(placeEntity);
             place.Id = placeEntity.Id;
+            place.Page = placeEntity.Page;
+
+            Repository<UserPlaceEntity>.Add(new UserPlaceEntity
+            {
+                PlaceId = place.Id,
+                UserId = userId,
+                Role = "Owner",
+            });
         }
 
         public void Update(Place place)
@@ -167,8 +198,8 @@ namespace Fulbaso.EntityFramework.Logic
 
         public IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int init, int rows, out int count)
         {
-            var query = EntityUtil.Context.PlaceViews.Where(c =>string.IsNullOrEmpty(value) ||
-                c.exp.Contains(value));
+            var query = EntityUtil.Context.PlaceViews.Where(c => (string.IsNullOrEmpty(value) ||
+                c.exp.Contains(value)) && c.IsActive);
             count = query.Count();
 
             // order by distance
@@ -265,7 +296,8 @@ namespace Fulbaso.EntityFramework.Logic
             places = from p in places
                      where (locations.Count() == 0 || locations.Contains(p.Location.Description) ||
                      locations.Contains(p.Location.Region.Description) ||
-                     locations.Contains(p.Location.Region.Territory.Description))
+                     locations.Contains(p.Location.Region.Territory.Description)) &&
+                     p.IsActive
                      select p;
 
             // order by distance
@@ -372,7 +404,7 @@ namespace Fulbaso.EntityFramework.Logic
 
             if (lat.HasValue && lng.HasValue)
             {
-                var near = from p in EntityUtil.Context.Places.Where(i => i.MapUa != null && i.MapVa != null && i.MapUa != lat && i.MapVa != lng)
+                var near = from p in EntityUtil.Context.Places.Where(i => i.MapUa != null && i.MapVa != null && i.MapUa != lat && i.MapVa != lng && i.IsActive)
                            let la1 = (decimal)p.MapUa
                            let lo1 = (decimal)p.MapVa
                            let la2 = (decimal)lat
@@ -512,6 +544,17 @@ namespace Fulbaso.EntityFramework.Logic
         public bool PlaceHasAdmin(int placeId)
         {
             return EntityUtil.Context.CourtBooks.Where(p => p.Court.PlaceId == placeId).Any();
+        }
+
+        private string GetAscii(string name)
+        {
+            return new string(name.GetAscii().ToLower().Where(char.IsLetterOrDigit).ToArray());
+        }
+
+        private bool IsAvailable(string name)
+        {
+            var ascii = this.GetAscii(name);
+            return !EntityUtil.Context.Places.Where(p => p.Page == ascii).Any();
         }
     }
 }

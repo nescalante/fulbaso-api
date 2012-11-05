@@ -6,7 +6,7 @@ namespace Fulbaso.Contract
 {
     public interface IPlaceService
     {
-        void Add(Place place);
+        void Add(Place place, long userId);
 
         void Delete(int placeId);
 

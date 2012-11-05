@@ -51,7 +51,7 @@ namespace Fulbaso.Web.Controllers
             }
 
             placeModel.Services = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null);
-            _placeService.Update(placeModel);
+            _placeService.Add(placeModel, _authentication.GetUser().Id);
 
             return RedirectToAction("Edit", "Place", new { place = placeModel.Page });
         }

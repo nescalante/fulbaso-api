@@ -143,17 +143,6 @@ namespace Fulbaso.Web
                         routes.Add("q", string.IsNullOrEmpty(this.Query) ? "*" : this.Query);
                     }
 
-                    if (this.Latitude.HasValue && this.Longitude.HasValue)
-                    {
-                        routes.Add("lat", this.Latitude);
-                        routes.Add("lng", this.Longitude);
-                    }
-                    else if (Position.HasValue)
-                    {
-                        routes.Add("lat", Position.Latitude);
-                        routes.Add("lng", Position.Longitude);
-                    }
-
                     return routes;
                 }
                 catch (Exception ex)
