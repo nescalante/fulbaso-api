@@ -266,9 +266,8 @@ namespace Fulbaso.Web
             }
         }
 
-        public PlacesFilter(string query, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool isIndoor, bool isLighted, DateTime? date = null, int? hour = null)
+        public PlacesFilter(int[] players, int[] floorTypes, string[] locations, byte[] tags, bool isIndoor, bool isLighted, DateTime? date = null, int? hour = null)
         {
-            this.Query = query;
             this.Players = players;
             this.FloorTypes = floorTypes;
             this.Locations = locations;
@@ -290,7 +289,7 @@ namespace Fulbaso.Web
 
         private PlacesFilter Clone()
         {
-            return new PlacesFilter(this.Query, this.Players, this.FloorTypes, this.Locations, this.Tags, this.IsIndoor, this.IsLighted);
+            return new PlacesFilter(this.Players, this.FloorTypes, this.Locations, this.Tags, this.IsIndoor, this.IsLighted);
         }
 
         public PlacesFilter AddPlayerOption(int player)

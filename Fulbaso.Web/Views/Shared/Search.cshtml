@@ -11,11 +11,6 @@
     var list = locations.Where(l => !Model.Locations.Any(m => m.ToUpper().Trim() == l.ToUpper().Trim()))
         .Select(l => new { IsActive = false, Description = l })
         .Concat(Model.Locations.Select(l => new { IsActive = true, Description = l })).OrderBy(l => l.Description);
-        
-    if (action.ToLower() == "map")
-    {
-        list = null; 
-    }
 }
 
 <h3>Búsqueda rápida</h3>

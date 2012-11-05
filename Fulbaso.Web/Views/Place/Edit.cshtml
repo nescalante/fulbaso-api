@@ -20,16 +20,14 @@
 
 @Html.Partial("Menu", Model.Page)
 
-@using (Html.BeginForm("Edit", "Place", FormMethod.Post, new { @class = "form-horizontal" }))
+@using (Html.BeginForm("Edit", "Place", FormMethod.Post))
 {
-    <fieldset>
-        <legend>General</legend>
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.MapUa)
         @Html.HiddenFor(m => m.MapVa)
         @Html.HiddenFor(m => m.Location.Id)
         @Html.Hidden("LocationJson")
-        <div class="control-group" style="padding-top: 16px;">
+        <div class="control-group">
             <label class="control-label" for="Description">Nombre</label>
             <div class="controls">
                 @Html.TextBoxFor(m => m.Description, new { @class = "input-xxlarge", maxlength = "200", })
@@ -72,7 +70,6 @@
                 }
             </div>
         </div>
-        <legend>Ubicación</legend>
         <div class="control-group">
             <label class="control-label" for="MapLocation">Dirección</label>
             <div class="controls">
@@ -93,10 +90,8 @@
             </div>
         </div>
         <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Aceptar</button>
-            @Html.ActionLink("Cancelar", "Admin", "Home", new { place = Model.Page, }, new { @class = "btn", })
+            <button class="btn btn-primary" type="submit">Guardar cambios</button>
         </div>
-    </fieldset>
 }
 
 @section Scripts

@@ -15,7 +15,7 @@ namespace Fulbaso.Web
                 (controller == null || context.Controller.ValueProvider.GetValue("controller").RawValue.ToString().ToUpper() == controller.ToUpper());
         }
 
-        public static IEnumerable<T> GetOrdered<T>(this IEnumerable<T> list) where T : IEntity
+        public static IEnumerable<T> Ordered<T>(this IEnumerable<T> list) where T : IEntity
         {
             return list.OrderBy(i => i.Description).Where(i => i.IsActive).ToList();
         }

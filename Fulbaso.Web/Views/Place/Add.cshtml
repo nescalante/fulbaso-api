@@ -7,7 +7,6 @@
 @{
     ViewBag.FormTitle = "Agregar cancha";
 }
-
 @section Header
 {
     <div class="page-header">
@@ -20,113 +19,70 @@
 <p>Desde acá vas a poder agregar un complejo a nuestra base de datos.</p>
 <p>Te pedimos que ingreses a continuación los datos correspondientes al complejo.</p>
 
-
-@using (Html.BeginForm("Add", "Place", FormMethod.Post, new { @class = "form-horizontal" }))
+@using (Html.BeginForm("Add", "Place", FormMethod.Post))
 {
-    <fieldset>
-        @Html.HiddenFor(m => m.MapUa)
-        @Html.HiddenFor(m => m.MapVa)
-        @Html.Hidden("LocationJson")
-        <div class="control-group" style="padding-top: 16px;">
-            <label class="control-label" for="Description">Nombre</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Description, new { @class = "input-xxlarge", maxlength = "200", })
+    @Html.HiddenFor(m => m.MapUa)
+    @Html.HiddenFor(m => m.MapVa)
+    @Html.Hidden("LocationJson")
+    <div id="description-group" class="control-group" style="padding-top: 16px;">
+        <label class="control-label" for="Description">Ingresá el nombre del complejo</label>
+        <div class="controls">
+            @Html.TextBoxFor(m => m.Description, new { @class = "input-xxlarge", maxlength = "200", })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="Info">Escribí una breve descripción</label>
+        <div class="controls">
+            @Html.TextAreaFor(m => m.Info, new { @class = "input-xxlarge", })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="Phone">Indicanos algún teléfono de contacto para el complejo</label>
+        <div class="controls">
+            @Html.TextBoxFor(m => m.Phone, new { @class = "input-large", maxlength = "200", })
+        </div>
+    </div>
+    <div id="location-group" class="control-group">
+        <label class="control-label" for="MapLocation">Buscá la ubicación en el mapa</label>
+        <div class="controls">
+            <div class="input-append" style="margin-bottom: 10px;">
+                @Html.TextBoxFor(m => m.Address, new { @class = "input-xxlarge", size = "16", maxlength = "200", })
+                <a id="testlocation" class="btn">Buscar</a>
             </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Info">Descripción</label>
-            <div class="controls">
-                @Html.TextAreaFor(m => m.Info, new { @class = "input-xxlarge", })
+            <div class="clearAll suggestion" style="display:none; margin-bottom: 10px;">
+                <a id="suggestion" style="cursor: pointer;"></a>
             </div>
+            <div id="map_canvas" style="height: 300px; width: 100%;"></div>
         </div>
-        <div class="control-group">
-            <label class="control-label" for="Phone">Teléfono</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Phone, new { @class = "input-large", maxlength = "200", })
-            </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="HowToArrive">Indicanos cómo llegar (colectivos, trenes, etc.)</label>
+        <div class="controls">
+            @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xxlarge", })
         </div>
-        <div class="control-group">
-            <label class="control-label" for="optionsCheckboxList">Servicios que ofrece</label>
-            <div class="controls">
-                @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
-                {
-                    <label class="checkbox">
-                        @if (Model != null && Model.Services.Contains(s))
-                        {
-                            <input type="checkbox" id="@s" name="@s" checked="checked" />
-                        }
-                        else
-                        {
-                            <input type="checkbox" id="@s" name="@s" />
-                        }
-                        @s.GetDescription()
-                    </label>
-                }
-            </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="optionsCheckboxList">Marcá los servicios que ofrece</label>
+        <div class="controls">
+            @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
+            {
+                <label class="checkbox">
+                    @if (Model != null && Model.Services.Contains(s))
+                    {
+                        <input type="checkbox" id="@s" name="@s" checked="checked" />
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="@s" name="@s" />
+                    }
+                    @s.GetDescription()
+                </label>
+            }
         </div>
-        <div class="control-group">
-            <label class="control-label" for="MapLocation">Dirección</label>
-            <div class="controls">
-                <div class="input-append" style="margin-bottom: 10px;">
-                    @Html.TextBoxFor(m => m.Address, new { @class = "input-xxlarge", size = "16", maxlength = "200", })
-                    <a id="testlocation" class="btn">Buscar</a>
-                </div>
-                <div class="clearAll suggestion" style="display:none; margin-bottom: 10px;">
-                    <a id="suggestion" style="cursor: pointer;"></a>
-                </div>
-                <div id="map_canvas" style="height: 300px; width: 100%;"></div>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="HowToArrive">¿Cómo llegar?</label>
-            <div class="controls">
-                @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xxlarge", })
-            </div>
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend>Cancha 1</legend>
-        <div class="con1trol-group" style="padding-top: 16px;">
-            <label class="control-label" for="Description">Nombre</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Description, new { @class = "input-xlarge", })
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Players">Cantidad de jugadores</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Players, new { @class = "input-xlarge", })
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="CourtType.Id">Deporte</label>
-            <div class="controls">
-                @Html.DropDownListFor(m => m.CourtType.Id, new SelectList(ViewBag.CourtTypes, "Id", "Description"))
-            </div>
-        </div>
-        <legend>Especificaciones</legend>
-        <div class="control-group" style="padding-top: 16px;">
-            <label class="control-label" for="FloorType.Id">Tipo de suelo</label>
-            <div class="controls">
-                @Html.DropDownListFor(m => m.FloorType.Id, new SelectList(ViewBag.FloorTypes, "Id", "Description"))
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="IsIndoor">Techada</label>
-            <div class="controls">
-                @Html.CheckBoxFor(m => m.IsIndoor)
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="IsLighted">Iluminada</label>
-            <div class="controls">
-                @Html.CheckBoxFor(m => m.IsLighted)
-            </div>
-        </div>
-        <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Aceptar</button>
-        </div>
-    </fieldset>     
+    </div>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">¡Agregar complejo!</button>
+    </div>
 }
 
 @section Scripts
@@ -135,7 +91,7 @@
     <script>
         $(function () {
             f.map.initialize("map_canvas");
-        
+
             function localize(result) {
                 $('#MapUa').val(map.marker.getPosition().lat().toString().replace(".", ","));
                 $('#MapVa').val(map.marker.getPosition().lng().toString().replace(".", ","));
@@ -156,12 +112,33 @@
             }
 
             $("#testlocation").click(function () {
+                $("#location-group").removeClass("error");
                 f.geocode.find($("#Address").val(), $("#Description").val(), $("#LocationJson"), localize);
             });
 
             $("#suggestion").click(function () {
                 $(".suggestion").slideUp();
                 $("#Address").val($("#suggestion").html());
+            });
+
+            $(".form-actions button").click(function () {
+                var valid = true;
+                $(".error").removeClass("error");
+
+                if ($.trim($("#Description").val()) == "") {
+                    $("#description-group").addClass("error");
+                    valid = valid & false;
+                }
+
+                if ($.trim($("#LocationJson").val()) == "") {
+                    $("#location-group").addClass("error");
+                    valid = valid & false;
+                }
+
+                if (!valid) {
+                    window.scrollTo(0, 0);
+                    return false;
+                }
             });
         });
     </script>

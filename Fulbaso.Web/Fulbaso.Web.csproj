@@ -332,6 +332,7 @@
     <Content Include="Views\Place\Images.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Place\Add.cshtml" />
+    <Content Include="Views\Place\Court.cshtml" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
@@ -402,9 +403,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\PlaceInfo.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\Admin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Place\Schedule.cshtml" />

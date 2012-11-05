@@ -25,45 +25,49 @@
                 {
                     <a id="favourite" class="btn" title="Votar por esta cancha"><i class="icon-thumbs-up"></i></a>
                 }
-                if (User.IsInRole("Admin"))
-                {
-                    <a href="@Url.Action("Admin", "Home", new { place = Model.Place.Page })" class="btn" title="Administrar">Administrar</a>
-                }
             }
         </h2>
     </div>
 }
 
-<div class="tabbable">
-    <ul @(!Model.HasAdmin && !Model.Place.Images.Any() ? "style=\"display:none;\"" : "")  
-        class="nav nav-tabs@(!Model.HasAdmin ? " visible-phone" : "")">
-        <li class="active">
-            <a href="#info" data-toggle="tab">Información</a>
-        </li>
-        @if (Model.HasAdmin)
-        {
-            <li><a href="#schedule" data-toggle="tab">Disponibilidad</a></li>
-        }
-        @if (Model.Place.Images.Any())
-        {
-            <li class="visible-phone"><a id="imagestab" href="#images" data-toggle="tab">Imágenes</a></li>
-        }
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="info">
-            @Html.Partial("General", Model.Place)
-        </div>
-        @if (Model.HasAdmin)
-        {
-            <div class="tab-pane" id="schedule">
-                @Html.Partial("Schedule", Model.Place)
+@if (User.IsInRole("Admin"))
+{
+    @Html.Partial("Menu", Model.Place.Page)
+    @Html.Partial("General", Model.Place)
+}
+else
+{
+    <div class="tabbable">
+        <ul @(!Model.HasAdmin && !Model.Place.Images.Any() ? "style=\"display:none;\"" : "")  
+            class="nav nav-tabs@(!Model.HasAdmin ? " visible-phone" : "")">
+            <li class="active">
+                <a href="#info" data-toggle="tab">Información</a>
+            </li>
+            @if (Model.HasAdmin)
+            {
+                <li><a href="#schedule" data-toggle="tab">Disponibilidad</a></li>
+            }
+            @if (Model.Place.Images.Any())
+            {
+                <li class="visible-phone"><a id="imagestab" href="#images" data-toggle="tab">Imágenes</a></li>
+            }
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="info">
+                @Html.Partial("General", Model.Place)
             </div>
-        }
-        <div class="tab-pane" id="images">
-            @Html.Partial("Images", Model.Place.Images)
+            @if (Model.HasAdmin)
+            {
+                <div class="tab-pane" id="schedule">
+                    @Html.Partial("Schedule", Model.Place)
+                </div>
+            }
+            <div class="tab-pane" id="images">
+                @Html.Partial("Images", Model.Place.Images)
+            </div>
         </div>
     </div>
-</div>
+}
 
 @section StyleSheets
 {

@@ -21,7 +21,7 @@
 
 @Html.Partial("Menu", (string)ViewBag.PlacePage)
 
-@using (Html.BeginForm(Model == null ? "Add" : "Edit", "Configuration", FormMethod.Post, new { @class = "form-horizontal" }))
+@using (Html.BeginForm(Model == null ? "Add" : "Edit", "Configuration", FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Id)
     @Html.Hidden("placepage", (object)ViewBag.PlacePage)
@@ -29,7 +29,7 @@
     @Html.Hidden("courtid", (object)ViewBag.CourtId)
     <fieldset>
         <legend>General</legend>
-        <div class="control-group" style="padding-top: 16px;">
+        <div class="control-group">
             <label class="control-label" for="Price">Precio (por hora)</label>
             <div class="controls">
                 <div class="input-prepend">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <legend>Horario</legend>
-        <div class="control-group" style="padding-top: 16px;">
+        <div class="control-group">
             <label class="control-label" for="StartHour">Desde las</label>
             <div class="controls">
                 <div class="input-append">
@@ -55,7 +55,7 @@
             </div>
         </div>
         <legend>Fecha</legend>
-        <div class="control-group" style="padding-top: 16px;">
+        <div class="control-group">
             <label class="control-label" for="StartDate">Desde el día</label>
             <div class="controls">
                 @Html.EditorFor(m => m.StartDate)
@@ -73,23 +73,22 @@
                 <div id="days-info" class="btn-group">
                     @foreach (var d in Enum.GetValues(typeof(DayOfWeek)))
                     {
-                        string dayclass;
-                        if (Model != null && Model.Days.Contains((DayOfWeek)d))
-                        {
-                            dayclass = "btn active";
-                            <input type="checkbox" id="@d" name="@d" checked="checked" style="display:none;" />
-                        }
-                        else
-                        {
-                            dayclass = "btn";
-                            <input type="checkbox" id="@d" name="@d" style="display:none;" />
-                        }
-                
-                        <a data-checkname="@d" class="@dayclass">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[(int)d])</a>
+                        <a data-checkname="@d" class="btn@(Model != null && Model.Days.Contains((DayOfWeek)d) ? " active" : "")">@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[(int)d])</a>
                     }
                 </div>
             </div>
         </div>
+        @foreach (var d in Enum.GetValues(typeof(DayOfWeek)))
+        {
+            if (Model != null && Model.Days.Contains((DayOfWeek)d))
+            {
+                <input type="checkbox" id="@d" name="@d" checked="checked" style="display:none;" />
+            }
+            else
+            {
+                <input type="checkbox" id="@d" name="@d" style="display:none;" />
+            }
+        }
         <div class="form-actions">
             <button class="btn btn-primary" type="submit">Aceptar</button>
             @Html.ActionLink("Volver", "Index", "Configuration", new { place = ViewBag.PlacePage, court = ViewBag.CourtId }, new { @class = "btn", })

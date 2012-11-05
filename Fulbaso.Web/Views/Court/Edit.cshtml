@@ -25,7 +25,7 @@
 
 @Html.Partial("Menu", (string)ViewBag.PlacePage)
 
-@using (Html.BeginForm(Model == null ? "Add" : "Edit", "Court", FormMethod.Post, new { @class = "form-horizontal" }))
+@using (Html.BeginForm(Model == null ? "Add" : "Edit", "Court", FormMethod.Post))
 {
     <fieldset>
         <legend>General</legend>

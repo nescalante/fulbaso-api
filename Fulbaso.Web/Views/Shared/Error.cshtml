@@ -1,8 +1,12 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
-
-@{
-    ViewBag.Title = "Error";
-}
-
-<h2>Ha ocurrido un error en la aplicación.</h2>
-<div style="display:none;">@Model.Exception.Message @(Model.Exception.InnerException != null ? Model.Exception.InnerException.Message : "")</div>
+﻿<div class="row">
+    <div class="span8">
+        <h2>Parece que algo no está funcionando bien.</h2>
+        <p>Estamos trabajando para que no vuelva a ocurrir.</p>
+        <p>Por favor, volvé a intentarlo más tarde.</p>
+    </div>
+    <div class="span4 hidden-phone">
+        <div style="margin-top: 20px;" class="img-shadow">
+            <img src="@Url.Content("~/img/404.jpg")" alt="Ha ocurrido un error" />
+        </div>
+    </div>
+</div>

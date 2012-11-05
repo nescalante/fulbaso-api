@@ -70,14 +70,14 @@
                                 <ul class="dropdown-menu">
                                     @foreach (var p in places)
                                     {
-                                        <li>@Html.ActionLink((string)p.Description, "Admin", "Home", new { place = p.Page }, null)</li>
+                                        <li>@Html.ActionLink((string)p.Description, "ItemView", "Place", new { place = p.Page }, null)</li>
                                     }
                                 </ul>
                             </li>
                         }
                         else if (places != null && places.Count == 1)
                         {
-                            <li>@Html.ActionLink(places.First().Description, "Admin", "Home", new { place = places.First().Page }, null)</li>
+                            <li>@Html.ActionLink(places.First().Description, "ItemView", "Place", new { place = places.First().Page }, null)</li>
                         }
                     </ul>
                     @if (!(ViewContext.CheckRoute("Index", "Home") && Request.QueryString.Count == 0))
@@ -134,7 +134,13 @@
                     window.location = "@Url.Action("Index", "Home")" + "?q=" + item.value;
                 }
             });
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    $.post("@Url.Action("SetPosition", "Home")", { lat: position.coords.latitude.toString().replace(".", ","), lng: position.coords.longitude.toString().replace(".", ",") });
+                });
+            }
         });
-     </script>
+    </script>
 </body>
 </html>

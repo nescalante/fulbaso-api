@@ -32,15 +32,6 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public ActionResult Admin(string place)
-        {
-            var model = _placeService.Get(place);
-
-            return View(model);
-        }
-
-        [HttpGet]
         public ActionResult List(int init)
         {
             int count;
@@ -158,7 +149,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult LogIn(string lat, string lng)
+        public ActionResult Login(string lat, string lng)
         {
             decimal dlat, dlng;
 
@@ -174,7 +165,13 @@ namespace Fulbaso.Web.Controllers
             return Redirect(url);
         }
 
-        [AcceptVerbs(HttpVerbs.Get)]
+        [HttpPost]
+        public void SetPosition(decimal lat, decimal lng, FormCollection collection)
+        {
+            Position.Set(lat, lng);
+        }
+
+        [HttpGet]
         public JsonResult Find(string term)
         {
             var lista = _placeService.GetForAutocomplete(term, 10)

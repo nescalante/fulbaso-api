@@ -48,8 +48,8 @@ namespace Fulbaso.Web.Controllers
                 ViewBag.PlacePage = placeModel.Page;
                 ViewBag.Place = placeModel.Description;
                 ViewBag.PlaceId = placeModel.Id;
-                ViewBag.CourtTypes = _courtTypeService.Get().GetOrdered();
-                ViewBag.FloorTypes = _floorTypeService.Get().GetOrdered();
+                ViewBag.CourtTypes = _courtTypeService.Get().Ordered();
+                ViewBag.FloorTypes = _floorTypeService.Get().Ordered();
 
                 return View("Edit");
             }
@@ -79,8 +79,8 @@ namespace Fulbaso.Web.Controllers
                 ViewBag.PlacePage = placeModel.Page;
                 ViewBag.Place = placeModel.Description;
                 ViewBag.PlaceId = placeModel.Id;
-                ViewBag.CourtTypes = _courtTypeService.Get().GetOrdered();
-                ViewBag.FloorTypes = _floorTypeService.Get().GetOrdered();
+                ViewBag.CourtTypes = _courtTypeService.Get().Ordered();
+                ViewBag.FloorTypes = _floorTypeService.Get().Ordered();
 
                 return View("Edit", courtModel);
             }

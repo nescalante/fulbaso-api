@@ -17,7 +17,7 @@
 
 @Html.Partial("Menu", Model.Page)
 
-@using (Html.BeginForm("AddFromFiles", "Image", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddFromFiles", "Image", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.Page)

@@ -14,16 +14,18 @@ namespace Fulbaso.Web.Controllers
     {
         private IPlaceService _placeService;
         private ICourtService _courtService;
+        private ICourtTypeService _courtTypeService;
         private IFavouriteService _favouriteService;
         private IFloorTypeService _floorTypeService;
         private ILocationService _locationService;
         private ITerritoryService _territoryService;
         private UserAuthentication _authentication;
 
-        public PlaceController(IPlaceService placeService, ICourtService courtService, IFavouriteService favouriteService, IFloorTypeService floorTypeService, ILocationService locationService, ITerritoryService territoryService, UserAuthentication authentication)
+        public PlaceController(IPlaceService placeService, ICourtService courtService, ICourtTypeService courtTypeService, IFavouriteService favouriteService, IFloorTypeService floorTypeService, ILocationService locationService, ITerritoryService territoryService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _courtService = courtService;
+            _courtTypeService = courtTypeService;
             _favouriteService = favouriteService;
             _floorTypeService = floorTypeService;
             _locationService = locationService;
@@ -32,9 +34,26 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Add()
         {
             return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Add(Place placeModel, FormCollection collection)
+        {
+            if (!string.IsNullOrEmpty(collection["LocationJson"]))
+            {
+                var gr = GeocodeResponse.Get(collection["LocationJson"]);
+                placeModel.Location = gr.GetLocation();
+            }
+
+            placeModel.Services = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null);
+            _placeService.Update(placeModel);
+
+            return RedirectToAction("Edit", "Place", new { place = placeModel.Page });
         }
 
         [HttpGet]
@@ -45,7 +64,7 @@ namespace Fulbaso.Web.Controllers
 
             if (placeModel != null)
             {
-                ViewBag.Locations = _locationService.Get().GetOrdered().OrderBy(l => l.Region.Description).Where(l => l.Region.IsActive).GroupBy(l => l.Region.Id).ToList();
+                ViewBag.Locations = _locationService.Get().Ordered().OrderBy(l => l.Region.Description).Where(l => l.Region.IsActive).GroupBy(l => l.Region.Id).ToList();
                 return View(placeModel);
             }
             else
@@ -65,7 +84,7 @@ namespace Fulbaso.Web.Controllers
             placeModel.Services = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null);
             _placeService.Update(placeModel);
 
-            return RedirectToAction("Admin", "Home", new { place = placeModel.Page });
+            return RedirectToAction("Edit", "Place", new { place = placeModel.Page });
         }
 
         [HttpGet]

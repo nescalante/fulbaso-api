@@ -3,10 +3,10 @@
 @model string
 
 <ul class="nav nav-pills">
-    <li class="@(ViewContext.CheckRoute("Admin", "Home") ? "active" : "")">@Html.ActionLink("Inicio", "Admin", "Home", new { place = Model }, null)</li>
+    <li class="@(ViewContext.CheckRoute("ItemView", "Place") ? "active" : "")">@Html.ActionLink("Complejo", "ItemView", "Place", new { place = Model }, null)</li>
     <li class="@(ViewContext.CheckRoute("Edit", "Place") ? "active" : "")">@Html.ActionLink("Editar", "Edit", "Place", new { place = Model }, null)</li>
+    <li class="@(ViewContext.CheckRoute("Index", "Court") || ViewContext.CheckRoute("Add", "Court") || ViewContext.CheckRoute("Edit", "Court") || ViewContext.CheckRoute("Index", "Configuration") || ViewContext.CheckRoute("Edit", "Configuration") || ViewContext.CheckRoute("Add", "Configuration") ? "active" : "")">@Html.ActionLink("Canchas", "Index", "Court", new { place = Model }, null)</li>
     <li class="@(ViewContext.CheckRoute("Index", "Image") || ViewContext.CheckRoute("FromUrl", "Image") || ViewContext.CheckRoute("FromFile", "Image") ? "active" : "")">@Html.ActionLink("Imágenes", "Index", "Image", new { place = Model }, null)</li>
-    <li class="@(ViewContext.CheckRoute("Index", "Court") || ViewContext.CheckRoute("Add", "Court") || ViewContext.CheckRoute("Edit", "Court") || ViewContext.CheckRoute("Index", "Configuration") || ViewContext.CheckRoute("Edit", "Configuration") || ViewContext.CheckRoute("Add", "Configuration") ? "active" : "")">@Html.ActionLink("Listar canchas", "Index", "Court", new { place = Model }, null)</li>
     <li class="@(ViewContext.CheckRoute("Index", "Schedule") ? "active" : "")">@Html.ActionLink("Calendario", "Index", "Schedule", new { place = Model }, null)</li>
     <li class="@(ViewContext.CheckRoute("Index", "Client") ? "active" : "")">@Html.ActionLink("Clientes", "Index", "Client", new { place = Model }, null)</li>
 </ul>

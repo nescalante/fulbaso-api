@@ -1,0 +1,35 @@
+﻿@model int
+
+<div id="court-@Model">
+    <h3>Cancha @Model <a id="delete-@Model" class="btn btn-mini btn-danger">Eliminar</a></h3>
+    <div class="control-group">
+        <label class="control-label" for="Players">Cantidad de jugadores</label>
+        <div class="controls">
+            @Html.TextBox("CourtsInfo[" + Model + "].Players", 5, new { @class = "input-xlarge", })
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="CourtType.Id">Deporte</label>
+        <div class="controls">
+            @Html.DropDownList("CourtsInfo[" + Model + "].CourtType.Id", new SelectList(ViewBag.CourtTypes, "Id", "Description"))
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="FloorType.Id">Tipo de suelo</label>
+        <div class="controls">
+            @Html.DropDownList("CourtsInfo[" + Model + "].FloorType.Id", new SelectList(ViewBag.FloorTypes, "Id", "Description"))
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="IsIndoor">¿Es techada?</label>
+        <div class="controls">
+            @Html.CheckBox("CourtsInfo[" + Model + "].IsIndoor")
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="IsLighted">¿Está iluminada?</label>
+        <div class="controls">
+            @Html.CheckBox("CourtsInfo[" + Model + "].IsLighted")
+        </div>
+    </div>
+</div>
