@@ -58,5 +58,7 @@ namespace Fulbaso.Contract
         bool PlaceHasAdmin(int placeId);
 
         void Update(Place place);
+
+        bool CheckPageAvailability(string name, out string result);
     }
 }

@@ -19,12 +19,21 @@
 
 @Html.Partial("Menu", Model.Page)
 
-<div style="margin-bottom: 10px;">
-    @Html.ActionLink("Agregar cancha", "Add", new { place = Model.Page }, new { @class = "btn" })
-</div>
-<div id="grid-contain">
-    @if (Model != null && Model.CourtsInfo.Count() > 0)
+
+<div>
+    <p>Desde acá vas a poder agregar y modificar las canchas del complejo.</p>
+    @if (Model == null || Model.CourtsInfo.Count() == 0)
     {
+        <p>Para empezar, @Html.ActionLink("hacé click acá", "Add", new { place = Model.Page }) para agregar la primer cancha.</p>
+    }
+</div>
+
+@if (Model != null && Model.CourtsInfo.Count() > 0)
+{
+    <div style="margin-bottom: 10px;">
+        @Html.ActionLink("Agregar cancha", "Add", new { place = Model.Page }, new { @class = "btn" })
+    </div>
+    <div id="grid-contain">
         <table id="courts" class="table">
             <tbody>
                 @for (int i = 0; i < Model.CourtsInfo.Count(); i++)
@@ -50,7 +59,10 @@
                         </td>
                         <td style="width: 1px;">
                             <div style="opacity: 1;">
-                                @Html.ActionImage("Index", "Configuration", new { court = c.Id, place = Model.Page }, null, "Configuración", Url.Content("~") + "img/cog.png", null)
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    @Html.ActionImage("Index", "Configuration", new { court = c.Id, place = Model.Page }, null, "Configuración", Url.Content("~") + "img/cog.png", null)
+                                }
                                 @Html.ActionImage("Edit", new { court = c.Id, place = Model.Page }, "Editar", Url.Content("~") + "img/pencil.png")
                                 <a data-toggle="modal" href="#dialog-confirm" name="delete" data-id="@c.Id">
                                     <img title="Eliminar" src="@Url.Content("~")img/delete.png" alt="Eliminar" />
@@ -61,8 +73,8 @@
                 }
             </tbody>
         </table>
-    }
-</div>
+    </div>
+}
 
 <div class="modal" id="dialog-confirm" style="display: none;">
     <div class="modal-header">
@@ -70,7 +82,7 @@
         <h3>@Configuration.AppTitle</h3>
     </div>
     <div class="modal-body">
-        <p>¿Está seguro que desea eliminar el item seleccionado?</p>
+        <p>¿Estás seguro de que queres eliminar el item seleccionado?</p>
     </div>
     <div class="modal-footer">
         <a id="delete-item" data-dismiss="modal" class="btn btn-danger">Eliminar</a> 

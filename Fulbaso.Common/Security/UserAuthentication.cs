@@ -88,5 +88,10 @@ namespace Fulbaso.Common.Security
         {
             return this.User;
         }
+
+        public void Refresh()
+        {
+            HttpContext.Current.Session[usersession] = _userService.Get(this.User.Id);
+        }
     }
 }

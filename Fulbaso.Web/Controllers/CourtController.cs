@@ -23,7 +23,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Index(string place)
         {
             var placeModel = _placeService.Get(place);
@@ -38,7 +38,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Add(string place)
         {
             var placeModel = _placeService.Get(place);
@@ -58,7 +58,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Add(Court courtModel, FormCollection collection)
         {
             courtModel.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));
@@ -68,7 +68,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Edit(string place, int court)
         {
             var placeModel = _placeService.Get(place);
@@ -89,6 +89,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Edit(Court courtModel, FormCollection collection)
         {
             courtModel.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));

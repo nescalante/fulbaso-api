@@ -30,10 +30,11 @@
     </div>
 }
 
-@if (User.IsInRole("Admin"))
+@if (User.IsInRole("Admin") || User.IsInRole("Owner"))
 {
     @Html.Partial("Menu", Model.Place.Page)
     @Html.Partial("General", Model.Place)
+
 }
 else
 {
@@ -83,7 +84,7 @@ else
 {
     <meta property="og:title" content="@Model.Place.Description" />
     <meta property="og:type" content="place" />
-    <meta property="og:image" content="@Url.Content("~/img/sport_soccer.png")" />
+    <meta property="og:image" content="@(Model.Place.Images.Any() ? Model.Place.Images.First().ToUrl(300) : Url.Content("~/img/sport_soccer.png"))" />
     <meta property="og:url" content="@Request.Url.AbsoluteUri" />
     <meta property="og:site_name" content="@Configuration.AppTitle"/>
     <meta name="KEYWORDS" content="@Html.Raw(keywords)" />

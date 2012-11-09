@@ -24,7 +24,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Index(string place)
         {
             var model = _placeService.Get(place);
@@ -33,7 +33,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult FromUrl(string place)
         {
             var model = _placeService.Get(place);
@@ -42,7 +42,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult FromFile(string place)
         {
             var model = _placeService.Get(place);
@@ -51,7 +51,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult AddFromFiles(Place placeModel, FormCollection collection)
         {
             if (!User.HasPlace(placeModel.Id)) throw new UnauthorizedAccessException();
@@ -76,7 +76,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult AddFromUrls(Place placeModel, FormCollection collection)
         {
             if (!User.HasPlace(placeModel.Id)) throw new UnauthorizedAccessException();
@@ -95,7 +95,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult DeleteImage(int id, string page, FormCollection collection)
         {
             _placeService.DeleteImage(id);
@@ -104,7 +104,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult UpdateImage(int id, string text, string page, FormCollection collection)
         {
             _placeService.UpdateImage(id, text);
@@ -113,6 +113,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult ParseUrl(string url)
         {
             try

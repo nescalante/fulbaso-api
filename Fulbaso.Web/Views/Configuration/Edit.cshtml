@@ -21,7 +21,7 @@
 
 @Html.Partial("Menu", (string)ViewBag.PlacePage)
 
-@using (Html.BeginForm(Model == null ? "Add" : "Edit", "Configuration", FormMethod.Post))
+@using (Html.BeginForm(Model == null ? "Add" : "Edit", "Configuration", FormMethod.Post, new { @class = "form-horizontal", }))
 {
     @Html.HiddenFor(m => m.Id)
     @Html.Hidden("placepage", (object)ViewBag.PlacePage)

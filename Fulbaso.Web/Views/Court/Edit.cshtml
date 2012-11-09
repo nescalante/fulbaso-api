@@ -15,69 +15,62 @@
     <div class="page-header">
         <h2>
             @ViewBag.Place
-            @if (Model != null)
-            {
-                <small>@(Model == null ? "Agregar" : Model.Description)</small>
-            }
+            <small>@(Model == null ? "Agregar" : Model.Description)</small>
         </h2>
     </div>
 }
 
 @Html.Partial("Menu", (string)ViewBag.PlacePage)
 
-@using (Html.BeginForm(Model == null ? "Add" : "Edit", "Court", FormMethod.Post))
+@using (Html.BeginForm(Model == null ? "Add" : "Edit", "Court", FormMethod.Post, new { @class = "form-horizontal", }))
 {
-    <fieldset>
-        <legend>General</legend>
-        @Html.HiddenFor(m => m.Id)
-        @Html.Hidden("placepage", (object)ViewBag.PlacePage)
-        @Html.Hidden("placeid", (object)ViewBag.PlaceId)
-        <div class="control-group" style="padding-top: 16px;">
-            <label class="control-label" for="Description">Nombre</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Description, new { @class = "input-xlarge", })
-            </div>
+    @Html.HiddenFor(m => m.Id)
+    @Html.Hidden("placepage", (object)ViewBag.PlacePage)
+    @Html.Hidden("placeid", (object)ViewBag.PlaceId)
+    <div class="control-group" style="padding-top: 16px;">
+        <label class="control-label" for="Description">Nombre</label>
+        <div class="controls">
+            @Html.TextBoxFor(m => m.Description, new { @class = "input-xlarge", })
         </div>
-        <div class="control-group">
-            <label class="control-label" for="Players">Cantidad de jugadores</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.Players, new { @class = "input-xlarge", })
-            </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="Players">Cantidad de jugadores</label>
+        <div class="controls">
+            @Html.TextBoxFor(m => m.Players, new { @class = "input-xlarge", })
         </div>
-        <div class="control-group">
-            <label class="control-label" for="CourtType.Id">Deporte</label>
-            <div class="controls">
-                @Html.DropDownListFor(m => m.CourtType.Id, new SelectList(ViewBag.CourtTypes, "Id", "Description"))
-            </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="CourtType.Id">Deporte</label>
+        <div class="controls">
+            @Html.DropDownListFor(m => m.CourtType.Id, new SelectList(ViewBag.CourtTypes, "Id", "Description"))
         </div>
-        <div class="control-group">
-            <label class="control-label" for="IsActive">Activa</label>
-            <div class="controls">
-                @Html.CheckBoxFor(m => m.IsActive)
-            </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="IsActive">Activa</label>
+        <div class="controls">
+            @Html.CheckBoxFor(m => m.IsActive)
         </div>
-        <legend>Especificaciones</legend>
-        <div class="control-group" style="padding-top: 16px;">
-            <label class="control-label" for="FloorType.Id">Tipo de suelo</label>
-            <div class="controls">
-                @Html.DropDownListFor(m => m.FloorType.Id, new SelectList(ViewBag.FloorTypes, "Id", "Description"))
-            </div>
+    </div>
+    <div class="control-group" style="padding-top: 16px;">
+        <label class="control-label" for="FloorType.Id">Tipo de suelo</label>
+        <div class="controls">
+            @Html.DropDownListFor(m => m.FloorType.Id, new SelectList(ViewBag.FloorTypes, "Id", "Description"))
         </div>
-        <div class="control-group">
-            <label class="control-label" for="IsIndoor">Techada</label>
-            <div class="controls">
-                @Html.CheckBoxFor(m => m.IsIndoor)
-            </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="IsIndoor">Techada</label>
+        <div class="controls">
+            @Html.CheckBoxFor(m => m.IsIndoor)
         </div>
-        <div class="control-group">
-            <label class="control-label" for="IsLighted">Iluminada</label>
-            <div class="controls">
-                @Html.CheckBoxFor(m => m.IsLighted)
-            </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="IsLighted">Iluminada</label>
+        <div class="controls">
+            @Html.CheckBoxFor(m => m.IsLighted)
         </div>
-        <div class="form-actions">
-            <button class="btn btn-primary" type="submit">Aceptar</button>
-            @Html.ActionLink("Cancelar", "Index", new { place = ViewBag.PlacePage }, new { @class = "btn", })
-        </div>
-    </fieldset> 
+    </div>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Aceptar</button>
+        @Html.ActionLink("Cancelar", "Index", new { place = ViewBag.PlacePage }, new { @class = "btn", })
+    </div>
 }

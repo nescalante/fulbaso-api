@@ -17,7 +17,7 @@
 
 @Html.Partial("Menu", Model.Page)
 
-@using (Html.BeginForm("AddFromUrls", "Image", FormMethod.Post))
+@using (Html.BeginForm("AddFromUrls", "Image", FormMethod.Post, new { @class = "form-horizontal", }))
 {
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.Page)

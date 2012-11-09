@@ -23,11 +23,11 @@
 @Html.Partial("Menu", (string)ViewBag.PlacePage)
 
 <div>
-    <p>Desde aquí se podrán configurar los diferentes precios de las canchas del complejo, separadas por día, horario y fecha.</p>
-    <p>Los precios tienen un orden de prioridad, la configuración que se encuentre más arriba tendrá más importancia por sobre el resto. Si desea modificar el orden de prioridad arrastre las configuraciones en el orden deseado.</p>
+    <p>Desde acá se podrán configurar los diferentes precios de las canchas del complejo, separadas por día, horario y fecha.</p>
+    <p>Los precios tienen un orden de prioridad, la configuración que se encuentre más arriba tendrá más importancia por sobre el resto. Si queres modificar el orden de prioridad arrastrá las configuraciones en el orden deseado.</p>
     @if (Model.Configuration.Count() == 0)
     {
-        <p>Comience agregando un precio y su respectiva configuración @Html.ActionLink("haciendo click aquí", "Add", new { court = Model.Id, place = ViewBag.PlacePage }).</p>
+        <p>Comenzá agregando un precio y su respectiva configuración @Html.ActionLink("haciendo click aquí", "Add", new { court = Model.Id, place = ViewBag.PlacePage }).</p>
     }
 </div>
 
@@ -103,7 +103,7 @@
     <h3>@Configuration.AppTitle</h3>
   </div>
   <div class="modal-body">
-    <p>¿Está seguro que desea eliminar el item seleccionado?</p>
+    <p>¿Estás seguro de que queres eliminar el item seleccionado?</p>
   </div>
   <div class="modal-footer">
     <a id="delete-item" data-dismiss="modal" class="btn btn-danger">Eliminar</a>

@@ -29,6 +29,21 @@ namespace Fulbaso.EntityFramework.Logic
 
         public void Add(Place place, long userId)
         {
+            if (place == null)
+            {
+                throw new ArgumentNullException("place");
+            }
+
+            if (string.IsNullOrEmpty(place.Description.Trim()))
+            {
+                throw new ArgumentNullException("place.Description");
+            }
+
+            if (place.Location == null)
+            {
+                throw new ArgumentNullException("place.Location");
+            }
+
             // try to set the place page name 
             var name = this.GetAscii(place.Description);
             
@@ -96,7 +111,7 @@ namespace Fulbaso.EntityFramework.Logic
             entity.MapVa = place.MapVa;
             entity.Phone = place.Phone;
             entity.HowToArrive = place.HowToArrive;
-            entity.Page = place.Page;
+            entity.Page = this.GetAscii(place.Page);
 
             while (entity.Services.Any()) EntityUtil.Context.DeleteObject(entity.Services.First());
             EntityUtil.Context.SaveChanges();
@@ -548,13 +563,22 @@ namespace Fulbaso.EntityFramework.Logic
 
         private string GetAscii(string name)
         {
-            return new string(name.GetAscii().ToLower().Where(char.IsLetterOrDigit).ToArray());
+            return new string(name.GetAscii().ToLower().Trim().Where(char.IsLetterOrDigit).ToArray());
         }
 
         private bool IsAvailable(string name)
         {
+            string value;
+            return CheckPageAvailability(name, out value) != null;
+        }
+        
+        public bool CheckPageAvailability(string name, out string result)
+        {
             var ascii = this.GetAscii(name);
-            return !EntityUtil.Context.Places.Where(p => p.Page == ascii).Any();
+            var isValid = !EntityUtil.Context.Places.Where(p => p.Page == ascii).Any();
+
+            result = ascii;
+            return isValid;
         }
     }
 }

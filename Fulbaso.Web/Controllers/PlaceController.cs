@@ -52,12 +52,13 @@ namespace Fulbaso.Web.Controllers
 
             placeModel.Services = Enum.GetValues(typeof(Service)).Cast<Service>().Where(s => collection[s.ToString()] != null);
             _placeService.Add(placeModel, _authentication.GetUser().Id);
+            _authentication.Refresh();
 
             return RedirectToAction("Edit", "Place", new { place = placeModel.Page });
         }
 
         [HttpGet]
-        [Authorize(Roles = "Editor,Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Edit(string place)
         {
             var placeModel = _placeService.Get(place);
@@ -72,7 +73,7 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Edit(Place placeModel, FormCollection collection)
         {
             if (!string.IsNullOrEmpty(collection["LocationJson"]))
@@ -115,6 +116,15 @@ namespace Fulbaso.Web.Controllers
             }
             else
                 return RedirectToAction("Error404", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult CheckAvailability(string page)
+        {
+            string result;
+            var isValid = _placeService.CheckPageAvailability(page, out result);
+
+            return Json(new { isValid = isValid, result = result, }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
