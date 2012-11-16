@@ -25,6 +25,7 @@ namespace Fulbaso.Web
             // place routes
             routes.MapRoute("DeleteFavouriteRoute", "eliminarfavorito", new { controller = "Place", action = "DeleteFavourite", });
             routes.MapRoute("AddFavouriteRoute", "agregarfavorito", new { controller = "Place", action = "AddFavourite", });
+            routes.MapRoute("AddPlace", "agregarcomplejo", new { controller = "Place", action = "Add", });
             routes.MapRoute("PlaceEditRoute", "p/{place}/editar", new { controller = "Place", action = "Edit", });
             routes.MapRoute("PlaceCalendarRoute", "p/{place}/agenda", new { controller = "Place", action = "Schedule" });
             routes.MapRoute("PlaceGetNearest", "p/{place}/cercanas", new { controller = "Place", action = "GetNearest", });

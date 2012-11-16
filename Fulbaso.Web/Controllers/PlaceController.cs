@@ -54,7 +54,7 @@ namespace Fulbaso.Web.Controllers
             _placeService.Add(placeModel, _authentication.GetUser().Id);
             _authentication.Refresh();
 
-            return RedirectToAction("Edit", "Place", new { place = placeModel.Page });
+            return RedirectToAction("Index", "Court", new { place = placeModel.Page, });
         }
 
         [HttpGet]

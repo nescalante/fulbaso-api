@@ -6,25 +6,52 @@
 @model Place
 @{
     ViewBag.FormTitle = Model.Description;
+    bool firstTime = (DateTime.Now - Model.DateFrom).TotalMinutes < 5;
 }
+
 @section Header
 {
     <div class="page-header">
-        <h2>
-            @Model.Description
-            <small>Canchas</small>
-        </h2>
+        @if (!firstTime)
+        {
+            <h2>
+                @Model.Description
+                <small>Canchas</small>
+            </h2>
+        }
+        else
+        {
+            <h2>¡El complejo @Model.Description ha sido creado!</h2>
+        }
     </div>
 }
 
-@Html.Partial("Menu", Model.Page)
-
+@if (Model != null && Model.CourtsInfo.Count() > 0)
+{
+    @Html.Partial("Menu", Model.Page)
+}
 
 <div>
-    <p>Desde acá vas a poder agregar y modificar las canchas del complejo.</p>
     @if (Model == null || Model.CourtsInfo.Count() == 0)
     {
+        if (firstTime)
+        {
+            
+            <p>De ahora en más, para que puedas acceder más rápido a este complejo, cada vez que ingreses con tu usuario, <b>@Model.Description</b> aparecerá en el menú.</p>
+        }
+        <p>Te vamos a pedir un poco mas de información acerca del complejo. Desde acá vas a poder agregar y modificar las canchas del complejo.</p>
+        <p>Para dar mas detalle a los usuarios acerca de este complejo te vamos a pedir que nos cuentes cómo son las canchas del mismo, es decir, de cuántos jugadores son, que tipo de suelo tienen, etc.</p>
+        if (firstTime)
+        {
+            <div class="alert alert-block">
+                <p>El complejo será habilitado en la búsqueda de canchas en las próximas 24 horas.</p>
+            </div>
+        }        
         <p>Para empezar, @Html.ActionLink("hacé click acá", "Add", new { place = Model.Page }) para agregar la primer cancha.</p>
+    }
+    else
+    {
+        <p>Desde acá vas a poder agregar y modificar las canchas del complejo.</p>
     }
 </div>
 
@@ -53,6 +80,9 @@
                         </td>
                         <td>
                             @c.CourtType
+                        </td>
+                        <td>
+                            @(c.Players.HasValue ? c.Players + " jugadores" : null)
                         </td>
                         <td>
                             @c.FloorType

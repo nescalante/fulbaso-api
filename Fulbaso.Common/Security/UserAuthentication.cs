@@ -92,6 +92,7 @@ namespace Fulbaso.Common.Security
         public void Refresh()
         {
             HttpContext.Current.Session[usersession] = _userService.Get(this.User.Id);
+            HttpContext.Current.Session["Places"] = null;
         }
     }
 }

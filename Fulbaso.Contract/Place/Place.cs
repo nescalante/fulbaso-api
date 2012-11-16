@@ -24,6 +24,8 @@ namespace Fulbaso.Contract
 
         public string HowToArrive { get; set; }
 
+        public DateTime DateFrom { get; set; }
+
         public string Page { get; set; }
 
         public IEnumerable<Service> Services { get; set; }

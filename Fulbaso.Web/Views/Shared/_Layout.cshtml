@@ -16,7 +16,7 @@
         ViewBag.FormTitle = ViewBag.Title;
     }
 
-    var places = CoreUtil.GetPlaces(User);
+    var places = User.GetPlaces();
 }
 
 <!DOCTYPE html>

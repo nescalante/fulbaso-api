@@ -18,40 +18,77 @@
     </div>
 }
 
+@section StyleSheets
+{
+    <style>
+        @@media (max-width: 979px) {
+            .row .span8, .row .span4 { display: block; float: none; width: auto; }
+        }
+        @@media (min-width: 979px) {
+            #Address { width: 350px; }
+        }        
+    </style>
+}
+
 @Html.Partial("Menu", Model.Page)
 
-@using (Html.BeginForm("Edit", "Place", FormMethod.Post, new { @class = "form-horizontal", }))
+@using (Html.BeginForm("Edit", "Place", FormMethod.Post, new { @class = "form-horizontal" }))
 {
-    @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.MapUa)
-    @Html.HiddenFor(m => m.MapVa)
-    @Html.HiddenFor(m => m.Location.Id)
-    @Html.Hidden("LocationJson")
-    <div id="description-group" class="control-group">
-        <label class="control-label" for="Description">Nombre</label>
-        <div class="controls">
-            @Html.TextBoxFor(m => m.Description, new { @class = "input-xxlarge", maxlength = "200", })
+    <div class="row">
+        <div class="span8">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.MapUa)
+            @Html.HiddenFor(m => m.MapVa)
+            @Html.HiddenFor(m => m.Location.Id)
+            @Html.Hidden("LocationJson")
+            <div id="description-group" class="control-group">
+                <label class="control-label" for="Description">Nombre</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Description, new { @class = "input-xlarge", maxlength = "200", })
+                </div>
+            </div>
+            <div id="page-group" class="control-group">
+                <label class="control-label" for="Page">Nombre de la página</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Page, new { @class = "input-xlarge", maxlength = "50", })
+                    <span style="display:none" class="help-inline">Nombre en uso</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="Info">Descripción</label>
+                <div class="controls">
+                    @Html.TextAreaFor(m => m.Info, new { @class = "input-xlarge", style = "height: 100px;" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="Phone">Teléfono</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "input-large", maxlength = "200", })
+                </div>
+            </div>   
+            <div class="control-group">
+                <label class="control-label" for="MapLocation">Dirección</label>
+                <div class="controls">
+                    <div class="input-append">
+                        @Html.TextBox("Address", Model.FullAddress, new { @class = "input-xlarge", size = "16", maxlength = "200", })
+                        <a id="testlocation" class="btn">Buscar</a>
+                    </div>
+                    <div class="clearAll suggestion" style="display:none; margin: 10px 0;">
+                        <a id="suggestion" style="cursor: pointer;"></a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div id="page-group" class="control-group">
-        <label class="control-label" for="Page">Nombre de la página</label>
-        <div class="controls">
-            @Html.TextBoxFor(m => m.Page, new { @class = "input-xxlarge", maxlength = "50", })
-            <span style="display:none" class="help-inline">Nombre en uso</span>
+        <div class="span4" style="margin-bottom: 10px;">
+            <div id="map_canvas" style="min-height: 310px;"></div>
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="Info">Descripción</label>
+        <label class="control-label" for="HowToArrive">¿Cómo llegar?</label>
         <div class="controls">
-            @Html.TextAreaFor(m => m.Info, new { @class = "input-xxlarge", })
+            @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xlarge", })
         </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="Phone">Teléfono</label>
-        <div class="controls">
-            @Html.TextBoxFor(m => m.Phone, new { @class = "input-large", maxlength = "200", })
-        </div>
-    </div>
+    </div>    
     <div class="control-group">
         <label class="control-label" for="optionsCheckboxList">Servicios</label>
         <div class="controls">
@@ -70,26 +107,7 @@
                 </label>
             }
         </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="MapLocation">Dirección</label>
-        <div class="controls">
-            <div class="input-append" style="margin-bottom: 10px;">
-                @Html.TextBox("Address", Model.FullAddress, new { @class = "input-xxlarge", size = "16", maxlength = "200", })
-                <a id="testlocation" class="btn">Buscar</a>
-            </div>
-            <div class="clearAll suggestion" style="display:none; margin-bottom: 10px;">
-                <a id="suggestion" style="cursor: pointer;"></a>
-            </div>
-            <div id="map_canvas" style="height: 300px; width: 100%;"></div>
-        </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="HowToArrive">¿Cómo llegar?</label>
-        <div class="controls">
-            @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xxlarge", })
-        </div>
-    </div>
+    </div>    
     <div class="form-actions">
         <button class="btn btn-primary" type="submit">Guardar cambios</button>
     </div>

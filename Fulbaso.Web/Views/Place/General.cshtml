@@ -89,7 +89,7 @@
                 }
             </div>
         }
-        @foreach (var c in Model.CourtsInfo.GroupBy(c => c.CourtType.Description).ToList())
+        @foreach (var c in Model.CourtsInfo.Where(i => i.IsActive).GroupBy(c => c.CourtType.Description).ToList())
         {
             var title = c.Key + " - " + c.Count() + " cancha" + (c.Count() > 1 ? "s" : "");
             var typeList = new List<string>();
@@ -169,6 +169,6 @@
         <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>
     </div>
     <div class="span4 hidden-phone">
-        <div id="map_canvas" style="min-height: 350px;"></div>
+        <div id="map_canvas" style="min-height: 310px;"></div>
     </div>
 </div>
