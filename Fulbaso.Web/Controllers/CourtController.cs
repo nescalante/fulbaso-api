@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Fulbaso.Common;
 using Fulbaso.Contract;
-using Fulbaso.Common.Security;
 
 namespace Fulbaso.Web.Controllers
 {
@@ -39,12 +39,13 @@ namespace Fulbaso.Web.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Editor,Admin,Owner")]
-        public ActionResult Add(string place)
+        public ActionResult Add(string place, bool? ft)
         {
             var placeModel = _placeService.Get(place);
 
             if (placeModel != null)
             {
+                ViewBag.FirstTime = ft.HasValue && ft.Value;
                 ViewBag.PlacePage = placeModel.Page;
                 ViewBag.Place = placeModel.Description;
                 ViewBag.PlaceId = placeModel.Id;
@@ -62,6 +63,16 @@ namespace Fulbaso.Web.Controllers
         public ActionResult Add(Court courtModel, FormCollection collection)
         {
             courtModel.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));
+
+            if (this.User is FacebookPrincipal)
+            {
+                var fp = this.User as FacebookPrincipal;
+                if (!new[] { "Editor", "Admin", "Owner" }.Any(r => fp.IsInRole(r, courtModel.Place.Id)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+            
             _courtService.Add(courtModel);
 
             return RedirectToAction("Index", new { place = collection["placepage"] });
@@ -93,6 +104,15 @@ namespace Fulbaso.Web.Controllers
         public ActionResult Edit(Court courtModel, FormCollection collection)
         {
             courtModel.Place = Place.Create<Place>(Convert.ToInt32(collection["placeid"]));
+
+            if (this.User is FacebookPrincipal)
+            {
+                var fp = this.User as FacebookPrincipal;
+                if (!new[] { "Editor", "Admin", "Owner" }.Any(r => fp.IsInRole(r, courtModel.Place.Id)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
 
             _courtService.Update(courtModel);
 

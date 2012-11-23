@@ -32,6 +32,11 @@
 
 @Html.Partial("Menu", Model.Page)
 
+<div style="padding-bottom: 16px;">
+    <p>Desde acá vas a poder editar la información de tu complejo.</p>
+    <p>Los campos marcados con (*) son obligatorios.</p>
+</div>
+
 @using (Html.BeginForm("Edit", "Place", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     <div class="row">
@@ -42,7 +47,7 @@
             @Html.HiddenFor(m => m.Location.Id)
             @Html.Hidden("LocationJson")
             <div id="description-group" class="control-group">
-                <label class="control-label" for="Description">Nombre</label>
+                <label class="control-label" for="Description">Nombre (*)</label>
                 <div class="controls">
                     @Html.TextBoxFor(m => m.Description, new { @class = "input-xlarge", maxlength = "200", })
                 </div>
@@ -67,7 +72,7 @@
                 </div>
             </div>   
             <div class="control-group">
-                <label class="control-label" for="MapLocation">Dirección</label>
+                <label class="control-label" for="MapLocation">Dirección (*)</label>
                 <div class="controls">
                     <div class="input-append">
                         @Html.TextBox("Address", Model.FullAddress, new { @class = "input-xlarge", size = "16", maxlength = "200", })
@@ -80,7 +85,7 @@
             </div>
         </div>
         <div class="span4" style="margin-bottom: 10px;">
-            <div id="map_canvas" style="min-height: 310px;"></div>
+            <div id="map_canvas" style="min-height: 310px;" ></div>
         </div>
     </div>
     <div class="control-group">
@@ -134,6 +139,11 @@
             }
 
             $(".form-actions button").click(function () {
+                if ($("#page-group").hasClass("error")) {
+                    window.scrollTo(0, 0);
+                    return false;
+                }
+                
                 var valid = true;
                 $(".error").removeClass("error");
 
@@ -150,18 +160,16 @@
                 }
             });
 
-            $("#Page").change(function () {
+            var lastResult = "";
+            var checkAvailability = function () {
                 $("#page-group").removeClass("error").removeClass("success");
                 $("#page-group .help-inline").hide();
 
                 if ($("#Page").val() != originalPage) {
                     $.getJSON("@Url.Action("CheckAvailability", "Place")", { page: $("#Page").val() }, function (data) {
-                        $("#Page").val(data.result);
-
-                        if (data.isValid) {
-                            $("#page-group").addClass("success");
-                        }
-                        else {
+                        lastResult = data.result;
+                        
+                        if (!data.isValid) {
                             $("#page-group").addClass("error");
                             $("#page-group .help-inline").fadeIn();
                         }
@@ -169,10 +177,9 @@
                         $("#page-group").addClass("error");
                     });
                 }
-                else {
-                    $("#page-group").addClass("success");
-                }
-            });
+            }
+
+            $("#Page").keyup(checkAvailability);
             
             function localize(result) {
                 $('#MapUa').val(map.marker.getPosition().lat().toString().replace(".", ","));

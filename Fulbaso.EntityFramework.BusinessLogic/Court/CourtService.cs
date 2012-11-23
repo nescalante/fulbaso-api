@@ -12,6 +12,12 @@ namespace Fulbaso.EntityFramework.Logic
     {
         public void Add(Court court)
         {
+            if (string.IsNullOrEmpty(court.Description))
+            {
+                var number = EntityUtil.Context.Courts.Where(c => c.PlaceId == court.Place.Id).Count() + 1;
+                court.Description = "Cancha " + number;
+            }
+
             var courtEntity = new CourtEntity
             {
                 PlaceId = court.Place.Id,
@@ -30,6 +36,8 @@ namespace Fulbaso.EntityFramework.Logic
 
         public void Update(Court court)
         {
+             court.Description = court.Description ?? "";
+
             var courtEntity = EntityUtil.Context.Courts.Where(c => c.Id == court.Id).ToList().First();
 
             courtEntity = new CourtEntity

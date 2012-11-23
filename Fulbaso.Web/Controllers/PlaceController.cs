@@ -76,6 +76,15 @@ namespace Fulbaso.Web.Controllers
         [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult Edit(Place placeModel, FormCollection collection)
         {
+            if (this.User is FacebookPrincipal)
+            {
+                var fp = this.User as FacebookPrincipal;
+                if (!new [] { "Editor", "Admin", "Owner" }.Any(r => fp.IsInRole(r, placeModel.Id)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+
             if (!string.IsNullOrEmpty(collection["LocationJson"]))
             {
                 var gr = GeocodeResponse.Get(collection["LocationJson"]);

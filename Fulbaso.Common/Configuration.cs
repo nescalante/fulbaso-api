@@ -18,6 +18,8 @@ namespace Fulbaso.Common
 
         public readonly static string AppId = Get("AppId");
 
+        public readonly static int TimeBeforeMenu = 10;
+
         public static bool IgnoreMinification
         {
             get { return Convert.ToBoolean(Get("IgnoreMinification") ?? "false"); }

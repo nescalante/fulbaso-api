@@ -6,13 +6,13 @@
 @model Place
 @{
     ViewBag.FormTitle = Model.Description;
-    bool firstTime = (DateTime.Now - Model.DateFrom).TotalMinutes < 5;
+    bool firstTime = (DateTime.Now - Model.DateFrom).TotalMinutes < Configuration.TimeBeforeMenu;
 }
 
 @section Header
 {
     <div class="page-header">
-        @if (!firstTime)
+        @if (!firstTime || (Model != null && Model.CourtsInfo.Count() != 0))
         {
             <h2>
                 @Model.Description
@@ -26,7 +26,7 @@
     </div>
 }
 
-@if (Model != null && Model.CourtsInfo.Count() > 0)
+@if (!firstTime || (Model != null && Model.CourtsInfo.Count() != 0))
 {
     @Html.Partial("Menu", Model.Page)
 }
@@ -36,28 +36,35 @@
     {
         if (firstTime)
         {
-            
             <p>De ahora en más, para que puedas acceder más rápido a este complejo, cada vez que ingreses con tu usuario, <b>@Model.Description</b> aparecerá en el menú.</p>
         }
-        <p>Te vamos a pedir un poco mas de información acerca del complejo. Desde acá vas a poder agregar y modificar las canchas del complejo.</p>
+        <p>Te vamos a pedir un poco mas de información acerca del complejo. </p>
+        <p>Desde acá vas a poder agregar y modificar las canchas.</p>
         <p>Para dar mas detalle a los usuarios acerca de este complejo te vamos a pedir que nos cuentes cómo son las canchas del mismo, es decir, de cuántos jugadores son, que tipo de suelo tienen, etc.</p>
         if (firstTime)
         {
             <div class="alert alert-block">
                 <p>El complejo será habilitado en la búsqueda de canchas en las próximas 24 horas.</p>
             </div>
-        }        
-        <p>Para empezar, @Html.ActionLink("hacé click acá", "Add", new { place = Model.Page }) para agregar la primer cancha.</p>
+        }
+        <p>Para empezar, @Html.ActionLink("hacé click acá", "Add", new { place = Model.Page, ft = firstTime, }) para agregar la primer cancha.</p>
     }
     else
     {
-        <p>Desde acá vas a poder agregar y modificar las canchas del complejo.</p>
+        if (firstTime)
+        {
+            <p>Podés seguir agregando tantas canchas como existan en el complejo. También podés agregar imagenes accediendo a la opción desde el menú superior, o bien, @Html.ActionLink("haciendo click acá", "Index", "Image").</p>
+        }
+        else
+        {
+            <p>Desde acá vas a poder agregar y modificar las canchas del complejo.</p>
+        }
     }
 </div>
 
 @if (Model != null && Model.CourtsInfo.Count() > 0)
 {
-    <div style="margin-bottom: 10px;">
+    <div style="margin-bottom: 16px;">
         @Html.ActionLink("Agregar cancha", "Add", new { place = Model.Page }, new { @class = "btn" })
     </div>
     <div id="grid-contain">
@@ -76,13 +83,20 @@
                             @("# " + (i + 1))
                         </td>
                         <td>
-                            @c.Description
+                            @if (!string.IsNullOrEmpty(c.Description.Trim()))
+                            {
+                                @Html.ActionLink(c.Description, "Edit", "Court", new { court = c.Id, place = Model.Page }, new { style = "text-decoration: none;" })
+                            }
                         </td>
                         <td>
                             @c.CourtType
                         </td>
                         <td>
-                            @(c.Players.HasValue ? c.Players + " jugadores" : null)
+                            @(c.Players.HasValue ? c.Players + " jugador" + (c.Players > 1 ? "es" : "") : null)
+                            @if (c.Players.HasValue)
+                            {
+                                <span class="hidden-phone"> por equipo</span>
+                            }
                         </td>
                         <td>
                             @c.FloorType

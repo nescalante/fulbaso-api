@@ -565,13 +565,13 @@ namespace Fulbaso.EntityFramework.Logic
 
         private string GetAscii(string name)
         {
-            return new string(name.GetAscii().ToLower().Trim().Where(char.IsLetterOrDigit).ToArray());
+            return new string(name.GetAscii().ToLower().Trim().Where(char.IsLetterOrDigit).ToArray()).Replace(" ", "");
         }
 
         private bool IsAvailable(string name)
         {
             string value;
-            return CheckPageAvailability(name, out value) != null;
+            return CheckPageAvailability(name, out value);
         }
         
         public bool CheckPageAvailability(string name, out string result)

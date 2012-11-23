@@ -32,10 +32,11 @@
         }
     </div>
     <div class="span4">
-        <div class="hidden-phone">
+        <div class="hidden-phone" style="margin-bottom: 16px;">
             @Html.Partial("Search", filter)
             <a class="btn" href="@Url.Action("Map", "Place", filter.Route)">Mostrar en el mapa</a>
         </div>
+        <div>¿Querés agregar un complejo a nuestra base de datos? Agregalo haciendo click @Html.ActionLink("acá", "Add", "Place").</div>
     </div>
 </div>
 

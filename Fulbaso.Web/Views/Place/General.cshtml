@@ -156,10 +156,13 @@
                             list.Add(i.Key.Players + " jugadores");
                         }
 
-                        <dt>@courtsInfo</dt>
-                        foreach (var l in list)
+                        if (list.Any())
                         {
-                            <dd>@l</dd>
+                            <dt>@courtsInfo</dt>
+                            foreach (var l in list)
+                            {
+                                <dd>@l</dd>
+                            }
                         }
                     }
                 }
