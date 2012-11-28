@@ -36,7 +36,10 @@
             @Html.Partial("Search", filter)
             <a class="btn" href="@Url.Action("Map", "Place", filter.Route)">Mostrar en el mapa</a>
         </div>
-        <div>¿Querés agregar un complejo a nuestra base de datos? Agregalo haciendo click @Html.ActionLink("acá", "Add", "Place").</div>
+        @if (Request.IsAuthenticated)
+        {
+            <div>¿Querés agregar un complejo a nuestra base de datos? Agregalo haciendo click @Html.ActionLink("acá", "Add", "Place").</div>
+        }
     </div>
 </div>
 
