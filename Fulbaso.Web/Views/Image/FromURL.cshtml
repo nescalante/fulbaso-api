@@ -17,6 +17,11 @@
 
 @Html.Partial("Menu", Model.Page)
 
+<div style="padding-bottom: 10px;">
+    <p>Copiá y pegá a continuación la url de la imagen que quieras agregar al complejo.</p>
+    <p>Podés agregar tantas imágenes como necesites. Una vez agregadas vas a poder detallarles una descripción.</p>
+</div>
+
 @using (Html.BeginForm("AddFromUrls", "Image", FormMethod.Post, new { @class = "form-horizontal", }))
 {
     @Html.HiddenFor(m => m.Id)
@@ -32,7 +37,7 @@
     <ul id="urllist" class="thumbnails">
     </ul>
     <div class="form-actions">
-        <button class="btn btn-primary" type="submit">Aceptar</button>
+        <button class="btn btn-primary" type="submit">Agregar</button>
         @Html.ActionLink("Cancelar", "Index", "Image", new { place = Model.Page, }, new { @class = "btn", })
     </div>
 }
@@ -104,6 +109,8 @@
 
                 $("#delete-" + filenumber).click(function() {
                     $(this).parent().parent().parent().remove();
+                    url = null;
+                    prev = null;
                 });
                 
                 filenumber++;

@@ -18,16 +18,27 @@
 
 @Html.Partial("Menu", (string)Model.Page)
 
-<div class="btn-group" style="margin-bottom: 10px;">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        Agregar imagen
-        <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-        <li>@Html.ActionLink("Desde URL", "FromURL", new { place = Model.Page })</li>
-        <li>@Html.ActionLink("Desde archivo", "FromFile", new { place = Model.Page })</li>
-    </ul>
-</div>
+<p>Desde acá vas a poder agregar y modificar imágenes para el complejo.</p>
+
+@if (Model.Images.Count() == 0)
+{
+    <p>Para subir imágenes desde archivos que tengas en tu disco, @Html.ActionLink("hace click acá", "FromFile", new { place = Model.Page }).</p>
+    <p>Para subir imágenes desde una url, @Html.ActionLink("hace click acá", "FromURL", new { place = Model.Page }).</p>
+}
+else
+{
+    <p>Podés subir imágenes desde archivos que tengas en tu disco o bien agregar una imagen desde una url.</p>
+    <div class="btn-group" style="margin-bottom: 10px;">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            Agregar imagen
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Desde URL", "FromURL", new { place = Model.Page })</li>
+            <li>@Html.ActionLink("Desde archivo", "FromFile", new { place = Model.Page })</li>
+        </ul>
+    </div>
+}
 
 @for (int i = 0; i < Model.Images.Count(); i++)
 {

@@ -122,7 +122,17 @@ namespace Fulbaso.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public void Delete(int id)
         {
-            // validar
+            if (this.User is FacebookPrincipal)
+            {
+                var placeId = _courtService.Get(id).Place.Id;
+
+                var fp = this.User as FacebookPrincipal;
+                if (!new[] { "Editor", "Admin", "Owner" }.Any(r => fp.IsInRole(r, placeId)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+
             _courtService.Delete(id);
         }
     }

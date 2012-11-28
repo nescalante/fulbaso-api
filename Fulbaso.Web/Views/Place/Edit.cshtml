@@ -49,34 +49,34 @@
             <div id="description-group" class="control-group">
                 <label class="control-label" for="Description">Nombre (*)</label>
                 <div class="controls">
-                    @Html.TextBoxFor(m => m.Description, new { @class = "input-xlarge", maxlength = "200", })
+                    @Html.TextBoxFor(m => m.Description, new { @class = "input-xlarge", maxlength = "200", tabindex = 1, })
                 </div>
             </div>
             <div id="page-group" class="control-group">
-                <label class="control-label" for="Page">Nombre de la página</label>
+                <label class="control-label" for="Page">Página <a href="#" style="font-weight: normal;" id="namehelp" rel="tooltip" data-placement="right" data-original-title="El nombre de la página es la dirección que aparecerá en la barra de direcciones del navegador dentro de nuestro sitio.">[?]</a></label>
                 <div class="controls">
-                    @Html.TextBoxFor(m => m.Page, new { @class = "input-xlarge", maxlength = "50", })
+                    @Html.TextBoxFor(m => m.Page, new { @class = "input-xlarge", maxlength = "50", tabindex = 2, })
                     <span style="display:none" class="help-inline">Nombre en uso</span>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="Info">Descripción</label>
                 <div class="controls">
-                    @Html.TextAreaFor(m => m.Info, new { @class = "input-xlarge", style = "height: 100px;" })
+                    @Html.TextAreaFor(m => m.Info, new { @class = "input-xlarge", style = "height: 100px;", tabindex = 3, })
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="Phone">Teléfono</label>
                 <div class="controls">
-                    @Html.TextBoxFor(m => m.Phone, new { @class = "input-large", maxlength = "200", })
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "input-large", maxlength = "200", tabindex = 4, })
                 </div>
             </div>   
-            <div class="control-group">
+            <div id="address-group" class="control-group">
                 <label class="control-label" for="MapLocation">Dirección (*)</label>
                 <div class="controls">
                     <div class="input-append">
-                        @Html.TextBox("Address", Model.FullAddress, new { @class = "input-xlarge", size = "16", maxlength = "200", })
-                        <a id="testlocation" class="btn">Buscar</a>
+                        @Html.TextBox("Address", Model.FullAddress, new { @class = "input-xlarge", size = "16", maxlength = "200", tabindex = 5, })
+                        <a id="testlocation" class="btn" tabindex="6">Buscar</a>
                     </div>
                     <div class="clearAll suggestion" style="display:none; margin: 10px 0;">
                         <a id="suggestion" style="cursor: pointer;"></a>
@@ -91,22 +91,26 @@
     <div class="control-group">
         <label class="control-label" for="HowToArrive">¿Cómo llegar?</label>
         <div class="controls">
-            @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xlarge", })
+            @Html.TextAreaFor(m => m.HowToArrive, new { @class = "input-xlarge", tabindex = 7, })
         </div>
     </div>    
     <div class="control-group">
         <label class="control-label" for="optionsCheckboxList">Servicios</label>
         <div class="controls">
+            @{
+                var i = 7;
+            }
             @foreach (var s in Enum.GetValues(typeof(Service)).Cast<Service>())
             {
+                i++;
                 <label class="checkbox">
                     @if (Model != null && Model.Services.Contains(s))
                     {
-                        <input type="checkbox" id="@s" name="@s" checked="checked" />
+                        <input type="checkbox" id="@s" name="@s" checked="checked" tabindex="@i" />
                     }
                     else
                     {
-                        <input type="checkbox" id="@s" name="@s" />
+                        <input type="checkbox" id="@s" name="@s" tabindex="@i" />
                     }
                     @s.GetDescription()
                 </label>
@@ -114,7 +118,7 @@
         </div>
     </div>    
     <div class="form-actions">
-        <button class="btn btn-primary" type="submit">Guardar cambios</button>
+        <button class="btn btn-primary" type="submit" tabindex="@i + 1">Guardar cambios</button>
     </div>
 }
 
@@ -123,7 +127,9 @@
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script>
         $(function () {
+            $("#namehelp").tooltip();
             var originalPage = $("#Page").val();
+            var locationChanged = false;
             f.map.initialize("map_canvas");
         
             @if (Model.MapUa != null && Model.MapVa != null)
@@ -151,8 +157,10 @@
                     $("#description-group").addClass("error");
                     valid = valid & false;
                 }
-
-                valid = valid & !$("#page-group").hasClass("error");
+                if ($.trim($("#LocationJson").val()) == "" && locationChanged) {
+                    $("#address-group").addClass("error");
+                    valid = valid & false;
+                }
 
                 if (!valid) {
                     window.scrollTo(0, 0);
@@ -180,7 +188,11 @@
             }
 
             $("#Page").keyup(checkAvailability);
-            
+            $("#Address").change(function () { 
+                $("#LocationJson").val("");
+                f.geocode.find($("#Address").val(), $("#Description").val(), $("#LocationJson"), localize);
+                locationChanged = true;
+            });
             function localize(result) {
                 $('#MapUa').val(map.marker.getPosition().lat().toString().replace(".", ","));
                 $('#MapVa').val(map.marker.getPosition().lng().toString().replace(".", ","));

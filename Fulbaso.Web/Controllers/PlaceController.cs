@@ -41,6 +41,15 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Approve(int id)
+        {
+            _placeService.Approve(id);
+
+            return RedirectToAction("Admin", "Home");
+        }
+
+        [HttpPost]
         [Authorize]
         public ActionResult Add(Place placeModel, FormCollection collection)
         {

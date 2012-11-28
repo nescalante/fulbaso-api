@@ -56,6 +56,18 @@ namespace Fulbaso.EntityFramework.Logic
             return file;
         }
 
+        public void Delete(int fileId)
+        {
+            try
+            {
+                var file = EntityUtil.Context.Files.Where(f => f.Id == fileId).ToList().First();
+                FileHelper.DeleteFile(file.FileName);
+                EntityUtil.Context.Files.DeleteObject(file);
+                EntityUtil.Context.SaveChanges();
+            }
+            catch { }
+        }
+
         private string GenerateFileName(long userId, long length)
         {
             var now = DateTime.Now;

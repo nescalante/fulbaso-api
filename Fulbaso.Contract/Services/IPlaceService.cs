@@ -49,6 +49,8 @@ namespace Fulbaso.Contract
 
         IEnumerable<Place> GetList(string value, decimal? latitude, decimal? longitude, int init, int rows, out int count);
 
+        IEnumerable<Place> GetPendingForApproval();
+
         IEnumerable<Tuple<Place, double?>> GetNearest(Place place, int count = 10, double distance = 0);
 
         IEnumerable<Tuple<Place, double?>> GetNearest(string place, int count = 10, double distance = 0);
@@ -60,5 +62,7 @@ namespace Fulbaso.Contract
         void Update(Place place);
 
         bool CheckPageAvailability(string name, out string result);
+
+        void Approve(int id);
     }
 }

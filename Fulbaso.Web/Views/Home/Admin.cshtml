@@ -1,0 +1,36 @@
+﻿@using Fulbaso.Contract
+
+@model IEnumerable<Place>
+
+<h2 style="margin-bottom: 10px;">Administración del sitio.</h2>
+<p>Canchas pendientes de aprobación</p>
+
+<div id="grid-contain">
+    <table id="courts" class="table">
+        <tbody>
+            @foreach (var p in Model.OrderBy(p => p.DateFrom))
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(p.Description, "ItemView", "Place", new { place = p.Page }, null)
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("Approve", "Place", new { id = p.Id }, FormMethod.Post, new { style = "margin: 0px; ", }))
+                        {
+                            <button type="submit" class="btn btn-success btn-small">Aprobar</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section StyleSheets
+{
+    <style>
+        #courts div { white-space: nowrap; }
+        #courts img { border: 0px; }
+        div#grid-contain table { width: 100%; }
+    </style>
+}

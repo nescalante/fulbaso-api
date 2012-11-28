@@ -102,6 +102,15 @@ namespace Fulbaso.EntityFramework.Logic
         {
             var entity = EntityUtil.Context.Places.Where(p => p.Id == place.Id).ToList().First();
 
+            if (string.IsNullOrEmpty(place.Page))
+            {
+                place.Page = entity.Page;
+            }
+            else
+            {
+                this.GetAscii(place.Page);
+            }
+
             entity.Name = place.Description;
             entity.Description = place.Info;
             entity.Address = place.Address;
@@ -111,7 +120,7 @@ namespace Fulbaso.EntityFramework.Logic
             entity.MapVa = place.MapVa;
             entity.Phone = place.Phone;
             entity.HowToArrive = place.HowToArrive;
-            entity.Page = this.GetAscii(place.Page);
+            entity.Page = place.Page;
 
             while (entity.Services.Any()) EntityUtil.Context.DeleteObject(entity.Services.First());
             EntityUtil.Context.SaveChanges();
@@ -169,9 +178,8 @@ namespace Fulbaso.EntityFramework.Logic
                 p.Files.Remove(file);
             }
 
-            EntityUtil.Context.Files.DeleteObject(file);
             EntityUtil.Context.SaveChanges();
-            FileHelper.DeleteFile(file.FileName);
+            _fileService.Delete(fileId);
         }
 
         public Place Get(int placeId)
@@ -581,6 +589,19 @@ namespace Fulbaso.EntityFramework.Logic
 
             result = ascii;
             return isValid;
+        }
+
+        public IEnumerable<Place> GetPendingForApproval()
+        {
+            return PlaceService.Get(p => !p.IsActive);
+        }
+
+        public void Approve(int id)
+        {
+            var place = EntityUtil.Context.Places.Where(p => p.Id == id).ToList().First();
+            place.IsActive = true;
+
+            EntityUtil.Context.SaveChanges();
         }
     }
 }

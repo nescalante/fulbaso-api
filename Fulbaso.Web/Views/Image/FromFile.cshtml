@@ -17,6 +17,10 @@
 
 @Html.Partial("Menu", Model.Page)
 
+<div style="padding-bottom: 10px;">
+    <p>A continuación buscá las imágenes que quieras subir.</p>
+</div>
+
 @using (Html.BeginForm("AddFromFiles", "Image", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(m => m.Id)
@@ -30,7 +34,7 @@
     <ul id="filelist" class="thumbnails">
     </ul>
     <div class="form-actions">
-        <button class="btn btn-primary" type="submit">Aceptar</button>
+        <button class="btn btn-primary" type="submit">Agregar</button>
         @Html.ActionLink("Cancelar", "Index", "Image", new { place = Model.Page, }, new { @class = "btn", })
     </div>
 }

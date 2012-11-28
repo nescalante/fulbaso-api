@@ -7,5 +7,7 @@ namespace Fulbaso.Contract
         void AddImage(Stream input, File file);
 
         File AddImage(string source, string description, long userId);
+
+        void Delete(int fileId);
     }
 }

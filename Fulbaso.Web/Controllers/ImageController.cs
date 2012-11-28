@@ -51,10 +51,16 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult AddFromFiles(Place placeModel, FormCollection collection)
         {
-            if (!User.HasPlace(placeModel.Id)) throw new UnauthorizedAccessException();
+            if (this.User is FacebookPrincipal)
+            {
+                var fp = this.User as FacebookPrincipal;
+                if (!new[] { "Editor", "Admin", "Owner" }.Any(r => fp.IsInRole(r, placeModel.Id)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
 
             for (int i = 0; i < Request.Files.Count; i++)
             {
@@ -76,10 +82,16 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult AddFromUrls(Place placeModel, FormCollection collection)
         {
-            if (!User.HasPlace(placeModel.Id)) throw new UnauthorizedAccessException();
+            if (this.User is FacebookPrincipal)
+            {
+                var fp = this.User as FacebookPrincipal;
+                if (!new[] { "Editor", "Admin", "Owner" }.Any(r => fp.IsInRole(r, placeModel.Id)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
 
             var list = collection.AllKeys.Where(k => k.StartsWith("src-"))
                 .Select(k => Convert.ToInt32(k.Substring(4)))
@@ -95,18 +107,38 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult DeleteImage(int id, string page, FormCollection collection)
         {
+            if (this.User is FacebookPrincipal)
+            {
+                var placeId = _placeService.Get(page).Id;
+
+                var fp = this.User as FacebookPrincipal;
+                if (!new[] { "Editor", "Admin", "Owner" }.Any(r => fp.IsInRole(r, placeId)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+
             _placeService.DeleteImage(id);
 
             return RedirectToAction("Index", new { place = page, });
         }
 
         [HttpPost]
-        [Authorize(Roles = "Editor,Admin,Owner")]
         public ActionResult UpdateImage(int id, string text, string page, FormCollection collection)
         {
+            if (this.User is FacebookPrincipal)
+            {
+                var placeId = _placeService.Get(page).Id;
+
+                var fp = this.User as FacebookPrincipal;
+                if (!new[] { "Editor", "Admin", "Owner" }.Any(r => fp.IsInRole(r, placeId)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+
             _placeService.UpdateImage(id, text);
 
             return RedirectToAction("Index", new { place = page, });
@@ -124,16 +156,23 @@ namespace Fulbaso.Web.Controllers
             }
             catch (ArgumentException)
             {
-                try
+                if (url.ToLower().Contains("facebook.com"))
                 {
-                    var albums = _albumService.Get(url.Split('/').Last().Split('?').First());
-                    var photos = albums.SelectMany(a => _photoService.GetFromAlbum(a.Id));
+                    try
+                    {
+                        var albums = _albumService.Get(url.Split('/').Last().Split('?').First());
+                        var photos = albums.SelectMany(a => _photoService.GetFromAlbum(a.Id));
 
-                    return Json(new { status = "facebook", content = photos, }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = "facebook", content = photos, }, JsonRequestBehavior.AllowGet);
+                    }
+                    catch
+                    {
+                        return Json(new { status = "error", message = "No se pudo encontrar el recurso.", }, JsonRequestBehavior.AllowGet);
+                    }
                 }
-                catch
+                else
                 {
-                    return Json(new { status = "error", message = "No se pudo encontrar el recurso.", }, JsonRequestBehavior.AllowGet);
+                    throw new WebException();
                 }
             }
             catch (WebException)

@@ -41,6 +41,15 @@ namespace Fulbaso.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Admin()
+        {
+            var model = _placeService.GetPendingForApproval();
+
+            return View(model);
+        }
+
+        [HttpGet]
         public ActionResult Index(int? init)
         {
             var filter = new PlacesFilter(this.Request.QueryString);

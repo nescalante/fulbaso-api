@@ -89,11 +89,17 @@
                 }
             </div>
         }
-        @foreach (var c in Model.CourtsInfo.Where(i => i.IsActive).GroupBy(c => c.CourtType.Description).ToList())
+        @foreach (var c in Model.CourtsInfo.Where(i => i.IsActive).OrderBy(i => i.CourtType.Id).GroupBy(c => c.CourtType.Description).ToList())
         {
             var title = c.Key + " - " + c.Count() + " cancha" + (c.Count() > 1 ? "s" : "");
             var typeList = new List<string>();
+            var info = c.ToList().GroupBy(g => new { FloorType = g.FloorType.Description, IsLighted = g.IsLighted, IsIndoor = g.IsIndoor, g.Players });
 
+            if (info.All(i => i.Key.Players != null))
+            {
+                typeList.Add(info.Select(i => i.Key.Players).OrderBy(i => i).Distinct().Select(i => i.ToString()).GetJoin() + " jugadores");
+            }
+            
             if (c.ToList().GroupBy(i => i.FloorType.Description).Count() == 1)
             {
                 typeList.Add(c.ToList().First().FloorType.ToString());
@@ -109,64 +115,54 @@
                 typeList.Add("Con luz");
             }
 
-            var info = c.ToList().GroupBy(g => new { FloorType = g.FloorType.Description, IsLighted = g.IsLighted, IsIndoor = g.IsIndoor, g.Players });
-            bool showCourts = true;
-
-            if (info.Count() == 1 && info.First().First().Players != null)
-            {
-                typeList.Add(info.First().First().Players + " jugadores");
-                showCourts = false;
-            }
             <h3 style="margin: 10px 0 5px;">
                 @title
             </h3>
-            if (typeList.Any())
-            {
-                <div class="alert alert-info" style="padding: 4px 0;margin:0;">
-                    <dl style="padding: 4px; margin:0;">
-                    @foreach (var i in typeList)
-                    {
-                        <dd>@i</dd>
-                    }
-                    </dl>
-                </div>            
-            }
-            <dl>
-                @if (showCourts)
+            <div class="alert alert-info" style="padding: 4px 0;margin:0;">
+                @if (typeList.Any())
                 {
-                    foreach (var i in info.OrderByDescending(i => i.Count()))
-                    {
-                        var list = new List<string>();
-                        var courtsInfo = i.Count() + " cancha" + (i.Count() > 1 ? "s" : "");
-
-                        if (!typeList.Contains(i.Key.FloorType.ToString()))
+                    <dl class="commoninfo" data-id="@c.Key" style="padding: 4px; margin:0;">
+                        @foreach (var i in typeList)
                         {
+                            <dd>@i</dd>
+                        }
+                    </dl>
+                }
+                @if (info.Count() > 1)
+                {
+                    <a class="btn showdetail" data-id="@c.Key" style="margin: 10px;" id="">Ver detalle</a>
+                    <dl class="placedetails" data-id="@c.Key" style="padding: 4px 12px; margin:0; display:none;">
+                        @foreach (var i in info.OrderByDescending(i => i.Count()))
+                        {
+                            var list = new List<string>();
+                            var courtsInfo = i.Count() + " cancha" + (i.Count() > 1 ? "s" : "");
+
                             list.Add(i.Key.FloorType.ToString());
-                        }
-                        if (!typeList.Contains("Con luz") && i.Key.IsLighted)
-                        {
-                            list.Add("Con luz");
-                        }
-                        if (!typeList.Contains("Techada") && !typeList.Contains("Techadas") && i.Key.IsIndoor)
-                        {
-                            list.Add("Techada" + (i.Count() > 1 ? "s" : ""));
-                        }
-                        if (i.Key.Players != null)
-                        {
-                            list.Add(i.Key.Players + " jugadores");
-                        }
-
-                        if (list.Any())
-                        {
-                            <dt>@courtsInfo</dt>
-                            foreach (var l in list)
+                            if (i.Key.IsLighted)
                             {
-                                <dd>@l</dd>
+                                list.Add("Con luz");
+                            }
+                            if (i.Key.IsIndoor)
+                            {
+                                list.Add("Techada" + (i.Count() > 1 ? "s" : ""));
+                            }
+                            if (i.Key.Players != null)
+                            {
+                                list.Add(i.Key.Players + " jugadores");
+                            }
+
+                            if (list.Any())
+                            {
+                                <dt>@courtsInfo</dt>
+                                foreach (var l in list)
+                                {
+                                    <dd>@l</dd>
+                                }
                             }
                         }
-                    }
+                    </dl>
                 }
-            </dl>
+            </div>            
         }
         <div class="fb-like" data-href="@Request.Url.AbsoluteUri" data-send="false" style="margin-top: 10px;" data-show-faces="false"></div>
         <div class="fb-comments" data-href="@Request.Url.AbsoluteUri" data-num-posts="5" style="margin-top: 10px;"></div>

@@ -56,6 +56,7 @@ namespace Fulbaso.Web
             routes.MapRoute("PlaceListRoute", "canchas", new { controller = "Home", action = "List", });
             routes.MapRoute("SetPositionRoute", "posicionar", new { controller = "Home", action = "SetPosition", });
             routes.MapRoute("MapRoute", "mapa", new { controller = "Place", action = "Map" });
+            routes.MapRoute("AdminRoute", "admin", new { controller = "Home", action = "Admin" });
             routes.MapRoute("Default", "{controller}/{action}", new { controller = "Home", action = "Index" });
         }
     }

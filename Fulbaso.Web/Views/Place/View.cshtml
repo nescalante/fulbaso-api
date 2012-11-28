@@ -78,6 +78,7 @@ else
         .tab-content { overflow: hidden !important; }
         .thumbnail p { margin-top: 10px; }
     </style>
+    <noscript><style>#showdetail { display: none; }</style></noscript>
 }
 
 @section Metadata
@@ -96,6 +97,12 @@ else
     <script>
         $.datepicker.setDefaults($.datepicker.regional["es"]);
         $(function () {
+            $(".showdetail").click(function () {
+                var id = $(this).data("id");
+                $(".showdetail[data-id=" + id + "], .commoninfo[data-id=" + id + "]").hide();
+                $(".placedetails[data-id=" + id + "]").fadeIn();
+            });
+
             $("#favourite").click(function () {
                 if ($(this).hasClass("active")) {
                     $(this).removeClass("active");
