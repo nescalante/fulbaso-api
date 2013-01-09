@@ -19,7 +19,7 @@ namespace Fulbaso.Service
             IEnumerable<Place> list;
             int count;
 
-            var filter = new Filter(latitude.GetDecimal(), longitude.GetDecimal(), players.GetInts('-'), floorTypes.GetInts('-'), (locations ?? "").Split('.'), tags.GetBytes('-'), indoor, lighted);
+            var filter = new Filter(latitude.GetDecimal(), longitude.GetDecimal(), players.GetInts('-'), floorTypes.GetInts('-'), (locations ?? "").Split('-'), tags.GetBytes('-'), indoor, lighted);
 
             if (filter.IsAdvanced)
             {
