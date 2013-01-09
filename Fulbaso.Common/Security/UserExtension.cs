@@ -11,7 +11,7 @@ namespace Fulbaso.Common.Security
     {
         public static bool IsInRole(this User user, string role)
         {
-            var roleService = ContainerUtil.GetApplicationContainer().Resolve<IRoleService>();
+            var roleService = ContainerUtil.GetApplicationContainer().Resolve<IRoleLogic>();
 
             return roleService.IsUserInRole(user.Id, role);
         }

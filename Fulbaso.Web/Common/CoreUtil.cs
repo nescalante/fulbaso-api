@@ -20,7 +20,7 @@ namespace Fulbaso.Web
             {
                 if (HttpContext.Current.Session["Places"] == null)
                 {
-                    HttpContext.Current.Session["Places"] = ContainerUtil.GetApplicationContainer().Resolve<IPlaceService>().GetByUser();
+                    HttpContext.Current.Session["Places"] = ContainerUtil.GetApplicationContainer().Resolve<IPlaceLogic>().GetByUser();
                 }
 
                 return HttpContext.Current.Session["Places"] as List<Place>;
@@ -31,7 +31,7 @@ namespace Fulbaso.Web
 
         public static string GetFloors(this IEnumerable<int> list)
         {
-            return ContainerUtil.GetApplicationContainer().Resolve<IFloorTypeService>().Get().Where(f => list.Contains(f.Id)).Select(f => f.ToString()).GetJoin();
+            return ContainerUtil.GetApplicationContainer().Resolve<IFloorTypeLogic>().Get().Where(f => list.Contains(f.Id)).Select(f => f.ToString()).GetJoin();
         }
 
         public static string GetTags(this IEnumerable<byte> list)

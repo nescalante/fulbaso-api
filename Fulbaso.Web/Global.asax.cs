@@ -55,8 +55,7 @@ namespace Fulbaso.Web
             _container.Install(
                 new ServiceInstaller(),
                 new AuthenticationInstaller(),
-                new ControllerInstaller(),
-                new ImporterInstaller()
+                new ControllerInstaller()
             );
 
             WindsorControllerFactory controllerFactory = new WindsorControllerFactory(_container.Kernel);

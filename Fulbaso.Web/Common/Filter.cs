@@ -79,7 +79,7 @@ namespace Fulbaso.Web
 
                 if (this.FloorTypes.Count() == 1)
                 {
-                    var floorType = ContainerUtil.GetApplicationContainer().Resolve<IFloorTypeService>().Get(this.FloorTypes.Single());
+                    var floorType = ContainerUtil.GetApplicationContainer().Resolve<IFloorTypeLogic>().Get(this.FloorTypes.Single());
                     list.Add(string.Format("con {0}", floorType.Description.ToLower()));
                 }
 

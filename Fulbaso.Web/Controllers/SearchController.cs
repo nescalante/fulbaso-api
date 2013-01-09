@@ -8,11 +8,11 @@ namespace Fulbaso.Web.Controllers
 {
     public class SearchController : BaseController
     {
-        private ILocationService _locationService;
-        private IFloorTypeService _floorTypeService;
-        private ICourtBookService _courtBookService;
+        private ILocationLogic _locationService;
+        private IFloorTypeLogic _floorTypeService;
+        private ICourtBookLogic _courtBookService;
 
-        public SearchController(ILocationService locationService, IFloorTypeService floorTypeService, ICourtBookService courtBookService)
+        public SearchController(ILocationLogic locationService, IFloorTypeLogic floorTypeService, ICourtBookLogic courtBookService)
         {
             _locationService = locationService;
             _floorTypeService = floorTypeService;

@@ -4,7 +4,7 @@ using Fulbaso.Contract;
 
 namespace Fulbaso.Facebook.Logic
 {
-    public class FacebookUser : FacebookService
+    public class FacebookUser : FacebookLogic
     {
         public User GetUser()
         {

@@ -12,7 +12,7 @@ namespace Fulbaso.Web
         {
             container.Register(
              AllTypes
-              .FromAssemblyContaining<FacebookService>()
+              .FromAssemblyContaining<FacebookLogic>()
               .Where(t => t.Name.StartsWith("Facebook"))
               .LifestylePerThread()
             );

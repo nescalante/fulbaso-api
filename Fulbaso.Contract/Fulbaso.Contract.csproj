@@ -42,41 +42,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\Territory.cs" />
-    <Compile Include="Configuration\CourtType.cs" />
-    <Compile Include="Configuration\FloorType.cs" />
-    <Compile Include="Court\CourtConfiguration.cs" />
-    <Compile Include="Court\CourtBook.cs" />
-    <Compile Include="Facebook\Album.cs" />
-    <Compile Include="Facebook\AlbumType.cs" />
-    <Compile Include="Facebook\Photo.cs" />
-    <Compile Include="Files\File.cs" />
-    <Compile Include="Place\Service.cs" />
-    <Compile Include="Services\IAlbumService.cs" />
-    <Compile Include="Services\IFileService.cs" />
-    <Compile Include="Services\IPhotoService.cs" />
-    <Compile Include="Services\IRoleService.cs" />
-    <Compile Include="Services\IUserService.cs" />
-    <Compile Include="Services\IFloorTypeService.cs" />
-    <Compile Include="Services\ICourtTypeService.cs" />
-    <Compile Include="Services\IClientService.cs" />
-    <Compile Include="Services\ICourtBookService.cs" />
-    <Compile Include="Services\ICourtConfigurationService.cs" />
-    <Compile Include="Services\ICourtService.cs" />
-    <Compile Include="Services\IFavouriteService.cs" />
-    <Compile Include="Services\IRegionService.cs" />
-    <Compile Include="Services\ITerritoryService.cs" />
-    <Compile Include="Services\ILocationService.cs" />
-    <Compile Include="Services\IPlaceService.cs" />
-    <Compile Include="Place\Client.cs" />
-    <Compile Include="Configuration\Region.cs" />
-    <Compile Include="Court\Court.cs" />
-    <Compile Include="Place\Place.cs" />
-    <Compile Include="Configuration\Location.cs" />
+    <Compile Include="Entities\Configuration\Territory.cs" />
+    <Compile Include="Entities\Configuration\CourtType.cs" />
+    <Compile Include="Entities\Configuration\FloorType.cs" />
+    <Compile Include="Entities\Court\CourtConfiguration.cs" />
+    <Compile Include="Entities\Court\CourtBook.cs" />
+    <Compile Include="Entities\Facebook\Album.cs" />
+    <Compile Include="Entities\Facebook\AlbumType.cs" />
+    <Compile Include="Entities\Facebook\Photo.cs" />
+    <Compile Include="Entities\Files\File.cs" />
+    <Compile Include="Entities\Place\Service.cs" />
+    <Compile Include="Entities\Place\Client.cs" />
+    <Compile Include="Entities\Configuration\Region.cs" />
+    <Compile Include="Entities\Court\Court.cs" />
+    <Compile Include="Entities\Place\Place.cs" />
+    <Compile Include="Entities\Configuration\Location.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IReportService.cs" />
-    <Compile Include="Services\IAuthenticationService.cs" />
-    <Compile Include="User\User.cs" />
+    <Compile Include="Entities\User\User.cs" />
+    <Compile Include="Services\Configuration\ICourtTypeLogic.cs" />
+    <Compile Include="Services\Configuration\IFloorTypeLogic.cs" />
+    <Compile Include="Services\Configuration\ILocationLogic.cs" />
+    <Compile Include="Services\Configuration\IRegionLogic.cs" />
+    <Compile Include="Services\Configuration\ITerritoryLogic.cs" />
+    <Compile Include="Services\Court\ICourtBookLogic.cs" />
+    <Compile Include="Services\Court\ICourtConfigurationLogic.cs" />
+    <Compile Include="Services\Court\ICourtLogic.cs" />
+    <Compile Include="Services\Court\IReportLogic.cs" />
+    <Compile Include="Services\Facebook\IAlbumLogic.cs" />
+    <Compile Include="Services\Facebook\IPhotoLogic.cs" />
+    <Compile Include="Services\File\IFileLogic.cs" />
+    <Compile Include="Services\Place\IClientLogic.cs" />
+    <Compile Include="Services\Place\IFavouriteLogic.cs" />
+    <Compile Include="Services\Place\IPlaceLogic.cs" />
+    <Compile Include="Services\Security\IAuthenticationLogic.cs" />
+    <Compile Include="Services\User\IRoleLogic.cs" />
+    <Compile Include="Services\User\IUserLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fulbaso.Helpers\Fulbaso.Helpers.csproj">
@@ -84,7 +84,9 @@
       <Name>Fulbaso.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

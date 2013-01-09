@@ -8,9 +8,9 @@ namespace Fulbaso.Common
     {
         public static Location GetLocation(this GeocodeResponse geocodeResponse)
         {
-            var locationService = ContainerUtil.GetApplicationContainer().Resolve<ILocationService>();
-            var regionService = ContainerUtil.GetApplicationContainer().Resolve<IRegionService>();
-            var territoryService = ContainerUtil.GetApplicationContainer().Resolve<ITerritoryService>();
+            var locationService = ContainerUtil.GetApplicationContainer().Resolve<ILocationLogic>();
+            var regionService = ContainerUtil.GetApplicationContainer().Resolve<IRegionLogic>();
+            var territoryService = ContainerUtil.GetApplicationContainer().Resolve<ITerritoryLogic>();
 
             var territory = geocodeResponse.Country;
             var location = geocodeResponse.AdministrativeAreaLevel2 ?? geocodeResponse.Neighborhood ?? geocodeResponse.Locality ?? geocodeResponse.Country;

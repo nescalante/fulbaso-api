@@ -10,12 +10,12 @@ namespace Fulbaso.Web.Controllers
 {
     public class ImageController : BaseController
     {
-        private IPlaceService _placeService;
-        private IAlbumService _albumService;
-        private IPhotoService _photoService;
+        private IPlaceLogic _placeService;
+        private IAlbumLogic _albumService;
+        private IPhotoLogic _photoService;
         private UserAuthentication _authentication;
 
-        public ImageController(IPlaceService placeService, IAlbumService albumService, IPhotoService photoService, UserAuthentication authentication)
+        public ImageController(IPlaceLogic placeService, IAlbumLogic albumService, IPhotoLogic photoService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _albumService = albumService;
