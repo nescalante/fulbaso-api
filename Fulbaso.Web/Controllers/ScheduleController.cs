@@ -9,11 +9,11 @@ namespace Fulbaso.Web.Controllers
     [Authorize]
     public class ScheduleController : BaseController
     {
-        private IPlaceService _placeService;
-        private ICourtBookService _courtBookService;
+        private IPlaceLogic _placeService;
+        private ICourtBookLogic _courtBookService;
         private UserAuthentication _authentication;
 
-        public ScheduleController(IPlaceService placeService, ICourtBookService courtBookService, UserAuthentication authentication)
+        public ScheduleController(IPlaceLogic placeService, ICourtBookLogic courtBookService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _courtBookService = courtBookService;

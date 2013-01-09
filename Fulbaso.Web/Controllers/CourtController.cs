@@ -9,12 +9,12 @@ namespace Fulbaso.Web.Controllers
     [Authorize]
     public class CourtController : BaseController
     {
-        private ICourtService _courtService;
-        private ICourtTypeService _courtTypeService;
-        private IFloorTypeService _floorTypeService;
-        private IPlaceService _placeService;
+        private ICourtLogic _courtService;
+        private ICourtTypeLogic _courtTypeService;
+        private IFloorTypeLogic _floorTypeService;
+        private IPlaceLogic _placeService;
         
-        public CourtController(ICourtService courtService, ICourtTypeService courtTypeService, IFloorTypeService floorTypeService, IPlaceService placeService)
+        public CourtController(ICourtLogic courtService, ICourtTypeLogic courtTypeService, IFloorTypeLogic floorTypeService, IPlaceLogic placeService)
         {
             _courtService = courtService;
             _courtTypeService = courtTypeService;

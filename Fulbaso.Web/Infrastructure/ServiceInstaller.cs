@@ -23,24 +23,24 @@ namespace Fulbaso.Web
 
             container.Register(
              AllTypes
-              .FromAssemblyContaining<PlaceService>()
-              .Where(t => t.Name.EndsWith("Service"))
+              .FromAssemblyContaining<PlaceLogic>()
+              .Where(t => t.Name.EndsWith("Logic"))
               .WithService.Select(ByConvention)
               .LifestylePerThread()
             );
 
             container.Register(
              AllTypes
-              .FromAssemblyContaining<AlbumService>()
-              .Where(t => t.Name.EndsWith("Service"))
+              .FromAssemblyContaining<AlbumLogic>()
+              .Where(t => t.Name.EndsWith("Logic"))
               .WithService.Select(ByConvention)
               .LifestylePerThread()
             );
 
             container.Register(
              AllTypes
-              .FromAssemblyContaining<AuthenticationService>()
-              .Where(t => t.Name.EndsWith("Service"))
+              .FromAssemblyContaining<AuthenticationLogic>()
+              .Where(t => t.Name.EndsWith("Logic"))
               .WithService.Select(ByConvention)
               .LifestylePerThread()
             );
@@ -83,7 +83,7 @@ namespace Fulbaso.Web
                     name = name.Remove(0, 1);
                 }
 
-                if (type.Name.EndsWith(name) || name.EndsWith("EntityService"))
+                if (type.Name.EndsWith(name))
                 {
                     return new[] { interfaceType };
                 }
