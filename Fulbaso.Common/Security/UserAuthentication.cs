@@ -8,11 +8,11 @@ namespace Fulbaso.Common.Security
 {
     public class UserAuthentication
     {
-        private IAuthenticationService _authentication;
-        private IUserService _userService;
+        private IAuthenticationLogic _authentication;
+        private IUserLogic _userService;
         private const string usersession = "user_key";
 
-        public UserAuthentication(IAuthenticationService authentication, IUserService userService)
+        public UserAuthentication(IAuthenticationLogic authentication, IUserLogic userService)
         {
             _authentication = authentication;
             _userService = userService;

@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Host", "Fulbaso.Host\Fulbaso.Host.csproj", "{4661D80B-2B6C-40BB-9483-A72F251B29B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Service.Contract", "Fulbaso.Service.Contract\Fulbaso.Service.Contract.csproj", "{CEC7DBF9-4691-47BD-B60A-B50CF74B9CAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Contract", "Fulbaso.Contract\Fulbaso.Contract.csproj", "{D39C7B19-28B4-461C-9F91-190442C173B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Helpers", "Fulbaso.Helpers\Fulbaso.Helpers.csproj", "{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.EntityFramework.Logic", "Fulbaso.EntityFramework.BusinessLogic\Fulbaso.EntityFramework.Logic.csproj", "{63319B1F-B305-4E2F-87D2-245074135436}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.EntityFramework", "Fulbaso.EntityFramework.Data\Fulbaso.EntityFramework.csproj", "{1A2ACCCC-48B2-4EFE-B78E-FAE279CB8A2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Facebook.Logic", "Fulbaso.Facebook.BusinessLogic\Fulbaso.Facebook.Logic.csproj", "{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Common", "Fulbaso.Common\Fulbaso.Common.csproj", "{E165A33D-72DC-4863-BACF-531243CF3FA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Authentication.Logic", "Fulbaso.Authentication.BusinessLogic\Fulbaso.Authentication.Logic.csproj", "{674D5B8F-313A-4C61-BD83-EAD2A8587B93}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Layer", "Common Layer", "{70BD4428-705E-4FE6-B728-CE5E0FE5606D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain Logic", "Domain Logic", "{F19323AA-9D93-45C3-89E2-2A535B4C96BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{6F7A527C-78A8-402D-9091-EBA1D11FB476}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{3E993AA5-D625-4A76-8C74-B544EC37B526}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fulbaso.Service", "Fulbaso.Service\Fulbaso.Service.csproj", "{544A1193-B112-47CD-96B3-4833564C38F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4661D80B-2B6C-40BB-9483-A72F251B29B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4661D80B-2B6C-40BB-9483-A72F251B29B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4661D80B-2B6C-40BB-9483-A72F251B29B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4661D80B-2B6C-40BB-9483-A72F251B29B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEC7DBF9-4691-47BD-B60A-B50CF74B9CAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEC7DBF9-4691-47BD-B60A-B50CF74B9CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEC7DBF9-4691-47BD-B60A-B50CF74B9CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEC7DBF9-4691-47BD-B60A-B50CF74B9CAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D39C7B19-28B4-461C-9F91-190442C173B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D39C7B19-28B4-461C-9F91-190442C173B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D39C7B19-28B4-461C-9F91-190442C173B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D39C7B19-28B4-461C-9F91-190442C173B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63319B1F-B305-4E2F-87D2-245074135436}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63319B1F-B305-4E2F-87D2-245074135436}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63319B1F-B305-4E2F-87D2-245074135436}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63319B1F-B305-4E2F-87D2-245074135436}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2ACCCC-48B2-4EFE-B78E-FAE279CB8A2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2ACCCC-48B2-4EFE-B78E-FAE279CB8A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2ACCCC-48B2-4EFE-B78E-FAE279CB8A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2ACCCC-48B2-4EFE-B78E-FAE279CB8A2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E165A33D-72DC-4863-BACF-531243CF3FA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E165A33D-72DC-4863-BACF-531243CF3FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E165A33D-72DC-4863-BACF-531243CF3FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E165A33D-72DC-4863-BACF-531243CF3FA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{674D5B8F-313A-4C61-BD83-EAD2A8587B93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{674D5B8F-313A-4C61-BD83-EAD2A8587B93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{674D5B8F-313A-4C61-BD83-EAD2A8587B93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{674D5B8F-313A-4C61-BD83-EAD2A8587B93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{544A1193-B112-47CD-96B3-4833564C38F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{544A1193-B112-47CD-96B3-4833564C38F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{544A1193-B112-47CD-96B3-4833564C38F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{544A1193-B112-47CD-96B3-4833564C38F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CEC7DBF9-4691-47BD-B60A-B50CF74B9CAE} = {3E993AA5-D625-4A76-8C74-B544EC37B526}
+		{4661D80B-2B6C-40BB-9483-A72F251B29B2} = {3E993AA5-D625-4A76-8C74-B544EC37B526}
+		{544A1193-B112-47CD-96B3-4833564C38F4} = {3E993AA5-D625-4A76-8C74-B544EC37B526}
+		{4DC1450D-673A-4A38-A6D8-C3C50FBB7C83} = {70BD4428-705E-4FE6-B728-CE5E0FE5606D}
+		{E165A33D-72DC-4863-BACF-531243CF3FA4} = {70BD4428-705E-4FE6-B728-CE5E0FE5606D}
+		{D39C7B19-28B4-461C-9F91-190442C173B5} = {70BD4428-705E-4FE6-B728-CE5E0FE5606D}
+		{FE430CD0-27AE-4144-AF84-7C4BBC0C6F3E} = {F19323AA-9D93-45C3-89E2-2A535B4C96BA}
+		{674D5B8F-313A-4C61-BD83-EAD2A8587B93} = {F19323AA-9D93-45C3-89E2-2A535B4C96BA}
+		{63319B1F-B305-4E2F-87D2-245074135436} = {F19323AA-9D93-45C3-89E2-2A535B4C96BA}
+		{1A2ACCCC-48B2-4EFE-B78E-FAE279CB8A2F} = {6F7A527C-78A8-402D-9091-EBA1D11FB476}
+	EndGlobalSection
+EndGlobal

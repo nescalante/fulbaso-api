@@ -45,7 +45,7 @@ namespace Fulbaso.Common
             {
                 int id;
                 var container = ContainerUtil.GetApplicationContainer();
-                var page = container.Resolve<IPlaceService>().ValidatePage(place.ToString(), out id);
+                var page = container.Resolve<IPlaceLogic>().ValidatePage(place.ToString(), out id);
 
                 return identity.PlaceRoles.Where(pr => pr.Item1 == id && pr.Item2 == role).Any();
             }

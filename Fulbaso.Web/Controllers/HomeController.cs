@@ -7,21 +7,20 @@ using System.Web.Mvc;
 using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
-using Fulbaso.Web.Models;
 using Fulbaso.Helpers;
 
 namespace Fulbaso.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        private IPlaceService _placeService;
-        private IReportService _reportService;
-        private IFloorTypeService _floorTypeService;
-        private ILocationService _locationService;
-        private ITerritoryService _territoryService;
+        private IPlaceLogic _placeService;
+        private IReportLogic _reportService;
+        private IFloorTypeLogic _floorTypeService;
+        private ILocationLogic _locationService;
+        private ITerritoryLogic _territoryService;
         private UserAuthentication _authentication;
 
-        public HomeController(IPlaceService placeService, IReportService reportService, IFloorTypeService floorTypeService, ILocationService locationService, ITerritoryService territoryService, UserAuthentication authentication)
+        public HomeController(IPlaceLogic placeService, IReportLogic reportService, IFloorTypeLogic floorTypeService, ILocationLogic locationService, ITerritoryLogic territoryService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _reportService = reportService;
@@ -56,16 +55,7 @@ namespace Fulbaso.Web.Controllers
 
             if (!filter.IsAdvanced && !filter.HasQuery)
             {
-                var index = new IndexModel
-                {
-                    TopUsedPlaces = _reportService.GetTopVotedPlaces(4),
-                    TopVotedPlaces = _reportService.GetTopUsedPlaces(4),
-                    PlacesCount = _reportService.GetPlacesCount(),
-                    CourtsCount = _reportService.GetCourtsCount(),
-                    OwnedPlaces = _reportService.GetOwnedPlaces(),
-                };
-
-                return View(index);
+                return View();
             }
             else
             {

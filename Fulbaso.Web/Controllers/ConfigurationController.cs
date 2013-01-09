@@ -10,11 +10,11 @@ namespace Fulbaso.Web.Controllers
     [Authorize]
     public class ConfigurationController : BaseController
     {
-        private ICourtConfigurationService _courtConfigurationService;
-        private ICourtService _courtService;
-        private IPlaceService _placeService;
+        private ICourtConfigurationLogic _courtConfigurationService;
+        private ICourtLogic _courtService;
+        private IPlaceLogic _placeService;
 
-        public ConfigurationController(ICourtConfigurationService courtConfigurationService, ICourtService courtService, IPlaceService placeService)
+        public ConfigurationController(ICourtConfigurationLogic courtConfigurationService, ICourtLogic courtService, IPlaceLogic placeService)
         {
             _courtConfigurationService = courtConfigurationService;
             _courtService = courtService;

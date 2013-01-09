@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using Fulbaso.Common;
 using Fulbaso.Common.Security;
 using Fulbaso.Contract;
-using Fulbaso.Web.Models;
 using System.Collections.Generic;
 using Fulbaso.Helpers;
 
@@ -12,16 +11,16 @@ namespace Fulbaso.Web.Controllers
 {
     public class PlaceController : BaseController
     {
-        private IPlaceService _placeService;
-        private ICourtService _courtService;
-        private ICourtTypeService _courtTypeService;
-        private IFavouriteService _favouriteService;
-        private IFloorTypeService _floorTypeService;
-        private ILocationService _locationService;
-        private ITerritoryService _territoryService;
+        private IPlaceLogic _placeService;
+        private ICourtLogic _courtService;
+        private ICourtTypeLogic _courtTypeService;
+        private IFavouriteLogic _favouriteService;
+        private IFloorTypeLogic _floorTypeService;
+        private ILocationLogic _locationService;
+        private ITerritoryLogic _territoryService;
         private UserAuthentication _authentication;
 
-        public PlaceController(IPlaceService placeService, ICourtService courtService, ICourtTypeService courtTypeService, IFavouriteService favouriteService, IFloorTypeService floorTypeService, ILocationService locationService, ITerritoryService territoryService, UserAuthentication authentication)
+        public PlaceController(IPlaceLogic placeService, ICourtLogic courtService, ICourtTypeLogic courtTypeService, IFavouriteLogic favouriteService, IFloorTypeLogic floorTypeService, ILocationLogic locationService, ITerritoryLogic territoryService, UserAuthentication authentication)
         {
             _placeService = placeService;
             _courtService = courtService;
@@ -118,19 +117,19 @@ namespace Fulbaso.Web.Controllers
                 placeModel.CourtsInfo = _courtService.GetByPlace(placeModel.Id);
 
                 var user = _authentication.GetUser();
-                var model = new PlaceModel
-                {
-                    Place = placeModel,
-                    HasAdmin = _placeService.PlaceHasAdmin(placeModel.Id),
-                    IsFavourite = user != null && _favouriteService.IsFavourite(placeModel.Id, user.Id),
-                };
+                //var model = new PlaceModel
+                //{
+                //    Place = placeModel,
+                //    HasAdmin = _placeService.PlaceHasAdmin(placeModel.Id),
+                //    IsFavourite = user != null && _favouriteService.IsFavourite(placeModel.Id, user.Id),
+                //};
 
-                if (model.HasAdmin)
-                {
-                    model.Place = _placeService.Get(placeModel, day);
-                }
+                //if (model.HasAdmin)
+                //{
+                //    model.Place = _placeService.Get(placeModel, day);
+                //}
 
-                return View("View", model);
+                return View("View");
             }
             else
                 return RedirectToAction("Error404", "Home");

@@ -10,10 +10,10 @@ namespace Fulbaso.Web.Controllers
     [Authorize]
     public class ClientController : BaseController
     {
-        private IClientService _clientService;
-        private IPlaceService _placeService;
+        private IClientLogic _clientService;
+        private IPlaceLogic _placeService;
 
-        public ClientController(IClientService clientService, IPlaceService placeService)
+        public ClientController(IClientLogic clientService, IPlaceLogic placeService)
         {
             _clientService = clientService;
             _placeService = placeService;

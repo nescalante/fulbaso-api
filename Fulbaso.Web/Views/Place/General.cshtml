@@ -132,23 +132,23 @@
                 {
                     <a class="btn showdetail" data-id="@c.Key" style="margin: 10px;" id="">Ver detalle</a>
                     <dl class="placedetails" data-id="@c.Key" style="padding: 4px 12px; margin:0; display:none;">
-                        @foreach (var i in info.OrderByDescending(i => i.Count()))
+                        @foreach (var i in info.OrderByDescending(i => i.Count()).ThenByDescending(i => i.Key.Players))
                         {
                             var list = new List<string>();
                             var courtsInfo = i.Count() + " cancha" + (i.Count() > 1 ? "s" : "");
 
-                            list.Add(i.Key.FloorType.ToString());
-                            if (i.Key.IsLighted)
+                            if (i.Key.Players != null)
                             {
-                                list.Add("Con luz");
+                                list.Add(i.Key.Players + " jugadores");
                             }
+                            list.Add(i.Key.FloorType.ToString());
                             if (i.Key.IsIndoor)
                             {
                                 list.Add("Techada" + (i.Count() > 1 ? "s" : ""));
                             }
-                            if (i.Key.Players != null)
+                            if (i.Key.IsLighted)
                             {
-                                list.Add(i.Key.Players + " jugadores");
+                                list.Add("Con luz");
                             }
 
                             if (list.Any())
