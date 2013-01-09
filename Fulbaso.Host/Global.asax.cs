@@ -9,6 +9,7 @@ using Fulbaso.Service;
 using Fulbaso.Service.Contract;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.ServiceModel.Activation;
 using System.Web;
@@ -95,7 +96,7 @@ namespace Fulbaso.Host
             Container.Kernel.Register(
                 Component
                     .For<Fulbaso.EntityFramework.ObjectContextEntities>()
-                    .UsingFactoryMethod(() => new Fulbaso.EntityFramework.ObjectContextEntities(System.Configuration.ConfigurationManager.ConnectionStrings["ObjectContextEntities"].ConnectionString))
+                    .UsingFactoryMethod(() => new Fulbaso.EntityFramework.ObjectContextEntities(ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"])) //ConfigurationManager.ConnectionStrings["ObjectContextEntities"].ConnectionString))
                     .LifestylePerThread()
                 );
         }
