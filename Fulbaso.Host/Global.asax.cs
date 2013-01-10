@@ -14,6 +14,7 @@ using System.Linq;
 using System.ServiceModel.Activation;
 using System.Web;
 using System.Web.Routing;
+using ObjectContextEntities = Fulbaso.EntityFramework.ObjectContextEntities;
 
 namespace Fulbaso.Host
 {
@@ -45,6 +46,9 @@ namespace Fulbaso.Host
 
         private void BuildContainer()
         {
+            var connectionString = ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"] ??
+                ConfigurationManager.ConnectionStrings["ObjectContextEntities"].ConnectionString;
+
             Container = new WindsorContainer();
             Container.Kernel.AddFacility<WcfFacility>();
             Container.Kernel.Register(
@@ -96,7 +100,7 @@ namespace Fulbaso.Host
             Container.Kernel.Register(
                 Component
                     .For<Fulbaso.EntityFramework.ObjectContextEntities>()
-                    .UsingFactoryMethod(() => new Fulbaso.EntityFramework.ObjectContextEntities(ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"])) // ConfigurationManager.ConnectionStrings["ObjectContextEntities"].ConnectionString))
+                    .UsingFactoryMethod(() => new ObjectContextEntities(connectionString))
                     .LifestylePerThread()
                 );
         }
