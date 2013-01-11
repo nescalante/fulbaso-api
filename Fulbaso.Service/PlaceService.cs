@@ -1,5 +1,6 @@
 ﻿using Fulbaso.Contract;
 using Fulbaso.Service.Contract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,10 +9,12 @@ namespace Fulbaso.Service
     public class PlaceService : IPlaceService
     {
         private IPlaceLogic _placeLogic;
+        private ICourtLogic _courtLogic;
 
-        public PlaceService(IPlaceLogic placeLogic)
+        public PlaceService(IPlaceLogic placeLogic, ICourtLogic courtLogic)
         {
             _placeLogic = placeLogic;
+            _courtLogic = courtLogic;
         }
 
         public PlaceListModel List(string term, string latitude, string longitude, string players, string floorTypes, string locations, string tags, bool indoor = false, bool lighted = false, int init = 0, int rows = 10)
@@ -39,9 +42,18 @@ namespace Fulbaso.Service
             };
         }
 
-        public PlaceListItemModel Get(string id)
+        public PlaceModel Get(string id)
         {
-            return null;
+            var model = _placeLogic.Get(id);
+
+            if (model != null)
+            {
+                model.CourtsInfo = _courtLogic.GetByPlace(model.Id);
+
+                return (PlaceModel)model;
+            }
+
+            throw new Exception("place not found"); ;
         }
     }
 }

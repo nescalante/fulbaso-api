@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using PlaceService = Fulbaso.Contract.Service;
 
 namespace Fulbaso.Service.Contract
 {

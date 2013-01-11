@@ -17,7 +17,7 @@ namespace Fulbaso.Service.Contract
         [WebInvoke(Method = "GET",
                     ResponseFormat = WebMessageFormat.Json,
                     BodyStyle = WebMessageBodyStyle.Bare,
-                    UriTemplate = "get?id={id}")]
-        PlaceListItemModel Get(string id);
+                    UriTemplate = "{id}")]
+        PlaceModel Get(string id);
     }
 }
