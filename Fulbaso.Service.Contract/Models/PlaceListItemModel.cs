@@ -7,7 +7,7 @@ using PlaceService = Fulbaso.Contract.Service;
 namespace Fulbaso.Service.Contract
 {
     [DataContract]
-    public class PlaceModel
+    public class PlaceListItemModel
     {
         [DataMember(Name = "name", Order = 1)]
         public string Name { get; set; }
@@ -33,9 +33,9 @@ namespace Fulbaso.Service.Contract
         [DataMember(Name = "services", Order = 8)]
         public List<string> Services { get; set; }
 
-        public static explicit operator PlaceModel(Place place)
+        public static explicit operator PlaceListItemModel(Place place)
         {
-            return new PlaceModel
+            return new PlaceListItemModel
             {
                 Name = place.Description,
                 Address = place.Address,

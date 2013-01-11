@@ -14,12 +14,12 @@ namespace Fulbaso.Service
             _placeLogic = placeLogic;
         }
 
-        public PlaceListModel Get(string term, string latitude, string longitude, string players, string floorTypes, string locations, string tags, bool indoor = false, bool lighted = false, int init = 0, int rows = 10)
+        public PlaceListModel List(string term, string latitude, string longitude, string players, string floorTypes, string locations, string tags, bool indoor = false, bool lighted = false, int init = 0, int rows = 10)
         {
             IEnumerable<Place> list;
             int count;
 
-            var filter = new Filter(latitude.GetDecimal(), longitude.GetDecimal(), players.GetInts('-'), floorTypes.GetInts('-'), (locations ?? "").Split('-'), tags.GetBytes('-'), indoor, lighted);
+            var filter = new Filter(term, latitude.GetDecimal(), longitude.GetDecimal(), players.GetInts('-'), floorTypes.GetInts('-'), (locations ?? "").Split('-'), tags.GetBytes('-'), indoor, lighted);
 
             if (filter.IsAdvanced)
             {
@@ -33,10 +33,15 @@ namespace Fulbaso.Service
             return new PlaceListModel
             {
                 Count = count,
-                List = list.Select(i => (PlaceModel)i).ToList(),
+                List = list.Select(i => (PlaceListItemModel)i).ToList(),
                 Title = filter.Reference,
                 Description = filter.ToString(),
             };
+        }
+
+        public PlaceListItemModel Get(string id)
+        {
+            return null;
         }
     }
 }

@@ -17,6 +17,6 @@ namespace Fulbaso.Service.Contract
         public int Count { get; set; }
 
         [DataMember(Name = "data", Order = 4)]
-        public List<PlaceModel> List { get; set; }
+        public List<PlaceListItemModel> List { get; set; }
     }
 }

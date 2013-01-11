@@ -10,8 +10,9 @@ namespace Fulbaso.Service
 {
     public class Filter
     {
-        public Filter(decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool isIndoor, bool isLighted, DateTime? date = null, int? hour = null)
+        public Filter(string query, decimal? latitude, decimal? longitude, int[] players, int[] floorTypes, string[] locations, byte[] tags, bool isIndoor, bool isLighted, DateTime? date = null, int? hour = null)
         {
+            this.Query = query;
             this.Players = players;
             this.FloorTypes = floorTypes;
             this.Locations = locations.Where(l => !string.IsNullOrEmpty(l)).ToArray();
