@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\CommonService.cs" />
     <Compile Include="Helpers\Filter.cs" />
     <Compile Include="Helpers\FilterUtil.cs" />
-    <Compile Include="PlaceService.cs" />
+    <Compile Include="Services\PlaceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,20 +1,10 @@
 ﻿using Castle.Facilities.WcfIntegration;
-using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using Fulbaso.Authentication.Logic;
-using Fulbaso.Common.Security;
-using Fulbaso.EntityFramework.Logic;
-using Fulbaso.Facebook.Logic;
-using Fulbaso.Service;
 using Fulbaso.Service.Contract;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.ServiceModel.Activation;
 using System.Web;
 using System.Web.Routing;
-using ObjectContextEntities = Fulbaso.EntityFramework.ObjectContextEntities;
 
 namespace Fulbaso.Host
 {
@@ -27,6 +17,7 @@ namespace Fulbaso.Host
             BuildContainer();
 
             RouteTable.Routes.Add(new ServiceRoute("places", new DefaultServiceHostFactory(), typeof(IPlaceService)));
+            RouteTable.Routes.Add(new ServiceRoute("util", new DefaultServiceHostFactory(), typeof(ICommonService)));
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
@@ -46,83 +37,13 @@ namespace Fulbaso.Host
 
         private void BuildContainer()
         {
-            var connectionString = ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"] ??
-                ConfigurationManager.ConnectionStrings["ObjectContextEntities"].ConnectionString;
-
             Container = new WindsorContainer();
             Container.Kernel.AddFacility<WcfFacility>();
-            Container.Kernel.Register(
-                AllTypes
-                    .FromAssemblyContaining<PlaceService>()
-                    .Where(t => t.Name.EndsWith("Service"))
-                    .WithService.Select(ByConvention)
-                    .LifestylePerThread()
-                );
-
-            Container.Kernel.Register(
-                AllTypes
-                    .FromAssemblyContaining<PlaceLogic>()
-                    .Where(t => t.Name.EndsWith("Logic"))
-                    .WithService.Select(ByConvention)
-                    .LifestylePerThread()
-                );
-
-            Container.Kernel.Register(
-                AllTypes
-                    .FromAssemblyContaining<AlbumLogic>()
-                    .Where(t => t.Name.EndsWith("Logic"))
-                    .WithService.Select(ByConvention)
-                    .LifestylePerThread()
-                );
-
-            Container.Kernel.Register(
-                AllTypes
-                    .FromAssemblyContaining<AuthenticationLogic>()
-                    .Where(t => t.Name.EndsWith("Logic"))
-                    .WithService.Select(ByConvention)
-                    .LifestylePerThread()
+            Container.Install(
+                new ServiceInstaller(),
+                new AuthenticationInstaller(),
+                new ContextInstaller()
             );
-
-            Container.Kernel.Register(
-                AllTypes
-                    .FromAssemblyContaining<FacebookLogic>()
-                    .Where(t => t.Name.StartsWith("Facebook"))
-                    .LifestylePerThread()
-                );
-
-            Container.Kernel.Register(
-                Classes
-                    .FromAssemblyContaining<UserAuthentication>()
-                    .Where(t => t.Name.EndsWith("Authentication"))
-                    .LifestylePerThread()
-                );
-
-            Container.Kernel.Register(
-                Component
-                    .For<Fulbaso.EntityFramework.ObjectContextEntities>()
-                    .UsingFactoryMethod(() => new ObjectContextEntities(connectionString))
-                    .LifestylePerThread()
-                );
-        }
-
-        private IEnumerable<Type> ByConvention(Type type, Type[] types)
-        {
-            Type[] interfaces = type.GetInterfaces();
-            foreach (Type interfaceType in interfaces)
-            {
-                string name = interfaceType.Name;
-                if (name.StartsWith("I"))
-                {
-                    name = name.Remove(0, 1);
-                }
-
-                if (type.Name.EndsWith(name))
-                {
-                    return new[] { interfaceType };
-                }
-            }
-
-            return Enumerable.Empty<Type>();
         }
     }
 }

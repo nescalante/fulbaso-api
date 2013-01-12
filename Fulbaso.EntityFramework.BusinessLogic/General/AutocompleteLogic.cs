@@ -9,9 +9,14 @@ namespace Fulbaso.EntityFramework.Logic
     {
         internal static IEnumerable<string> GetForAutocomplete(ObjectContextEntities context, string prefixText, int count)
         {
-            return context.AutocompleteValues.Where(p => p.Value.Contains(prefixText))
-                .OrderBy(p => p.Value.ToLower().IndexOf(prefixText.ToLower())).ThenBy(p => p.Value.Length)
-                .Take(count).Select(p => p.Value).ToList();
+            return context.AutocompleteValues
+                .Select(p => p.Value)
+                .Distinct()
+                .Where(p => p.Contains(prefixText))
+                .OrderBy(p => p.ToLower().IndexOf(prefixText.ToLower()))
+                .ThenBy(p => p.Length)
+                .Take(count)
+                .ToList();
         }
 
         internal static IEnumerable<Tuple<string, int>> GetTags(ObjectContextEntities context)

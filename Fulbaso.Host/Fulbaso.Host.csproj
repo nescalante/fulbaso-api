@@ -78,13 +78,17 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Services\CommonService.svc" />
     <Content Include="Global.asax" />
-    <Content Include="PlaceService.svc" />
+    <Content Include="Services\PlaceService.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dependencies\AuthenticationInstaller.cs" />
+    <Compile Include="Dependencies\ContextInstaller.cs" />
+    <Compile Include="Dependencies\ServiceInstaller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
