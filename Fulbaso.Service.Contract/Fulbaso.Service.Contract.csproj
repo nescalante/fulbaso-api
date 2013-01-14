@@ -48,8 +48,8 @@
     <Compile Include="Models\PlaceModel.cs" />
     <Compile Include="Models\PlaceListItemModel.cs" />
     <Compile Include="Models\PlaceListModel.cs" />
-    <Compile Include="Interfaces\Place\ICommonService.cs" />
-    <Compile Include="Interfaces\Place\IPlaceService.cs" />
+    <Compile Include="Interfaces\ICommonService.cs" />
+    <Compile Include="Interfaces\IPlaceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
