@@ -6,7 +6,6 @@ using System.ServiceModel.Web;
 namespace Fulbaso.Service.Contract
 {
     [ServiceContract]
-    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public interface ICommonService
     {
         [OperationContract]

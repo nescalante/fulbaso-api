@@ -1,11 +1,12 @@
 ﻿using Fulbaso.Contract;
 using Fulbaso.Service.Contract;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Activation;
 
 namespace Fulbaso.Service
 {
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class CommonService : ICommonService
     {
         private IPlaceLogic _placeLogic;
