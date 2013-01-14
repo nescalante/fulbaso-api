@@ -1,9 +1,11 @@
 ﻿using System.ServiceModel;
+using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 
 namespace Fulbaso.Service.Contract
 {
     [ServiceContract]
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public interface IPlaceService
     {
         [OperationContract]
