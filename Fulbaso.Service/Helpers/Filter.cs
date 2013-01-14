@@ -26,7 +26,7 @@ namespace Fulbaso.Service
             this.Hour = hour ?? 0;
 
             this.Latitude = latitude;
-            this.Longitude = Longitude;
+            this.Longitude = longitude;
         }
 
         private const char separator = '-';
