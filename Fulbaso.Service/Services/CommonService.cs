@@ -6,7 +6,7 @@ using System.ServiceModel.Activation;
 
 namespace Fulbaso.Service
 {
-    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
     public class CommonService : ICommonService
     {
         private IPlaceLogic _placeLogic;
