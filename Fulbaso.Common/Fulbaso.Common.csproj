@@ -69,107 +69,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionResults\Json\AjaxViewJsonResult.cs" />
-    <Compile Include="ActionResults\Json\ExceptionJsonResult.cs" />
-    <Compile Include="ActionResults\Json\JsonRedirectResult.cs" />
-    <Compile Include="ActionResults\Json\ModelStateValidationJsonResult.cs" />
-    <Compile Include="ActionResults\NotFoundResult.cs" />
-    <Compile Include="ActionResults\RedirectToHomeResult.cs" />
-    <Compile Include="CompiledRegex.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="Controller\ErrorController.cs" />
-    <Compile Include="Engine\ExtendedController.cs" />
-    <Compile Include="Engine\ExtendedControllerContext.cs" />
-    <Compile Include="Engine\ExtendedView.cs" />
-    <Compile Include="Engine\ExtendedViewEngine.cs" />
-    <Compile Include="Engine\ExtendedWebViewPage.cs" />
-    <Compile Include="Engine\StringRenderingController.cs" />
-    <Compile Include="ErrorHandling\ExceptionExtensions.cs" />
-    <Compile Include="ErrorHandling\ExceptionHelper.cs" />
-    <Compile Include="ErrorHandling\HttpApplicationErrorHandler.cs" />
-    <Compile Include="Exceptions\HttpNotFoundException.cs" />
-    <Compile Include="Extensions\Guid.cs" />
-    <Compile Include="Extensions\HttpRequestBase.cs" />
-    <Compile Include="Extensions\HttpRequest.cs" />
-    <Compile Include="Extensions\RouteData.cs" />
-    <Compile Include="Extensions\String.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
-    <Compile Include="Helpers\JavaScriptHelper.cs" />
-    <Compile Include="Helpers\MvcResourceHelper.cs" />
-    <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
-    <Compile Include="IoC\PropertyInjection.cs" />
-    <Compile Include="Models\ErrorViewModel.cs" />
-    <Compile Include="Mvc\BaseController.cs" />
-    <Compile Include="Mvc\WindsorControllerFactory.cs" />
-    <Compile Include="Places\Position.cs" />
-    <Compile Include="Resources\Regex.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Regex.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Unrecoverable.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Unrecoverable.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>User.resx</DependentUpon>
-    </Compile>
     <Compile Include="Security\UserExtension.cs" />
     <Compile Include="Utility\ContainerUtil.cs" />
     <Compile Include="Places\Distance.cs" />
     <Compile Include="Places\LocationParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Constants.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Constants.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Error.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Error.resx</DependentUpon>
-    </Compile>
     <Compile Include="Facebook\FacebookIdentity.cs" />
-    <Compile Include="Resources\Html.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Html.resx</DependentUpon>
-    </Compile>
     <Compile Include="Security\UserAuthentication.cs" />
     <Compile Include="Facebook\FacebookPrincipal.cs" />
     <Compile Include="Utility\ContextUtil.cs" />
     <Compile Include="Utility\WebUtil.cs" />
-    <Compile Include="Utility\ResourceCompressor.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Constants.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Constants.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Error.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Error.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Html.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Html.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Regex.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Regex.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Unrecoverable.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Unrecoverable.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>User.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
